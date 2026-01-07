@@ -552,7 +552,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { CalendarIcon, Mail, Phone, MessageSquare, FileText, Check, CreditCard, QrCode } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 // import UPI from "@assets/images/upi.jpeg"; // Placeholder UPI QR code image
-import UPI2 from "@assets/images/upi2.png"; // Placeholder UPI QR code image
+// import UPI2 from "@assets/images/upi2.png"; // Placeholder UPI QR code image
 
 interface BookingModalProps {
   isOpen: boolean;
@@ -849,10 +849,10 @@ ${notes ? `Notes: ${notes}` : ''}`;
                       <div className="w-48 h-48 bg-gray-100 flex items-center justify-center mb-2 mx-auto">
                         <QrCode className="h-32 w-32 text-gray-400" />
                         {/* Actual UPI QR would go here */}
-                        <img
-                          src={UPI2}
-                          // className="w-full h-full object-cover"
-                        />
+                          <img
+                            src="/assets/images/upi2.png"
+                            alt="UPI QR"
+                          />
                       </div>
                       <p className="text-sm font-medium">Scan to pay ₹30</p>
                       <p className="text-xs text-muted-foreground">9646562880-5@ybl</p>
