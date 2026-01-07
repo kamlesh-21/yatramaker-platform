@@ -1,0 +1,242 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Light theme values */
+    --background: 0 0% 100%;
+    --foreground: 240 10% 3.9%;
+    --border: 240 5% 90%;
+  }
+
+  .dark {
+    /* Dark theme overrides */
+    --background: 220 13% 10%;
+    --foreground: 0 0% 100%;
+    --border: 240 3.7% 15.9%;
+  }
+
+  html,
+  body,
+  #root {
+    background-color: hsl(var(--background))!important;
+    color: hsl(var(--foreground))!important;
+  }
+}
+
+@theme inline {
+  /* Core mapping — this ensures Tailwind respects your toggle */
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  /* All other existing variables remain unchanged */
+  --color-border: oklch(88% 0.02 250);
+  --color-card: var(--color-background); /* 👈 make cards match background */
+  --color-card-foreground: var(--color-foreground);
+  --color-card-border: var(--color-border);
+  
+  --color-sidebar: oklch(96% 0 0);
+  --color-sidebar-foreground: oklch(22% 0.01 250);
+  --color-sidebar-border: oklch(89% 0.01 250);
+  --color-sidebar-primary: oklch(58% 0.19 35);
+  --color-sidebar-primary-foreground: oklch(98% 0.02 35);
+  --color-sidebar-accent: oklch(91% 0.01 35);
+  --color-sidebar-accent-foreground: oklch(22% 0.01 250);
+  --color-sidebar-ring: oklch(58% 0.19 35);  
+
+  --color-popover: oklch(95% 0 0);
+  --color-popover-foreground: oklch(22% 0.01 250);
+  --color-popover-border: oklch(87% 0.01 250);
+  
+  --color-primary: oklch(58% 0.19 35);
+  --color-primary-foreground: oklch(98% 0.02 35);
+  
+  --color-secondary: oklch(92% 0.01 250);
+  --color-secondary-foreground: oklch(22% 0.01 250);
+  
+  --color-muted: oklch(93% 0.01 35);
+  --color-muted-foreground: oklch(35% 0.02 250);
+  
+  --color-accent: oklch(90% 0.01 35);
+  --color-accent-foreground: oklch(22% 0.01 250);
+  
+  --color-destructive: oklch(52% 0.22 25);
+  --color-destructive-foreground: oklch(98% 0.02 25);
+  
+  --color-input: oklch(78% 0.02 250);
+  --color-ring: oklch(58% 0.19 35);
+  
+  /* Chart Colors */
+  --color-chart-1: oklch(58% 0.19 35);
+  --color-chart-2: oklch(62% 0.17 150);
+  --color-chart-3: oklch(72% 0.18 75);
+  --color-chart-4: oklch(62% 0.15 270);
+  --color-chart-5: oklch(65% 0.20 310);
+  
+  /* Additional colors for your components */
+  --color-badge: oklch(92% 0.01 250);
+  --color-badge-foreground: oklch(22% 0.01 250);
+  --color-badge-border: oklch(85% 0.01 250);
+  
+  /* Typography */
+  --font-sans: Inter, system-ui, -apple-system, sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: Menlo, Monaco, monospace;
+  --font-display: Archivo, Inter, sans-serif;
+  
+  /* Border Radius */
+  --radius: 0.5rem;
+  
+  /* Shadows */
+  --shadow-2xs: 0px 1px 2px 0px oklch(22% 0.01 250 / 0.05);
+  --shadow-xs: 0px 1px 3px 0px oklch(22% 0.01 250 / 0.08);
+  --shadow-sm: 0px 2px 4px -1px oklch(22% 0.01 250 / 0.06), 0px 1px 2px -1px oklch(22% 0.01 250 / 0.10);
+  --shadow: 0px 4px 6px -1px oklch(22% 0.01 250 / 0.08), 0px 2px 4px -2px oklch(22% 0.01 250 / 0.10);
+  --shadow-md: 0px 6px 12px -2px oklch(22% 0.01 250 / 0.10), 0px 3px 6px -3px oklch(22% 0.01 250 / 0.12);
+  --shadow-lg: 0px 10px 20px -4px oklch(22% 0.01 250 / 0.12), 0px 4px 8px -4px oklch(22% 0.01 250 / 0.14);
+  --shadow-xl: 0px 20px 30px -8px oklch(22% 0.01 250 / 0.14), 0px 8px 12px -6px oklch(22% 0.01 250 / 0.16);
+  --shadow-2xl: 0px 25px 50px -12px oklch(22% 0.01 250 / 0.25);
+}
+
+/* Dark theme using class strategy */
+@theme inline (dark) {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+
+  --color-card: var(--color-background);
+  --color-card-foreground: var(--color-foreground);
+  --color-card-border: var(--color-border);
+  
+  
+  --color-sidebar: oklch(20% 0.01 250);
+  --color-sidebar-foreground: oklch(95% 0 0);
+  --color-sidebar-border: oklch(28% 0.02 250);
+  --color-sidebar-primary: oklch(58% 0.19 35);
+  --color-sidebar-primary-foreground: oklch(98% 0.02 35);
+  --color-sidebar-accent: oklch(28% 0.02 250);
+  --color-sidebar-accent-foreground: oklch(95% 0 0);
+  --color-sidebar-ring: oklch(62% 0.19 35);
+  
+  --color-popover: oklch(28% 0.02 250);
+  --color-popover-foreground: oklch(95% 0 0);
+  --color-popover-border: oklch(38% 0.02 250);
+  
+  --color-primary: oklch(58% 0.19 35);
+  --color-primary-foreground: oklch(98% 0.02 35);
+  
+  --color-secondary: oklch(32% 0.02 250);
+  --color-secondary-foreground: oklch(95% 0 0);
+  
+  --color-muted: oklch(30% 0.02 250);
+  --color-muted-foreground: oklch(55% 0.02 250);
+  
+  --color-accent: oklch(32% 0.02 35);
+  --color-accent-foreground: oklch(95% 0 0);
+  
+  --color-destructive: oklch(52% 0.22 25);
+  --color-destructive-foreground: oklch(98% 0.02 25);
+  
+  --color-input: oklch(45% 0.02 250);
+  --color-ring: oklch(62% 0.19 35);
+  
+  /* Additional dark mode colors */
+  --color-badge: oklch(32% 0.02 250);
+  --color-badge-foreground: oklch(95% 0 0);
+  --color-badge-border: oklch(40% 0.02 250);
+  
+  /* Dark mode chart colors */
+  --color-chart-1: oklch(75% 0.15 35);
+  --color-chart-2: oklch(72% 0.14 150);
+  --color-chart-3: oklch(75% 0.16 75);
+  --color-chart-4: oklch(75% 0.13 270);
+  --color-chart-5: oklch(75% 0.18 310);
+  
+  /* Dark mode shadows */
+  --shadow-2xs: 0px 1px 2px 0px oklch(10% 0.01 250 / 0.40);
+  --shadow-xs: 0px 1px 3px 0px oklch(10% 0.01 250 / 0.50);
+  --shadow-sm: 0px 2px 4px -1px oklch(10% 0.01 250 / 0.45), 0px 1px 2px -1px oklch(10% 0.01 250 / 0.55);
+  --shadow: 0px 4px 6px -1px oklch(10% 0.01 250 / 0.50), 0px 2px 4px -2px oklch(10% 0.01 250 / 0.60);
+  --shadow-md: 0px 6px 12px -2px oklch(10% 0.01 250 / 0.55), 0px 3px 6px -3px oklch(10% 0.01 250 / 0.65);
+  --shadow-lg: 0px 10px 20px -4px oklch(10% 0.01 250 / 0.60), 0px 4px 8px -4px oklch(10% 0.01 250 / 0.70);
+  --shadow-xl: 0px 20px 30px -8px oklch(10% 0.01 250 / 0.65), 0px 8px 12px -6px oklch(10% 0.01 250 / 0.75);
+  --shadow-2xl: 0px 25px 50px -12px oklch(10% 0.01 250 / 0.70);
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  input[type="search"]::-webkit-search-cancel-button {
+    display: none;
+  }
+
+  [contenteditable][data-placeholder]:empty::before {
+    content: attr(data-placeholder);
+    color: hsl(var(--muted-foreground));
+    pointer-events: none;
+  }
+
+  .toggle-elevate::before,
+  .toggle-elevate-2::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  .toggle-elevate.toggle-elevated::before {
+    background-color: var(--elevate-2);
+  }
+
+  .border.toggle-elevate::before {
+    inset: -1px;
+  }
+
+  .hover-elevate:not(.no-default-hover-elevate),
+  .active-elevate:not(.no-default-active-elevate),
+  .hover-elevate-2:not(.no-default-hover-elevate),
+  .active-elevate-2:not(.no-default-active-elevate) {
+    position: relative;
+    z-index: 0;
+  }
+
+  .hover-elevate:not(.no-default-hover-elevate)::after,
+  .active-elevate:not(.no-default-active-elevate)::after,
+  .hover-elevate-2:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:not(.no-default-active-elevate)::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    border-radius: inherit;
+    z-index: 999;
+  }
+
+  .hover-elevate:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-1);
+  }
+
+  .hover-elevate-2:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-2);
+  }
+
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
+    inset: -1px;
+  }
+}

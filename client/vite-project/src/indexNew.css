@@ -1,0 +1,401 @@
+@import "tailwindcss";
+
+@layer base {
+  :root {
+    /* Light theme - Based on your logo colors */
+    --background: 210 40% 98%; /* Light blue tint background */
+    --foreground: 221 39% 20%; /* Navy blue from your logo #2E3F51 */
+    --border: 214 32% 91%;
+    
+    /* Core colors from your logo */
+    --card: 0 0% 100%;
+    --card-foreground: 221 39% 20%;
+    --card-border: 214 32% 91%;
+    
+    --popover: 0 0% 100%;
+    --popover-foreground: 221 39% 20%;
+    --popover-border: 214 32% 91%;
+    
+    /* Primary = Your logo's middle blue (#5FABF8) */
+    --primary: 217 86% 67%;
+    --primary-foreground: 0 0% 100%;
+    --primary-border: 208 90% 57%;
+    
+    /* Secondary = Warm coral for holiday vibe */
+    --secondary: 28 92% 67%;
+    --secondary-foreground: 0 0% 100%;
+    --secondary-border: 28 92% 57%;
+    
+    /* Muted = Soft blue-gray */
+    --muted: 210 40% 96%;
+    --muted-foreground: 215 25% 47%;
+    --muted-border: 214 32% 91%;
+    
+    /* Accent = Pink from holiday palette */
+    --accent: 332 82% 68%;
+    --accent-foreground: 0 0% 100%;
+    --accent-border: 332 82% 58%;
+    
+    /* Destructive = Coral red */
+    --destructive: 0 84% 68%;
+    --destructive-foreground: 0 0% 100%;
+    --destructive-border: 0 84% 58%;
+    
+    /* Input */
+    --input: 214 32% 91%;
+    --ring: 208 90% 67%;
+    
+    /* Sidebar - Light blue */
+    --sidebar: 210 40% 98%;
+    --sidebar-foreground: 221 39% 20%;
+    --sidebar-border: 214 32% 91%;
+    --sidebar-ring: 208 90% 67%;
+    --sidebar-primary: 208 90% 67%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-primary-border: 208 90% 57%;
+    --sidebar-accent: 28 92% 67%;
+    --sidebar-accent-foreground: 0 0% 100%;
+    --sidebar-accent-border: 28 92% 57%;
+    
+    /* Chart colors - Based on logo + accents */
+    --chart-1: 208 90% 67%; /* Primary blue */
+    --chart-2: 28 92% 67%;  /* Coral */
+    --chart-3: 332 82% 68%; /* Pink */
+    --chart-4: 150 80% 55%; /* Mint green */
+    --chart-5: 45 93% 65%;  /* Yellow */
+  }
+
+  .dark {
+    /* Dark theme - Still using your logo colors */
+    --background: 221 39% 10%; /* Dark navy background */
+    --foreground: 210 40% 98%; /* Light text */
+    --border: 221 39% 25%;
+    
+    --card: 221 39% 15%;
+    --card-foreground: 210 40% 98%;
+    --card-border: 221 39% 25%;
+    
+    --popover: 221 39% 15%;
+    --popover-foreground: 210 40% 98%;
+    --popover-border: 221 39% 25%;
+    
+    /* Brighter logo colors for dark mode */
+    --primary: 208 100% 75%;
+    --primary-foreground: 221 39% 10%;
+    --primary-border: 208 100% 65%;
+    
+    --secondary: 28 100% 75%;
+    --secondary-foreground: 221 39% 10%;
+    --secondary-border: 28 100% 65%;
+    
+    --muted: 221 39% 20%;
+    --muted-foreground: 215 20% 75%; /* MUCH BRIGHTER for readability */
+    --muted-border: 221 39% 30%;
+    
+    --accent: 332 100% 75%;
+    --accent-foreground: 221 39% 10%;
+    --accent-border: 332 100% 65%;
+    
+    --destructive: 0 100% 75%;
+    --destructive-foreground: 221 39% 10%;
+    --destructive-border: 0 100% 65%;
+    
+    --input: 221 39% 25%;
+    --ring: 208 100% 75%;
+    
+    /* Sidebar - Darker blue */
+    --sidebar: 221 39% 12%;
+    --sidebar-foreground: 210 40% 98%;
+    --sidebar-border: 221 39% 25%;
+    --sidebar-ring: 208 100% 75%;
+    --sidebar-primary: 208 100% 75%;
+    --sidebar-primary-foreground: 221 39% 10%;
+    --sidebar-primary-border: 208 100% 65%;
+    --sidebar-accent: 28 100% 75%;
+    --sidebar-accent-foreground: 221 39% 10%;
+    --sidebar-accent-border: 28 100% 65%;
+    
+    /* Chart colors - Brighter for dark mode */
+    --chart-1: 208 100% 75%;
+    --chart-2: 28 100% 75%;
+    --chart-3: 332 100% 75%;
+    --chart-4: 150 100% 65%;
+    --chart-5: 45 100% 70%;
+  }
+
+  html,
+  body,
+  #root {
+    background-color: hsl(var(--background)) !important;
+    color: hsl(var(--foreground)) !important;
+  }
+}
+
+@theme inline {
+  /* Core mapping */
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+  
+  /* Your logo's colors */
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary-border: hsl(var(--sidebar-primary-border));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent-border: hsl(var(--sidebar-accent-border));
+  
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+  
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  
+  /* Chart Colors - Holiday themed */
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+  
+  /* Additional colors for your components */
+  --color-badge: hsl(var(--muted));
+  --color-badge-foreground: hsl(var(--muted-foreground));
+  --color-badge-border: hsl(var(--muted-border));
+  
+  /* Holiday gradients using your logo colors */
+  --gradient-logo: linear-gradient(135deg, #717CED 0%, #5FABF8 50%, #2E3F51 100%);
+  --gradient-holiday: linear-gradient(135deg, #5FABF8 0%, #ED71B3 50%, #F8A95F 100%);
+  --gradient-sunset: linear-gradient(135deg, #F8A95F 0%, #ED71B3 100%);
+  --gradient-ocean: linear-gradient(135deg, #717CED 0%, #5FABF8 100%);
+  
+  /* Typography */
+  --font-sans: Inter, system-ui, -apple-system, sans-serif;
+  --font-serif: Georgia, serif;
+  --font-mono: Menlo, Monaco, monospace;
+  --font-display: Archivo, Inter, sans-serif;
+  
+  /* Border Radius */
+  --radius: 0.5rem;
+  
+  /* Shadows */
+  --shadow-2xs: 0px 1px 2px 0px rgba(46, 63, 81, 0.05);
+  --shadow-xs: 0px 1px 3px 0px rgba(46, 63, 81, 0.08);
+  --shadow-sm: 0px 2px 4px -1px rgba(46, 63, 81, 0.06), 0px 1px 2px -1px rgba(46, 63, 81, 0.10);
+  --shadow: 0px 4px 6px -1px rgba(46, 63, 81, 0.08), 0px 2px 4px -2px rgba(46, 63, 81, 0.10);
+  --shadow-md: 0px 6px 12px -2px rgba(46, 63, 81, 0.10), 0px 3px 6px -3px rgba(46, 63, 81, 0.12);
+  --shadow-lg: 0px 10px 20px -4px rgba(46, 63, 81, 0.12), 0px 4px 8px -4px rgba(46, 63, 81, 0.14);
+  --shadow-xl: 0px 20px 30px -8px rgba(46, 63, 81, 0.14), 0px 8px 12px -6px rgba(46, 63, 81, 0.16);
+  --shadow-2xl: 0px 25px 50px -12px rgba(46, 63, 81, 0.25);
+}
+
+/* Dark theme using class strategy */
+@theme inline (dark) {
+  --color-background: hsl(var(--background));
+  --color-foreground: hsl(var(--foreground));
+  --color-border: hsl(var(--border));
+  --color-card: hsl(var(--card));
+  --color-card-foreground: hsl(var(--card-foreground));
+  --color-card-border: hsl(var(--card-border));
+  
+  /* Sidebar */
+  --color-sidebar: hsl(var(--sidebar));
+  --color-sidebar-foreground: hsl(var(--sidebar-foreground));
+  --color-sidebar-border: hsl(var(--sidebar-border));
+  --color-sidebar-primary: hsl(var(--sidebar-primary));
+  --color-sidebar-primary-foreground: hsl(var(--sidebar-primary-foreground));
+  --color-sidebar-primary-border: hsl(var(--sidebar-primary-border));
+  --color-sidebar-accent: hsl(var(--sidebar-accent));
+  --color-sidebar-accent-foreground: hsl(var(--sidebar-accent-foreground));
+  --color-sidebar-accent-border: hsl(var(--sidebar-accent-border));
+  --color-sidebar-ring: hsl(var(--sidebar-ring));
+  
+  --color-popover: hsl(var(--popover));
+  --color-popover-foreground: hsl(var(--popover-foreground));
+  --color-popover-border: hsl(var(--popover-border));
+  
+  --color-primary: hsl(var(--primary));
+  --color-primary-foreground: hsl(var(--primary-foreground));
+  
+  --color-secondary: hsl(var(--secondary));
+  --color-secondary-foreground: hsl(var(--secondary-foreground));
+  
+  --color-muted: hsl(var(--muted));
+  --color-muted-foreground: hsl(var(--muted-foreground));
+  
+  --color-accent: hsl(var(--accent));
+  --color-accent-foreground: hsl(var(--accent-foreground));
+  
+  --color-destructive: hsl(var(--destructive));
+  --color-destructive-foreground: hsl(var(--destructive-foreground));
+  
+  --color-input: hsl(var(--input));
+  --color-ring: hsl(var(--ring));
+  
+  /* Additional dark mode colors */
+  --color-badge: hsl(var(--muted));
+  --color-badge-foreground: hsl(var(--muted-foreground));
+  --color-badge-border: hsl(var(--muted-border));
+  
+  /* Dark mode chart colors */
+  --color-chart-1: hsl(var(--chart-1));
+  --color-chart-2: hsl(var(--chart-2));
+  --color-chart-3: hsl(var(--chart-3));
+  --color-chart-4: hsl(var(--chart-4));
+  --color-chart-5: hsl(var(--chart-5));
+  
+  /* Dark mode shadows */
+  --shadow-2xs: 0px 1px 2px 0px rgba(0, 0, 0, 0.40);
+  --shadow-xs: 0px 1px 3px 0px rgba(0, 0, 0, 0.50);
+  --shadow-sm: 0px 2px 4px -1px rgba(0, 0, 0, 0.45), 0px 1px 2px -1px rgba(0, 0, 0, 0.55);
+  --shadow: 0px 4px 6px -1px rgba(0, 0, 0, 0.50), 0px 2px 4px -2px rgba(0, 0, 0, 0.60);
+  --shadow-md: 0px 6px 12px -2px rgba(0, 0, 0, 0.55), 0px 3px 6px -3px rgba(0, 0, 0, 0.65);
+  --shadow-lg: 0px 10px 20px -4px rgba(0, 0, 0, 0.60), 0px 4px 8px -4px rgba(0, 0, 0, 0.70);
+  --shadow-xl: 0px 20px 30px -8px rgba(0, 0, 0, 0.65), 0px 8px 12px -6px rgba(0, 0, 0, 0.75);
+  --shadow-2xl: 0px 25px 50px -12px rgba(0, 0, 0, 0.70);
+}
+
+@layer base {
+  * {
+    border-color: hsl(var(--border));
+  }
+
+  body {
+    font-family: var(--font-sans), system-ui, -apple-system, sans-serif;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+}
+
+@layer utilities {
+  input[type="search"]::-webkit-search-cancel-button {
+    display: none;
+  }
+
+  [contenteditable][data-placeholder]:empty::before {
+    content: attr(data-placeholder);
+    color: hsl(var(--muted-foreground));
+    pointer-events: none;
+  }
+
+  .toggle-elevate::before,
+  .toggle-elevate-2::before {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    border-radius: inherit;
+    z-index: -1;
+  }
+
+  .toggle-elevate.toggle-elevated::before {
+    background-color: var(--elevate-2);
+  }
+
+  .border.toggle-elevate::before {
+    inset: -1px;
+  }
+
+  .hover-elevate:not(.no-default-hover-elevate),
+  .active-elevate:not(.no-default-active-elevate),
+  .hover-elevate-2:not(.no-default-hover-elevate),
+  .active-elevate-2:not(.no-default-active-elevate) {
+    position: relative;
+    z-index: 0;
+  }
+
+  .hover-elevate:not(.no-default-hover-elevate)::after,
+  .active-elevate:not(.no-default-active-elevate)::after,
+  .hover-elevate-2:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:not(.no-default-active-elevate)::after {
+    content: "";
+    pointer-events: none;
+    position: absolute;
+    inset: 0px;
+    border-radius: inherit;
+    z-index: 999;
+  }
+
+  .hover-elevate:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-1);
+  }
+
+  .hover-elevate-2:hover:not(.no-default-hover-elevate)::after,
+  .active-elevate-2:active:not(.no-default-active-elevate)::after {
+    background-color: var(--elevate-2);
+  }
+
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate-2:not(.no-hover-interaction-elevate)::after,
+  .border.active-elevate-2:not(.no-active-interaction-elevate)::after,
+  .border.hover-elevate:not(.no-hover-interaction-elevate)::after {
+    inset: -1px;
+  }
+  
+  /* Holiday mode utilities */
+  .holiday-gradient {
+    background: var(--gradient-holiday);
+    color: white;
+  }
+  
+  .sunset-gradient {
+    background: var(--gradient-sunset);
+    color: white;
+  }
+  
+  .ocean-gradient {
+    background: var(--gradient-ocean);
+    color: white;
+  }
+  
+  .logo-gradient {
+    background: var(--gradient-logo);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+  }
+  
+  .logo-gradient-bg {
+    background: var(--gradient-logo);
+    color: white;
+  }
+  
+  /* Text readability fix */
+  .text-high-contrast {
+    color: hsl(var(--foreground));
+  }
+  
+  .dark .text-high-contrast {
+    color: hsl(var(--foreground)) !important;
+  }
+  
+  /* Fix for muted text in dark mode */
+  .dark .text-muted-foreground {
+    color: hsl(var(--muted-foreground)) !important;
+  }
+}

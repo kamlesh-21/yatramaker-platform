@@ -1,0 +1,57 @@
+{
+  "success": true,
+  "tripType": "multi-city",
+  "metadata": {
+    "generatedAt": "2025-01-15T10:30:00Z",
+    "computationTime": "2.4s",
+    "destinationsEvaluated": 87
+  },
+  "multiCityResults": {
+    "recommendedItineraries": [
+      {
+        "id": "variant_cheapest",
+        "name": "Budget Explorer",
+        "tagline": "Maximum destinations, minimum spend",
+        "optimizationGoal": "cheapest",
+        "totalCost": 31500,
+        "costPerDay": 4500,
+        "route": {
+          "sequence": ["Patna", "Nalanda", "Rajgir", "Bodh Gaya", "Patna"],
+          "totalDistance": 310,
+          "pattern": "loop",
+          "efficiencyScore": 87
+        },
+        "dailySchedule": []
+      }
+    ]
+  },
+  "singleDestinationResults": [
+    {
+      "destination": {
+        "destination_id": 45,
+        "name": ["Bodh Gaya"],
+        "type": ["spiritual", "heritage"],
+        "location": { "state": "Bihar", "region": "East India" },
+        "description": "A UNESCO spiritual heritage site."
+      },
+      "travelOptions": {
+        "cheapest": { "totalCost": 12400, "totalTimeH": 4.5, "comfortScore": 6 },
+        "fastest": { "totalCost": 18900, "totalTimeH": 2.0, "comfortScore": 8 },
+        "comfortable": { "totalCost": 15600, "totalTimeH": 3.0, "comfortScore": 9 }
+      },
+      "accommodationCost": { "totalCost": 18000, "nights": 6 },
+      "localExpenses": {
+        "totalCost": 8400,
+        "activities": [
+          { "name": "Temple Visit", "type": "spiritual", "duration": 2, "cost": 500 }
+        ]
+      },
+      "totalCost": 38800,
+      "breakdown": {
+        "travel": 12400,
+        "accommodation": 18000,
+        "localExpenses": 8400
+      }
+    }
+  ]
+}

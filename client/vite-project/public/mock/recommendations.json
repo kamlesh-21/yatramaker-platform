@@ -1,0 +1,126 @@
+{
+  "success": true,
+  "tripType": "single-destination",
+  "results": [
+    {
+      "destination": {
+        "id": 45,
+        "name": ["Bodh Gaya"],
+        "type": ["spiritual", "heritage"],
+        "location": {
+          "latitude": 24.6952,
+          "longitude": 84.9914,
+          "state": "Bihar",
+          "region": "East India"
+        },
+        "description": "The holiest site in Buddhism where Lord Buddha attained enlightenment.",
+        "images": [
+          {
+            "url": "https://source.unsplash.com/800x600/?bodhgaya,temple",
+            "photographer_name": "John Doe",
+            "title": "Mahabodhi Temple"
+          }
+        ],
+        "seasonality": {
+          "peakSeason": "October to March",
+          "offPeakSeason": "April to September"
+        },
+        "additionalLocalInfo": {
+          "mustTryDishes": ["Litti Chokha", "Sattu Paratha"],
+          "hiddenGems": ["Dungeshwari Cave", "Sujata Village"]
+        }
+      },
+      "variants": [
+        {
+          "label": "cheapest",
+          "priority": "💰 Most Affordable",
+          "totalCost": {
+            "base": 28500,
+            "withActivities": 31700,
+            "breakdown": {
+              "travel": 8300,
+              "accommodation": 12000,
+              "localExpenses": 8200,
+              "activities": 3200
+            }
+          },
+          "travel": {
+            "mode": "train",
+            "legs": [
+              {
+                "mode": "cab",
+                "description": "CAB from Dhanbad to Dhanbad Junction",
+                "distanceKm": 5,
+                "costTotal": 150
+              },
+              {
+                "mode": "train",
+                "description": "TRAIN from Dhanbad Junction to Gaya Junction",
+                "distanceKm": 180,
+                "costTotal": 7500
+              },
+              {
+                "mode": "cab",
+                "description": "CAB from Gaya Junction to Bodh Gaya",
+                "distanceKm": 15,
+                "costTotal": 650
+              }
+            ],
+            "totalDistance": 200,
+            "totalTimeHours": 4.5,
+            "comfortScore": 7
+          },
+          "accommodation": {
+            "cost": 12000,
+            "numberOfNights": 4,
+            "accommodationType": "Comfort",
+            "averageRate": 3000,
+            "numberOfRooms": 1,
+            "hotelName": "Hotel Mahamaya International",
+            "starRating": "3⭐"
+          },
+          "localExpenses": {
+            "transportation": 2400,
+            "meals": 4800,
+            "attractions": 1000,
+            "total": 8200
+          },
+          "activities": [
+            {
+              "name": "Meditation Session at Mahabodhi Temple",
+              "cost": 500,
+              "activity_type": "spiritual"
+            },
+            {
+              "name": "Buddhist Heritage Walk",
+              "cost": 800,
+              "activity_type": "cultural"
+            }
+          ],
+          "explanations": {
+            "whyThisVariant": "Most economical option using budget-friendly transport and strategic route planning.",
+            "budgetFit": "57% utilization of your budget, ideal for spiritual travelers."
+          }
+        }
+      ],
+      "defaultVariant": "cheapest",
+      "metadata": {
+        "computed_at": "2025-10-25T10:30:00Z",
+        "fits_budget": true,
+        "recommended_days": 2
+      }
+    }
+  ],
+  "pagination": {
+    "currentPage": 1,
+    "totalPages": 8,
+    "totalResults": 147,
+    "resultsPerPage": 20
+  },
+  "metadata": {
+    "generatedAt": "2025-10-25T10:30:00.000Z",
+    "destinationsEvaluated": 204,
+    "destinationsFeasible": 147,
+    "computationTime": "1247ms"
+  }
+}

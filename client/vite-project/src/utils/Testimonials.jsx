@@ -1,0 +1,31 @@
+const Testimonials = [
+    { text: "I saved 30% on my dream vacation thanks to the detailed cost breakdowns and budget-friendly options!", author: "Priya S." },
+    { text: "Amazing travel suggestions in my budget! I discovered places I never thought I could afford.", author: "Sneha K." },
+    { text: "YatraMaker helped me plan the perfect family vacation without breaking the bank. Highly recommended!", author: "Mithilesh S." },
+    { text: "Ever felt overwhelmed by travel planning? I did, until I found YatraMaker. It made budgeting for my trip to Goa a breeze!", author: "Anjali Rao" },
+    { text: "Dreaming of a vacation but worried about costs? YatraMaker helped me plan an affordable getaway to the hills. Highly recommend!", author: "Rohit Sharma" },
+    { text: "Thanks to YatraMaker, I discovered that my budget could take me to some amazing destinations. Planning my next trip already!", author: "Priyanka Das" },
+    { text: "Traveling on a budget doesn't mean compromising on experiences. YatraMaker showed me how to enjoy a luxurious trip within my means.", author: "Karan Patel" },
+    { text: "I was skeptical at first, but YatraMaker's personalized itineraries made my trip planning so much easier and cost-effective.", author: "Sita Nair" },
+    { text: "If you're looking to explore new places without overspending, YatraMaker is a game-changer. It helped me plan a memorable trip to Kerala.", author: "Vikram Singh" },
+    { text: "YatraMaker's budget-based recommendations are spot on! I planned a trip to Rajasthan and it was an experience of a lifetime.", author: "Aditi Bansal" },
+    { text: "For anyone struggling with travel planning, YatraMaker offers a simple and efficient solution. It made my trip to Himachal Pradesh hassle-free.", author: "Deepak Mehta" },
+    { text: "YatraMaker understands the value of money. It helped me plan a trip to the Northeast that was both affordable and unforgettable.", author: "Nisha Kaur" },
+    { text: "I never thought I could afford a trip to Andaman, but YatraMaker made it possible with its smart budgeting tools.", author: "Sanjay Verma" },
+    { text: "YatraMaker's focus on budget-friendly travel is commendable. It assisted me in planning a trip to Ladakh without breaking the bank.", author: "Leela Joshi" },
+    { text: "Planning a trip to South India was daunting until I used YatraMaker. It provided me with a detailed itinerary that fit my budget perfectly.", author: "Harish Rao" },
+    { text: "YatraMaker's innovative approach to travel planning ensures you get the best experiences within your budget. My trip to Gujarat was a testament to that.", author: "Meera Chaudhary" },
+    { text: "I was amazed at how YatraMaker could tailor a trip to my budget, allowing me to explore the beauty of Kashmir without overspending.", author: "Ajay Kumar" },
+    { text: "YatraMaker takes the guesswork out of travel budgeting. It helped me plan a trip to the Western Ghats that was both enjoyable and economical.", author: "Rita Agrawal" },
+    { text: "Thanks to YatraMaker, I could plan a trip to the Sundarbans, experiencing its unique beauty without exceeding my budget.", author: "Tarun Singh" },
+    { text: "YatraMaker's personalized approach to travel planning made my trip to the Rann of Kutch a seamless experience.", author: "Aparna Patil" },
+    { text: "I highly recommend YatraMaker for anyone looking to plan a budget-friendly trip to any corner of India.", author: "Sameer Lal" },
+    { text: "YatraMaker's detailed cost breakdowns ensure transparency in travel planning. It made my trip to the Nilgiris stress-free.", author: "Kamini Tripathi" },
+    { text: "Planning a trip to the City of Joy was made easy with YatraMaker's user-friendly platform.", author: "Devendra Singh" },
+    { text: "YatraMaker's commitment to budget-based travel planning is truly revolutionary. It helped me explore the beauty of the Konkan coast without overspending.", author: "Neha Desai" },
+    { text: "I was pleasantly surprised by how YatraMaker could accommodate my budget for a trip to the serene backwaters of Kerala.", author: "Kiran Vashisht" },
+    { text: "YatraMaker's focus on user preferences and budget constraints makes it a valuable tool for any traveler.", author: "Poonam Gupta" },
+    // Add 14 more testimonials here...
+  ];
+
+export {Testimonials}

@@ -1,0 +1,425 @@
+## 2.1 Unified Search Endpoint (Handles Both Single & Multi-City)
+
+### Endpoint: `POST /api/travelData/recommendations`
+
+### Request Payload
+
+```javascript
+{
+  // ==========================================
+  // COMMON FIELDS (Existing - Keep Same)
+  // ==========================================
+  "location": "Patna",
+  "budget": 50000,
+  "tripDuration": 7,
+  "travelers": {
+    "adults": 2,
+    "children": 1,
+    "infants": 0
+  },
+  "preferences": ["spiritual", "heritage", "cultural"],
+  "accommodationPreference": "mid-range", // budget | mid-range | luxury
+  
+  // ==========================================
+  // NEW FIELD: Trip Type Selector
+  // ==========================================
+  "tripType": "multi-city", // "single-destination" | "multi-city"
+  
+  // ==========================================
+  // MULTI-CITY SPECIFIC (Only if tripType = "multi-city")
+  // ==========================================
+  "multiCityOptions": {
+    "tripStructure": "loop", // linear | loop | hub-spoke
+    
+    "mustVisitDestinations": [ // Optional
+      {
+        "destination_id": 45,
+        "name": "Bodh Gaya",
+        "priority": "must" // must | prefer | optional
+      },
+      {
+        "destination_id": 78,
+        "name": "Nalanda",
+        "priority": "prefer"
+      }
+    ],
+    
+    "pacingPreference": "moderate", // relaxed | moderate | intensive
+    
+    "luggageStyle": "minimize-changes", // minimize-changes | flexible
+    
+    "experiencePriorities": { // 0-10 scale, optional
+      "historical": 8,
+      "spiritual": 9,
+      "adventure": 2,
+      "nature": 5,
+      "cultural": 7,
+      "photography": 6,
+      "shopping": 3,
+      "food": 7,
+      "relaxation": 4,
+      "nightlife": 1
+    },
+    
+    "optimizationGoal": "balanced" // cheapest | fastest | comfortable | experiential | balanced
+  }
+}
+```
+
+---
+
+## 2.2 Unified Response Structure
+
+### Success Response: `200 OK`
+
+```javascript
+{
+  "success": true,
+  "tripType": "multi-city", // or "single-destination"
+  
+  // ==========================================
+  // METADATA
+  // ==========================================
+  "metadata": {
+    "generatedAt": "2024-01-15T10:30:00Z",
+    "computationTime": "2.4s",
+    "destinationsEvaluated": 87,
+    "routesConsidered": 243 // Only for multi-city
+  },
+  
+  // ==========================================
+  // SINGLE DESTINATION RESPONSE (If tripType = "single-destination")
+  // ==========================================
+  "singleDestinationResults": [
+    {
+      "destination": {
+        "destination_id": 45,
+        "name": ["Bodh Gaya"],
+        "type": ["spiritual", "heritage"],
+        "location": {
+          "latitude": 24.6952,
+          "longitude": 84.9914,
+          "state": "Bihar",
+          "region": "East India"
+        },
+        "description": "...",
+        "images": [...]
+      },
+      
+      "travelOptions": {
+        "cheapest": {
+          "totalCost": 12400,
+          "route": [...],
+          "totalTimeH": 4.5,
+          "comfortScore": 6
+        },
+        "fastest": {
+          "totalCost": 18900,
+          "route": [...],
+          "totalTimeH": 2.0,
+          "comfortScore": 8
+        },
+        "comfortable": {
+          "totalCost": 15600,
+          "route": [...],
+          "totalTimeH": 3.0,
+          "comfortScore": 9
+        }
+      },
+      
+      "accommodationCost": {
+        "totalCost": 18000,
+        "rooms": [...],
+        "nights": 6
+      },
+      
+      "localExpenses": {
+        "totalCost": 8400,
+        "activities": [...],
+        "meals": 6000,
+        "localTransport": 2400
+      },
+      
+      "totalCost": 38800,
+      "breakdown": {
+        "travel": 12400,
+        "accommodation": 18000,
+        "localExpenses": 8400
+      }
+    }
+    // ... more single destinations
+  ],
+  
+  // ==========================================
+  // MULTI-CITY RESPONSE (If tripType = "multi-city")
+  // ==========================================
+  "multiCityResults": {
+    
+    // Array of 4 optimized variants
+    "recommendedItineraries": [
+      {
+        "id": "variant_cheapest",
+        "rank": 1,
+        "name": "Budget Explorer",
+        "tagline": "Maximum destinations, minimum spend",
+        "optimizationGoal": "cheapest",
+        
+        // ==========================================
+        // COST SUMMARY
+        // ==========================================
+        "totalCost": 31500,
+        "costBreakdown": {
+          "travel": 8300,
+          "accommodation": 12000,
+          "food": 6000,
+          "activities": 3200,
+          "buffer": 2000
+        },
+        "costPerPerson": 10500,
+        "costPerDay": 4500,
+        
+        // ==========================================
+        // ROUTE DETAILS
+        // ==========================================
+        "route": {
+          "sequence": ["Patna", "Pawapuri", "Nalanda", "Rajgir", "Bodh Gaya", "Barabar Caves", "Patna"],
+          "totalDistance": 310,
+          "totalTravelTime": 14.5,
+          "efficiencyScore": 87,
+          "pattern": "loop",
+          "backtrackingPenalty": 13
+        },
+        
+        // ==========================================
+        // DAILY SCHEDULE (Complete breakdown)
+        // ==========================================
+        "dailySchedule": [
+          {
+            "day": 1,
+            "date": "2024-01-20",
+            "summary": "Patna → Nalanda (Journey + Exploration)",
+            "location": "Nalanda",
+            "overnight": "Nalanda",
+            
+            // Travel details
+            "travelLeg": {
+              "from": {
+                "name": "Patna",
+                "coordinates": [25.5941, 85.1376]
+              },
+              "to": {
+                "name": "Nalanda",
+                "coordinates": [25.1358, 85.4477]
+              },
+              "distance": 95,
+              "mode": "train + shared cab",
+              "modeBreakdown": [
+                {
+                  "type": "train",
+                  "from": "Patna Junction",
+                  "to": "Rajgir Station",
+                  "duration": 2.0,
+                  "cost": 400,
+                  "departure": "08:00",
+                  "arrival": "10:00",
+                  "trainNumber": "12367",
+                  "class": "SL"
+                },
+                {
+                  "type": "shared_cab",
+                  "from": "Rajgir Station",
+                  "to": "Nalanda",
+                  "duration": 0.5,
+                  "cost": 200,
+                  "departure": "10:30",
+                  "arrival": "11:00"
+                }
+              ],
+              "totalCost": 600,
+              "totalDuration": 2.5,
+              "comfortScore": 6,
+              "whyThisMode": "Train is most economical for 95km with family. Shared cab covers last mile."
+            },
+            
+            // Accommodation
+            "accommodation": {
+              "hotelId": 234,
+              "name": "Hotel Heritage Nalanda",
+              "category": "mid-range",
+              "address": "University Road, Nalanda",
+              "checkIn": "14:00",
+              "checkOut": "12:00 (next day)",
+              "rooms": [
+                {
+                  "type": "Deluxe Room (2 Adults + 1 Child)",
+                  "count": 1,
+                  "costPerNight": 2400
+                }
+              ],
+              "totalCost": 2400,
+              "amenities": ["WiFi", "Breakfast", "AC", "Hot Water"],
+              "rating": 7.2,
+              "whyThisHotel": "Best value in Nalanda with family-friendly rooms"
+            },
+            
+            // Activities
+            "activities": [
+              {
+                "activityId": 567,
+                "name": "Nalanda University Ruins Guided Tour",
+                "type": "historical",
+                "timeSlot": "15:00 - 17:30",
+                "duration": 2.5,
+                "cost": 500,
+                "costBreakdown": {
+                  "entryFee": 200,
+                  "guide": 300
+                },
+                "experienceValue": 9,
+                "priority": "must-do",
+                "description": "Explore ancient Buddhist university ruins with expert guide"
+              },
+              {
+                "name": "Evening walk at Nalanda market",
+                "type": "cultural",
+                "timeSlot": "18:00 - 19:30",
+                "duration": 1.5,
+                "cost": 300,
+                "priority": "optional"
+              }
+            ],
+            
+            // Meals
+            "meals": {
+              "breakfast": {
+                "location": "Hotel",
+                "cost": 0,
+                "time": "07:00"
+              },
+              "lunch": {
+                "location": "Local restaurant near Nalanda",
+                "cost": 600,
+                "time": "13:00",
+                "recommendation": "Veg thali at Nalanda Bhojanalaya"
+              },
+              "dinner": {
+                "location": "Hotel restaurant",
+                "cost": 800,
+                "time": "20:00"
+              }
+            },
+            
+            // Day summary
+            "daySummary": {
+              "totalCost": 4700,
+              "travelTime": 2.5,
+              "activityTime": 4.0,
+              "freeTime": 3.5,
+              "pacingScore": 7,
+              "highlightMoment": "Sunset at ancient Nalanda ruins"
+            }
+          }
+          // ... Days 2-7 follow same structure
+        ],
+        
+        // ==========================================
+        // EXPLANATIONS (Critical!)
+        // ==========================================
+        "explanations": {
+          "routeRationale": "This 7-day Buddhist Circuit follows a natural south-to-east progression from Patna:\n\n✓ Geographic Efficiency: 87% route efficiency (minimal backtracking)\n  Total distance: 310km vs direct distance: 180km\n\n✓ Thematic Coherence: All destinations align with 'spiritual' + 'heritage' preferences\n  Buddhist pilgrimage sites follow historical chronology\n\n✓ Time Optimization: Avg 2.1 hours travel/day (matches your 'moderate' pacing)\n  Buffer built in for train delays and spontaneous stops\n\n✓ Budget Fit: ₹31,500 vs your budget ₹50,000 (63% utilization)\n  Leaves ₹18,500 buffer for shopping, upgrades, or emergencies",
+          
+          "destinationJustifications": [
+            {
+              "destination": "Bodh Gaya",
+              "included": true,
+              "reasoning": "WHY INCLUDED:\n• Perfect match: spiritual (10/10) + heritage (8/10) scores\n• UNESCO World Heritage Site (high cultural importance)\n• Allocated 2 nights (needs time for temple visits + meditation)\n• 72% of Buddhist circuit travelers visit here"
+            },
+            {
+              "destination": "Vaishali",
+              "included": false,
+              "reasoning": "WHY NOT INCLUDED:\n• Distance: Would add 90km backtracking from Patna\n• Time: Requires +1 day, exceeds your 7-day limit\n• Theme overlap: Similar to Pawapuri (both Jain sites)\n• Cost: +₹4,200 (would exceed comfortable budget utilization)"
+            }
+          ],
+          
+          "transportChoices": [
+            {
+              "leg": "Patna → Nalanda (95km)",
+              "selected": "train + shared cab",
+              "alternatives": [
+                {"mode": "private cab", "cost": 2400, "time": 2.0},
+                {"mode": "bus", "cost": 300, "time": 3.5}
+              ],
+              "reasoning": "WHY TRAIN + SHARED CAB:\n• Cost: ₹600 vs ₹2400 (private cab) - saves ₹1800\n• Time: 2.5hrs vs 2.0hrs (cab) - only 30min slower\n• Experience: Authentic Indian rail travel + local interaction\n• Comfort: Good for 2 adults + 1 child with luggage"
+            }
+          ],
+          
+          "accommodationStrategy": "HOTEL SELECTION LOGIC:\n• Strategy: Progressive stays (move with route, not hub-and-spoke)\n• Reasoning: Each destination deserves immersive overnight experience\n• Hotels: Mid-range tier (matches your preference)\n• Family optimization: All rooms accommodate 2A+1C",
+          
+          "tradeoffs": "KEY DECISIONS MADE:\n\n1. CHEAPEST VARIANT CHOSEN (vs Fastest/Comfortable)\n   Trade-off: Save ₹6,200 but add 3 hours total travel time\n   Why worth it: Your 'moderate' pacing allows slower travel\n\n2. SKIPPED BARABAR CAVES as main stop\n   Trade-off: Less time at caves (2hrs vs 4hrs if overnight)\n   Why worth it: Saves 1 night accommodation (₹2,400)"
+        },
+        
+        // ==========================================
+        // VARIANT COMPARISON
+        // ==========================================
+        "variantComparison": {
+          "vsFastest": {
+            "costDifference": -6200,
+            "timeDifference": 3.0,
+            "comfortDifference": -1.5,
+            "experienceDifference": 0.5,
+            "summary": "Saves ₹6,200 but adds 3 hours total travel. More train/bus, less flights."
+          },
+          "vsComfortable": {
+            "costDifference": -8100,
+            "timeDifference": 1.5,
+            "comfortDifference": -2.0,
+            "experienceDifference": 0.3,
+            "summary": "Saves ₹8,100. Uses public transport vs private cabs."
+          }
+        },
+        
+        // ==========================================
+        // CONFIDENCE METRICS
+        // ==========================================
+        "confidenceMetrics": {
+          "costAccuracy": 92,
+          "timeAccuracy": 88,
+          "routeOptimality": 87,
+          "userSatisfactionPredicted": 8.3,
+          "dataFreshness": "2024-01-10",
+          "similarTripsBooked": 147
+        }
+      }
+      // ... 3 more variants (fastest, comfortable, experiential)
+    ],
+    
+    // ==========================================
+    // ALTERNATIVE SUGGESTIONS
+    // ==========================================
+    "alternativeSuggestions": [
+      {
+        "type": "add_destination",
+        "destination": "Vaishali",
+        "impact": {
+          "days": 1,
+          "cost": 4200,
+          "distance": 90
+        },
+        "reasoning": "Ancient Jain & Buddhist site. Logical extension if you extend to 8 days.",
+        "viabilityScore": 7.5
+      },
+      {
+        "type": "remove_destination",
+        "destination": "Barabar Caves",
+        "impact": {
+          "days": -0.5,
+          "cost": -2100,
+          "distance": -40
+        },
+        "reasoning": "Offbeat location, theme divergence. Save time/money if budget is tight.",
+        "viabilityScore": 8.2
+      }
+    ]
+  }
+}
+```

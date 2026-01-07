@@ -1,0 +1,55 @@
+/* client/vite-project/sec/components/corporate/blog/BlogLandingPage.css */
+
+/* Ensure full image is displayed without being cut */
+.carousel-image-wrapper {
+    max-height: 500px;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .carousel-image {
+    object-fit: cover;  /* Ensures the full image is shown */
+    max-height: 500px;
+  }
+  
+  /* Brighten the carousel control arrows */
+  .carousel-control-prev-icon,
+  .carousel-control-next-icon {
+    filter: brightness(2); /* Makes the arrows more visible */
+  }
+  
+  /* Dark background for the text overlay to increase contrast */
+  .carousel-caption-custom {
+    position: absolute;
+    bottom: 20%;
+  }
+  
+  .carousel-caption-bg {
+    background-color: rgba(0, 0, 0, 0.6); /* Semi-transparent background */
+    padding: 15px;
+    border-radius: 8px;
+  }
+  
+  /* Make button more visible */
+  .carousel-caption-custom button {
+    background-color: #ff6f61;
+    border-color: #ff6f61;
+  }
+  
+  .carousel-caption-custom h3,
+  .carousel-caption-custom p {
+    color: white;
+  }
+  
+  /* Fallback layout: Grid */
+  .fallback-grid {
+    display: flex;
+    flex-wrap: wrap;
+  }
+  
+  .fallback-grid .card {
+    margin-bottom: 20px;
+  }
+  

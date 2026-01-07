@@ -1,0 +1,167 @@
+[
+  {
+    "name": "Dhanbad",
+    "latitude": 23.7954,
+    "longitude": 86.4270,
+    "state": "Jharkhand",
+    "nearest_hubs": {
+      "airports": [
+        { "name": "Birsa Munda Airport", "code": "IXR", "city": "Ranchi", "distance_km": 165, "latitude": 23.3441, "longitude": 85.3096 },
+        { "name": "Netaji Subhash Chandra Bose International Airport", "code": "CCU", "city": "Kolkata", "distance_km": 260, "latitude": 22.6546, "longitude": 88.4467 }
+      ],
+      "railway_stations": [
+        { "name": "Dhanbad Junction", "code": "DHN", "city": "Dhanbad", "distance_km": 0, "latitude": 23.7951, "longitude": 86.4270 },
+        { "name": "Asansol Junction", "code": "ASN", "city": "Asansol", "distance_km": 45, "latitude": 23.6739, "longitude": 86.9524 }
+      ]
+    }
+  },
+  {
+    "name": "Patna",
+    "latitude": 25.6167,
+    "longitude": 85.1333,
+    "state": "Bihar",
+    "nearest_hubs": {
+      "airports": [
+        { "name": "Jay Prakash Narayan International Airport", "code": "PAT", "city": "Patna", "distance_km": 5, "latitude": 25.5913, "longitude": 85.0870 }
+      ],
+      "railway_stations": [
+        { "name": "Patna Junction", "code": "PNBE", "city": "Patna", "distance_km": 0, "latitude": 25.5941, "longitude": 85.1376 }
+      ]
+    }
+  },
+  {
+    "name": "Ranchi",
+    "latitude": 23.3500,
+    "longitude": 85.3333,
+    "state": "Jharkhand",
+    "nearest_hubs": {
+      "airports": [
+        { "name": "Birsa Munda Airport", "code": "IXR", "city": "Ranchi", "distance_km": 0, "latitude": 23.3441, "longitude": 85.3096 }
+      ],
+      "railway_stations": [
+        { "name": "Ranchi Junction", "code": "RNC", "city": "Ranchi", "distance_km": 0, "latitude": 23.3470, "longitude": 85.3366 }
+      ]
+    }
+  },
+  {
+    "name": "Kolkata",
+    "latitude": 22.5726,
+    "longitude": 88.3639,
+    "state": "West Bengal",
+    "nearest_hubs": {
+      "airports": [
+        { "name": "Netaji Subhash Chandra Bose International Airport", "code": "CCU", "city": "Kolkata", "distance_km": 15, "latitude": 22.6546, "longitude": 88.4467 }
+      ],
+      "railway_stations": [
+        { "name": "Howrah Junction", "code": "HWH", "city": "Kolkata", "distance_km": 8, "latitude": 22.5850, "longitude": 88.3426 },
+        { "name": "Sealdah", "code": "SDAH", "city": "Kolkata", "distance_km": 0, "latitude": 22.5676, "longitude": 88.3697 }
+      ]
+    }
+  },
+  {
+    "name": "Mumbai",
+    "latitude": 19.0761,
+    "longitude": 72.8774,
+    "state": "Maharashtra",
+    "nearest_hubs": {
+      "airports": [
+        { "name": "Chhatrapati Shivaji Maharaj International Airport", "code": "BOM", "city": "Mumbai", "distance_km": 0, "latitude": 19.0896, "longitude": 72.8656 }
+      ],
+      "railway_stations": [
+        { "name": "Chhatrapati Shivaji Maharaj Terminus", "code": "CSMT", "city": "Mumbai", "distance_km": 0, "latitude": 18.9402, "longitude": 72.8356 },
+        { "name": "Mumbai Central", "code": "BCT", "city": "Mumbai", "distance_km": 12, "latitude": 18.9690, "longitude": 72.8193 }
+      ]
+    }
+  },
+  {
+    "name": "New Delhi",
+    "latitude": 28.6791,
+    "longitude": 77.0697,
+    "state": "Delhi",
+    "nearest_hubs": {
+      "airports": [
+        { "name": "Indira Gandhi International Airport", "code": "DEL", "city": "Delhi", "distance_km": 16, "latitude": 28.5562, "longitude": 77.1000 }
+      ],
+      "railway_stations": [
+        { "name": "New Delhi Railway Station", "code": "NDLS", "city": "Delhi", "distance_km": 0, "latitude": 28.6430, "longitude": 77.2197 },
+        { "name": "Old Delhi Railway Station", "code": "DLI", "city": "Delhi", "distance_km": 8, "latitude": 28.6619, "longitude": 77.2280 }
+      ]
+    }
+  },
+  {
+    "name": "Bengaluru",
+    "latitude": 12.9724,
+    "longitude": 77.5806,
+    "state": "Karnataka",
+    "nearest_hubs": {
+      "airports": [
+        { "name": "Kempegowda International Airport", "code": "BLR", "city": "Bengaluru", "distance_km": 40, "latitude": 13.1986, "longitude": 77.7066 }
+      ],
+      "railway_stations": [
+        { "name": "Bengaluru City Junction", "code": "BNC", "city": "Bengaluru", "distance_km": 0, "latitude": 12.9780, "longitude": 77.5726 },
+        { "name": "Yesvantpur Junction", "code": "YPR", "city": "Bengaluru", "distance_km": 15, "latitude": 13.0285, "longitude": 77.5400 }
+      ]
+    }
+  },
+  {
+    "name": "Chennai",
+    "latitude": 13.0674,
+    "longitude": 80.2376,
+    "state": "Tamil Nadu",
+    "nearest_hubs": {
+      "airports": [
+        { "name": "Chennai International Airport", "code": "MAA", "city": "Chennai", "distance_km": 12, "latitude": 12.9941, "longitude": 80.1709 }
+      ],
+      "railway_stations": [
+        { "name": "Chennai Central", "code": "MAS", "city": "Chennai", "distance_km": 0, "latitude": 13.0827, "longitude": 80.2707 },
+        { "name": "Chennai Egmore", "code": "MS", "city": "Chennai", "distance_km": 8, "latitude": 13.0785, "longitude": 80.2611 }
+      ]
+    }
+  },
+  {
+    "name": "Hyderabad",
+    "latitude": 17.3871,
+    "longitude": 78.4917,
+    "state": "Telangana",
+    "nearest_hubs": {
+      "airports": [
+        { "name": "Rajiv Gandhi International Airport", "code": "HYD", "city": "Hyderabad", "distance_km": 24, "latitude": 17.2403, "longitude": 78.4294 }
+      ],
+      "railway_stations": [
+        { "name": "Secunderabad Junction", "code": "SC", "city": "Hyderabad", "distance_km": 0, "latitude": 17.4399, "longitude": 78.4983 },
+        { "name": "Hyderabad Deccan", "code": "HYB", "city": "Hyderabad", "distance_km": 15, "latitude": 17.3850, "longitude": 78.4867 }
+      ]
+    }
+  },
+  {
+    "name": "Jamshedpur",
+    "latitude": 22.8008,
+    "longitude": 86.1990,
+    "state": "Jharkhand",
+    "nearest_hubs": {
+      "airports": [
+        { "name": "Birsa Munda Airport", "code": "IXR", "city": "Ranchi", "distance_km": 135, "latitude": 23.3441, "longitude": 85.3096 },
+        { "name": "Netaji Subhash Chandra Bose International Airport", "code": "CCU", "city": "Kolkata", "distance_km": 290, "latitude": 22.6546, "longitude": 88.4467 }
+      ],
+      "railway_stations": [
+        { "name": "Tatanagar Junction", "code": "TATA", "city": "Jamshedpur", "distance_km": 0, "latitude": 22.8046, "longitude": 86.2029 }
+      ]
+    }
+  },
+  {
+    "name": "Bokaro Steel City",
+    "latitude": 23.6693,
+    "longitude": 86.1511,
+    "state": "Jharkhand",
+    "nearest_hubs": {
+      "airports": [
+        { "name": "Birsa Munda Airport", "code": "IXR", "city": "Ranchi", "distance_km": 110, "latitude": 23.3441, "longitude": 85.3096 },
+        { "name": "Netaji Subhash Chandra Bose International Airport", "code": "CCU", "city": "Kolkata", "distance_km": 230, "latitude": 22.6546, "longitude": 88.4467 }
+      ],
+      "railway_stations": [
+        { "name": "Bokaro Steel City", "code": "BKSC", "city": "Bokaro", "distance_km": 0, "latitude": 23.6693, "longitude": 86.1511 },
+        { "name": "Dhanbad Junction", "code": "DHN", "city": "Dhanbad", "distance_km": 45, "latitude": 23.7951, "longitude": 86.4270 }
+      ]
+    }
+  }
+]

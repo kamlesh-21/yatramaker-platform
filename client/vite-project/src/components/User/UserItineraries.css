@@ -1,0 +1,48 @@
+/* src/styles/UserItineraries.css */
+.user-itinerary-card {
+    background-color: #f0f8ff; 
+    border-radius: 10px; 
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+    transition: transform 0.2s ease-in-out; 
+  }
+  
+  .user-itinerary-card:hover {
+    transform: scale(1.02); 
+  }
+  
+  .user-itinerary-card .card-header {
+    background-color: #e6f7ff; 
+    color: #007bff; 
+    font-weight: bold; 
+  }
+  
+  .user-itinerary-card .card-body {
+    padding: 20px; 
+  }
+  
+.container {
+  max-width: 1200px;
+}
+
+.itinerary-card {
+  margin-bottom: 10px;
+  padding: 10px;
+}
+
+.itinerary-card .card-body {
+  padding: 10px;
+  font-size: 0.9rem;
+}
+
+.card-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.card-text {
+  font-size: 0.875rem;
+}
+
+.button {
+  width: 100%;
+}

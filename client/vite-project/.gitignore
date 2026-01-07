@@ -1,0 +1,74 @@
+# ====================
+# ENVIRONMENT FILES
+# ====================
+.env
+.env.local
+.env.development.local
+.env.test.local
+.env.production.local
+*.env
+.env.*
+
+# Client environment files
+client/vite-project/.env
+client/vite-project/.env.*
+
+# Server environment files
+server/.env
+server/.env.*
+
+# ====================
+# NODE MODULES
+# ====================
+node_modules/
+*/node_modules/
+**/node_modules/
+
+# Client
+client/vite-project/node_modules/
+
+# Server
+server/node_modules/
+
+# ====================
+# BUILD OUTPUTS
+# ====================
+dist/
+build/
+out/
+*.log
+
+# Client builds
+client/vite-project/dist/
+client/vite-project/build/
+
+# Server builds
+server/dist/
+server/build/
+
+# ====================
+# IDE & OS FILES
+# ====================
+.vscode/
+.idea/
+*.swp
+*.swo
+.DS_Store
+Thumbs.db
+
+# ====================
+# DATABASE & LOGS
+# ====================
+*.db
+*.sqlite
+*.log
+logs/
+
+# ====================
+# MISC
+# ====================
+coverage/
+.nyc_output
+*.pid
+*.seed
+*.pid.lock

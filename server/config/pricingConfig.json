@@ -1,0 +1,39 @@
+{
+  "fixedPrices": {
+    "baseFlightCost": 2400,
+    "costPerKmFlight": 4.6,
+    "baseTrainCost": 550,
+    "costPerKmTrain": 2,
+    "costPerKmBus": 3.25,
+    "maxBusDistance": 400,
+    "costPerKmDriving": 5,
+    "maxDrivingDistance": 350,
+    "childFareMultiplierFlight": 0.75,
+    "childFareMultiplierTrain": 0.50,
+    "childFareMultiplierBus": 0.50,
+    "infantFareMultiplier": 0.1,
+    "infantFareMinCost": 1500,
+    "infantFareTrainFixed": 300,
+    "infantFareBusFixed": 200,
+    "childMealMultiplier": 0.5,
+    "roomOccupancyRatio": 2.5,
+    "defaultMinDuration": 1,
+    "localExpenseMultipliers": {
+      "Comfort": 1.0,
+      "Cheap": 0.5,
+      "Luxury": 1.5,
+      "Midrange": 1.0
+    }
+  },
+    "adjustments": {
+      "flight": 0.0,
+      "train": 0.0,
+      "bus": 0.0,
+      "driving": 0.0,
+      "accommodation": 0.0,
+      "meals": 0.0,
+      "transportation": 0.0,
+      "activities": 0.0
+    }
+  }
+  

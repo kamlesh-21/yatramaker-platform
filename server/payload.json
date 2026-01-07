@@ -1,0 +1,64 @@
+{
+  "location": "Dhanbad",
+  "userLocation": {
+    "name": "Dhanbad",
+    "latitude": 23.7954,
+    "longitude": 86.4270,
+    "state": "Jharkhand",
+    "nearest_hubs": {
+      "airports": [
+        {
+          "name": "Birsa Munda Airport",
+          "code": "IXR",
+          "city": "Ranchi",
+          "distance_km": 165,
+          "latitude": 23.3441,
+          "longitude": 85.3096
+        },
+        {
+          "name": "Netaji Subhash Chandra Bose International Airport",
+          "code": "CCU",
+          "city": "Kolkata",
+          "distance_km": 260,
+          "latitude": 22.6546,
+          "longitude": 88.4467
+        }
+      ],
+      "railway_stations": [
+        {
+          "name": "Dhanbad Junction",
+          "code": "DHN",
+          "city": "Dhanbad",
+          "distance_km": 0,
+          "latitude": 23.7951,
+          "longitude": 86.4270
+        },
+        {
+          "name": "Asansol Junction",
+          "code": "ASN",
+          "city": "Asansol",
+          "distance_km": 45,
+          "latitude": 23.6739,
+          "longitude": 86.9524
+        }
+      ]
+    }
+  },
+  "budget": 12000,
+  "tripDuration": 3,
+  "travellers": {
+    "adults": 1,
+    "children": 0,
+    "infants": 0
+  },
+  "preferences": ["Cities", "Jungles", "Culture", "Temples", "Riverside"],
+  "accommodationPreference": "Cheap",
+  "tripType": "multi-destination",
+  "filters": {
+    "regions": [],
+    "states": [],
+    "maxDistance": null
+  },
+  "page": 1,
+  "limit": 20
+}
