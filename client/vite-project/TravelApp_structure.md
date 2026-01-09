@@ -1,141 +1,193 @@
 ```
 Yatramaker   
 ```
+```
 └── 📁client
-    └── 📁.git
-        └── 📁hooks
-        └── 📁info
-            └── exclude
-        └── 📁logs
-            └── 📁refs
-                └── 📁heads
-                    └── master
-            └── HEAD
-        └── 📁objects
-
-        └── 📁refs
-            └── 📁heads
-                └── master
-            ├── tags
-        └── COMMIT_EDITMSG
-        └── config
-        └── description
-        └── HEAD
-        └── index
     └── 📁vite-project
         └── 📁public
             └── 📁assets
                 └── 📁illustrations
-                    └── step-icon-1.png
+                    ├── step-icon-1.png
                 └── 📁images
                     └── 📁highlights
-
+                        ├── activity_breakup.png
+                        ├── travel_breakup.png
+                    ├── cherai.png
+                    ├── upi2.png
+                    ├── varanasi.png
                 └── 📁logos
-                    └── Yatra_Maker_Logo_1.svg
-                    └── Yatra_Maker_Logo.png
-                └── yatramaker-og-image.jpg
-            └── Yatra_Maker_Icon.svg
+                    ├── Yatra_Maker_Logo_1.svg
+                    ├── Yatra_Maker_Logo.png
+                ├── imager2.png
+                ├── ogimage8.jpg
+                ├── yatramaker-og-image.jpg
+            └── 📁mock
+                ├── backendResponse.json
+                ├── recommendations.json
+            ├── apple-touch-icon.png
+            ├── favicon-96x96.png
+            ├── favicon.ico
+            ├── favicon.svg
+            ├── robots.txt
+            ├── site.webmanifest
+            ├── sitemap.xml
+            ├── web-app-manifest-192x192.png
+            ├── web-app-manifest-512x512.png
         └── 📁src
             └── 📁animations
-                └── loading.json
+                ├── loading.json
             └── 📁assets
+                └── 📁generated_images
+                    ├── Ancient_temple_architecture_India_48468ef6.png
+                    ├── Bodh_Gaya_temple_sunrise_f3cba291.png
+                    ├── Snow_mountain_peaks_Himalayas_9d095955.png
+                    ├── Traditional_Indian_market_street_e035db73.png
+                    ├── Tropical_beach_paradise_e4bd0af5.png
                 └── 📁illustrations
-                    └── step-icon-1.png
+                    ├── step-icon-1.png
                 └── 📁images
                     └── 📁highlights
- 
+                    ├── activity_breakup.png
+                     ├── destinations.png
+                    ├── hero-image05.png
+                    ├── snow2.jpg
+                    ├── stay_breakup.png
+                    ├── travel_breakup.png
+                    ├── Travel2.png
+                    ├── UPI.jpeg
+                    ├── upi2.png
+                    ├── varanasi.png
                 └── 📁logos
-                    └── Yatra_Maker_Icon.svg
-                    └── Yatra_Maker_Logo_1.svg
-                    └── Yatra_Maker_Logo.png
+                    └── 📁logos2
+                        ├── logo-yatramaker-nobg.png
+                        ├── logo-yatramaker.png
+                    ├── favicon.ico
+                    ├── Yatra_Maker_Icon.ico
+                    ├── Yatra_Maker_Icon.svg
+                    ├── Yatra_Maker_Logo_1.svg
+                    ├── Yatra_Maker_Logo_Dark.svg
+                    ├── Yatra_Maker_Logo.png
+                    ├── YM2.svg
+            └── 📁attached_assets
+                └── 📁generated_images
+                    ├── Ancient_temple_architecture_India_48468ef6.png
+                    ├── Bodh_Gaya_temple_sunrise_f3cba291.png
+                    ├── Desert_dunes_Rajasthan_sunset_4c4c6dc1.png
+                    ├── Forest_wildlife_sanctuary_nature_420e849d.png
+
+                ├── 3e9e6835-ef1f-4b2b-9b16-ba97ca37dc29_1761156940759.png
+                ├── download (1)_1761156940762.jpg
+                ├── Pasted--2-1-Unified-Search-Endpoint-Handles-Both-Single-Multi-City-Endpoint-POST-api-travel-1761150020008_1761150020012.txt
             └── 📁auth
-                └── ForgotPassword.jsx
-                └── Login.css
-                └── LoginComponent.jsx
-                └── Register.css
-                └── RegisterComponent.jsx
-                └── ResetPassword.jsx
+                ├── ForgotPassword.tsx
+                ├── LoginComponent.tsx
+                ├── RegisterComponent.tsx
+                ├── ResetPassword.tsx
             └── 📁components
                 └── 📁Corporate
                     └── 📁Blog
-                        └── BlogLandingPage.jsx
-                        └── SingleBlogPost.jsx
-                    └── AboutUs.jsx
-                    └── Contact.jsx
-                    └── FAQ.jsx
-                    └── News.jsx
-                    └── Partner.jsx
-                    └── Privacy.jsx
-                    └── TermsOfService.jsx
-                └── 📁HomePage
-                    └── DestinationCardsGrid.css
-                    └── DestinationCardsGrid.jsx
-                    └── EnhancedTestimonialsSection.css
-                    └── EnhancedTestimonialsSection.jsx
-                    └── FeaturesSection.css
-                    └── FeaturesSection.jsx
-                    └── HomePage.css
-                    └── HomePage.jsx
-                └── 📁Results
-                    └── AccommodationOptions.jsx
-                    └── Modal.css
-                    └── Modal.jsx
-                    └── MultiCityTripCard.jsx
-                    └── NoResultsPage.jsx
-                    └── ResultsPage.css
-                    └── ResultsPage.jsx
-                    └── SingleDestinationCard.css
-                    └── SingleDestinationCard.jsx
-                └── 📁TravelRecommendation
-                    └── AccommodationPreference.jsx
-                    └── BudgetAllocationSliders.jsx
-                    └── BudgetInput.jsx
-                    └── LocationInput.jsx
-                    └── PreferencesInput.jsx
-                    └── travellerInput.css
-                    └── TravellerInput.jsx
-                    └── TravelRecommendation.css
-                    └── TravelRecommendation.jsx
-                    └── TripDuration.jsx
+                        ├── BlogLandingPage.css
+                        ├── BlogLandingPage.tsx
+                        ├── SingleBlogPost.tsx
+                    ├── AboutUs.tsx
+                    ├── Contact.tsx
+                    ├── FAQ.tsx
+                    ├── News.tsx
+                    ├── Partner.tsx
+                    ├── Privacy.tsx
+                    ├── TermsOfService.tsx
+                └── 📁results
+                    ├── AccommodationSection.tsx
+                    ├── ActivitiesSection.tsx
+                    ├── DayScheduleCard.tsx
+                    ├── DestinationGuideSection.tsx
+                    ├── ErrorState.tsx
+                    ├── ItineraryDestinationCard.tsx
+                    ├── LoadingState.tsx
+                    ├── LocalExpensesSection.tsx
+                    ├── ModeIcon.tsx
+                    ├── ScoreMeter.tsx
+                    ├── TravelLegCard.tsx
+                    ├── TravelOptionsSection.tsx
+                └── 📁ui
                 └── 📁User
-                    └── Dashboard.jsx
-                    └── DashboardPage.css
-                    └── ItineraryDetailsPage.jsx
-                    └── Login.jsx
-                    └── LoginPage.css
-                    └── UserItineraries.css
-                    └── UserItineraries.jsx
-                    └── UserOnboarding.css
-                    └── UserOnboarding.jsx
-                └── BudgetVisualization.jsx
-                └── Footer.css
-                └── Footer.jsx
-                └── Header.css
-                └── Header.jsx
-                └── PrivateRoute.jsx
-                └── Subscribe.jsx
+                    ├── Dashboard.tsx
+                    ├── ItineraryDetailsPage.jsx
+                    ├── Login.tsx
+                    ├── SavedDestinationDetail.tsx
+                    ├── UserItineraries.css
+                    ├── UserItineraries.tsx
+                    ├── UserOnboarding.css
+                    ├── UserOnboarding.tsx
+                ├── BackButton.tsx
+                ├── BaseSEO.tsx
+                ├── BookingModal.tsx
+                ├── BudgetVisualization.jsx
+                ├── CostBreakdown.tsx
+                ├── DayCard.tsx
+                ├── DestinationCard.tsx
+                ├── Footer.tsx
+                ├── Header.jsx
+                ├── LocationInput.tsx
+                ├── MultiCityCard.tsx
+                ├── PrivateRoute.tsx
+                ├── SearchForm.tsx
+                ├── Subscribe.tsx
+                ├── ThemeToggle.tsx
+                ├── TravelOptionCard.tsx
             └── 📁context
-                └── AuthContext.jsx
+                ├── AuthContext.tsx
+                ├── NavigationContext.tsx
+            └── 📁data
+                ├── locations.json
+            └── 📁hooks
+                ├── use-auth.ts
+                ├── use-mobile.tsx
+                ├── use-toast.ts
+            └── 📁lib
+                ├── api.legacy.ts
+                ├── api.ts
+                ├── mockApi.ts
+                ├── normalizeTripData.ts
+                ├── queryClient.ts
+                ├── safe.ts
+                ├── utils.ts
+            └── 📁pages
+                ├── DestinationDetail.tsx
+                ├── Home.tsx
+                ├── ItineraryDetail.tsx
+                ├── not-found.tsx
+                ├── Results.tsx
+                ├── SearchPage.tsx
+            └── 📁services
+                ├── itineraryService.ts
+            └── 📁shared
+                ├── schema.ts
             └── 📁utils
-                └── activities2.mongodb.js
-                └── cities.mongodb.js
-                └── clusters.mongodb.js
-                └── env.js
-                └── hotels.mongodb.js
-                └── update.mongodb.js
-            └── App.css
-            └── App.jsx
-            └── main.jsx
-            └── ScrollToTop.js
-        └── .env
-        └── .eslintrc.cjs
-        └── .gitignore
-        └── index.html
-        └── package-lock.json
-        └── package.json
-        └── README.md
-        └── TravelApp_structure.md
+                ├── api.js
+                ├── env.ts
+                ├── safeNumber.js
+                ├── Testimonials.jsx
+            ├── App.css
+            ├── App.jsx
+            ├── index.css
+            ├── indexNew.css
+            ├── indexOriginal.css
+            ├── main.jsx
+            ├── ScrollToTop.js
+        ├── .env
+        ├── .eslintrc.cjs
+        ├── .gitignore
+        ├── components.json
+        ├── index.html
+        ├── package-lock.json
+        ├── package.json
+        ├── README.md
+        ├── tailwind.config.ts
+        ├── TravelApp_structure.md
+        ├── tsconfig.json
         └── vite.config.js
+```
 └── 📁server
     └── 📁config
         └── pricingConfig.json
