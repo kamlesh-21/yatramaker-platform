@@ -1,9 +1,7 @@
-//src/components/Footer.tsx
 import React from "react";
 import { Link } from "react-router-dom";
 import { Helmet } from "react-helmet-async";
 import { FaFacebook, FaTwitter, FaInstagram, FaLinkedin } from "react-icons/fa";
-// import Subscribe from "./Subscribe";
 import Subscribe from '@/components/Subscribe';
 
 const FOOTER_SECTIONS = {
@@ -14,6 +12,12 @@ const FOOTER_SECTIONS = {
       { to: "/contact", label: "Contact", title: "Get in touch with YatraMaker" },
       { to: "/news", label: "News", title: "YatraMaker company news" },
       { to: "/blog", label: "Blog", title: "YatraMaker travel blog" },
+      // Added blog pillar links here (subtle & useful)
+      { to: "https://blog.yatramaker.com/destinations/budget/", external: true, label: "Budget Guides", title: "Travel within your budget" },
+      { to: "https://blog.yatramaker.com/destinations/holiday/", external: true, label: "Holiday Ideas", title: "Destinations by type & budget" },
+      { to: "https://blog.yatramaker.com/destinations/planning/", external: true, label: "Trip Planning", title: "Itineraries & cost breakdowns" },
+      { to: "https://blog.yatramaker.com/destinations/inspiration/", external: true, label: "Travel Inspiration", title: "Travel inspiration & ideas" },
+
     ],
   },
   support: {
@@ -28,26 +32,10 @@ const FOOTER_SECTIONS = {
 };
 
 const SOCIAL_LINKS = [
-  {
-    href: "https://www.facebook.com/people/YatraMaker/61563261184870/",
-    icon: FaFacebook,
-    label: "Facebook",
-  },
-  {
-    href: "https://x.com/YatraMaker",
-    icon: FaTwitter,
-    label: "Twitter",
-  },
-  {
-    href: "https://www.instagram.com/yatra_maker/",
-    icon: FaInstagram,
-    label: "Instagram",
-  },
-  {
-    href: "https://www.linkedin.com/company/yatramaker/",
-    icon: FaLinkedin,
-    label: "LinkedIn",
-  },
+  { href: "https://www.facebook.com/people/YatraMaker/61563261184870/", icon: FaFacebook, label: "Facebook" },
+  { href: "https://x.com/YatraMaker", icon: FaTwitter, label: "Twitter" },
+  { href: "https://www.instagram.com/yatra_maker/", icon: FaInstagram, label: "Instagram" },
+  { href: "https://www.linkedin.com/company/yatramaker/", icon: FaLinkedin, label: "LinkedIn" },
 ];
 
 const STRUCTURED_DATA = {
@@ -57,30 +45,37 @@ const STRUCTURED_DATA = {
   url: "https://www.yatramaker.com",
   logo: "https://www.yatramaker.com/logo.png",
   sameAs: SOCIAL_LINKS.map((l) => l.href),
-  description:
-    "YatraMaker offers personalized travel recommendations and comprehensive itineraries based on your total budget.",
+  description: "YatraMaker offers personalized travel recommendations and comprehensive itineraries based on your total budget.",
   areaServed: "Worldwide",
   slogan: "Your Budget, Your Dream Destination",
 };
 
 interface FooterSectionProps {
   title: string;
-  links: { to: string; label: string; title: string }[];
+  links: { to: string; label: string; title: string; external?: boolean }[];
 }
 
 const FooterSection: React.FC<FooterSectionProps> = ({ title, links }) => (
   <div>
     <h6 className="mb-3 font-semibold text-white text-sm">{title}</h6>
     <ul className="space-y-2">
-      {links.map(({ to, label, title }) => (
+      {links.map(({ to, label, title, external }) => (
         <li key={to}>
-          <Link
-            to={to}
-            title={title}
-            className="text-gray-300 hover:text-white text-sm"
-          >
-            {label}
-          </Link>
+          {external ? (
+            <a
+              href={to}
+              title={title}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="text-gray-300 hover:text-white text-sm"
+            >
+              {label}
+            </a>
+          ) : (
+            <Link to={to} title={title} className="text-gray-300 hover:text-white text-sm">
+              {label}
+            </Link>
+          )}
         </li>
       ))}
     </ul>
@@ -127,13 +122,11 @@ const ProductHuntBadge: React.FC = () => (
 
 const Footer: React.FC = () => {
   const currentYear = new Date().getFullYear();
-
   return (
     <>
       <Helmet>
         <script type="application/ld+json">{JSON.stringify(STRUCTURED_DATA)}</script>
       </Helmet>
-
       <footer className="bg-gray-900 text-gray-300 pt-10 pb-6 border-t border-gray-800">
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-10">
           <div className="lg:col-span-2">
@@ -147,7 +140,9 @@ const Footer: React.FC = () => {
             <ProductHuntBadge />
           </div>
 
+          {/* Updated Company section with blog links */}
           <FooterSection {...FOOTER_SECTIONS.company} />
+
           <FooterSection {...FOOTER_SECTIONS.support} />
 
           <div>

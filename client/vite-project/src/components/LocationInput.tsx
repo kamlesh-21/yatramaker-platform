@@ -124,7 +124,9 @@ const LocationInput: React.FC<LocationInputProps> = ({
       
       <div className="relative">
         {showIcon && (
-          <MapPin className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-muted-foreground pointer-events-none z-10" />
+          <MapPin 
+            className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4 text-white dark:text-white pointer-events-none z-10" 
+          />
         )}
         
         <Input
@@ -148,21 +150,24 @@ const LocationInput: React.FC<LocationInputProps> = ({
       </div>
 
       {showSuggestions && suggestions.length > 0 && (
-        <div className="absolute z-50 w-full mt-1 bg-background border border-border rounded-md shadow-lg max-h-60 overflow-auto">
+        <div className="absolute z-50 w-full mt-1 bg-background border border-border rounded-md shadow-lg max-h-60 overflow-auto scrollbar-thin">
           {suggestions.map((suggestion, index) => (
             <div
               key={`${suggestion.name}-${suggestion.state}`}
               className={cn(
-                "px-4 py-2 cursor-pointer transition-colors",
-                "hover:bg-accent hover:text-accent-foreground",
+                "px-4 py-2.5 cursor-pointer transition-colors duration-150",
+                "text-sm text-foreground",
+                "hover:bg-accent/70 hover:text-accent-foreground",
                 highlightedIndex === index && "bg-accent text-accent-foreground"
               )}
               onClick={() => handleSuggestionClick(suggestion)}
               onMouseEnter={() => setHighlightedIndex(index)}
             >
-              <div className="flex items-center gap-2">
+              <div className="flex items-center gap-2.5">
                 <span className="font-medium">{suggestion.name}</span>
-                <span className="text-sm text-muted-foreground">, {suggestion.state}</span>
+                <span className="text-xs text-muted-foreground truncate max-w-[140px]">
+                  , {suggestion.state}
+                </span>
               </div>
             </div>
           ))}
