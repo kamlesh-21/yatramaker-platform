@@ -79,7 +79,6 @@ function getDistance(lat1, lon1, lat2, lon2) {
  * Main entry point
  */
 function calculateTravelCost(userLocation, destination, travellers) {
-    console.log(`\n🔍 Calculating travel: ${userLocation?.name} → ${destination?.name}`);
     
     const { latitude: userLat, longitude: userLon } = userLocation || {};
     const { latitude: destLat, longitude: destLon } = destination || {};
@@ -96,12 +95,6 @@ function calculateTravelCost(userLocation, destination, travellers) {
     const airDistance = Math.round(calculateDistance(userLat, userLon, destLat, destLon)); // no terrain
     const roadDistance = Math.round(calculateDistance(userLat, userLon, destLat, destLon, terrainType));
 
-    console.log(`   📏 Direct air distance: ${airDistance} km`);
-    console.log(`   🛣️ Terrain-adjusted road distance (${terrainType}): ${roadDistance} km`); // terrain-adjusted
-    
-    console.log(`   🗺️ Destination type: [${(destination.type || []).join(', ')}]`);
-    console.log(`   ✈️ Max airport last-mile (type-based): ${getMaxHubDistance(destination, 'airport')} km`);
-    console.log(`   🚉 Max station last-mile (type-based): ${getMaxHubDistance(destination, 'station')} km`);
 
     const travelOptions = [];
     
@@ -109,9 +102,6 @@ function calculateTravelCost(userLocation, destination, travellers) {
     const userStations = userLocation.nearest_hubs?.railway_stations || [];
     const destAirports = destination.travel?.airports || [];
     const destStations = destination.travel?.railwayStations || [];
-
-    console.log(`   👤 User hubs: ${userAirports.length} airports, ${userStations.length} stations`);
-    console.log(`   🎯 Dest hubs: ${destAirports.length} airports, ${destStations.length} stations`);
 
     // === ✈️ FLIGHT OPTIONS (multi-leg: user → originHub → destHub → destination) ===
     const flightOption = calculateFlightOption(
@@ -123,9 +113,8 @@ function calculateTravelCost(userLocation, destination, travellers) {
     );
     if (flightOption) {
         travelOptions.push(flightOption);
-        console.log(`   ✅ Flight: ${flightOption.name} | ₹${flightOption.cost} | ${flightOption.estimatedTimeHours}h`);
     } else {
-        console.log(`   ⚠️ Flight: No viable route found`);
+        // console.log(`   ⚠️ Flight: No viable route found`);
     }
 
     // === 🚆 TRAIN OPTIONS ===
@@ -138,26 +127,22 @@ function calculateTravelCost(userLocation, destination, travellers) {
     );
     if (trainOption) {
         travelOptions.push(trainOption);
-        console.log(`   ✅ Train: ${trainOption.name} | ₹${trainOption.cost} | ${trainOption.estimatedTimeHours}h`);
     } else {
-        console.log(`   ⚠️ Train: No viable route found`);
+        // console.log(`   ⚠️ Train: No viable route found`);
     }
 
     // === 🚌 BUS OPTION (direct only — no multi-leg bus logic yet) ===
     const busOption = calculateBusOption(roadDistance, travellers);
     if (busOption && roadDistance <= (getFixedPrice('maxBusDistance') || 800)) {
         travelOptions.push(busOption);
-        console.log(`   ✅ Bus: ₹${busOption.cost} | ${busOption.estimatedTimeHours}h`);
     }
 
     // === 🚗 DRIVING OPTION ===
     const driveOption = calculateDrivingOption(roadDistance, travellers);
     if (driveOption && roadDistance <= (getFixedPrice('maxDrivingDistance') || 1000)) {
         travelOptions.push(driveOption);
-        console.log(`   ✅ Drive: ₹${driveOption.cost} | ${driveOption.estimatedTimeHours}h`);
     }
 
-    console.log(`   ✅ Total options generated: ${travelOptions.length}\n`);
 
     // Enrich with dynamic attributes
     return travelOptions.map(opt => ({
@@ -178,7 +163,6 @@ function calculateTravelCost(userLocation, destination, travellers) {
 // =============================================================================
 function calculateFlightOption(userLocation, destination, userAirports, destAirports, travellers) {
     if (!userAirports.length || !destAirports.length) {
-        console.log(`   ⚠️ Flight: Missing user or dest airports`);
         return null;
     }
 
@@ -211,7 +195,6 @@ function calculateFlightOption(userLocation, destination, userAirports, destAirp
             // ✅ UNIVERSAL LAST-MILE CHECK (fixes Gangtok!)
             const lastMileLimit = getEffectiveLastMileLimit(destination, 'airport', destHub.distance);
             if (destHubToFinalKm > lastMileLimit) {
-                console.log(`   ⚠️ Skipping ${destHub.name}: last-mile ${destHubToFinalKm}km > limit ${lastMileLimit}km`);
                 continue;
             }
 
@@ -279,7 +262,6 @@ function calculateFlightOption(userLocation, destination, userAirports, destAirp
 // =============================================================================
 function calculateTrainOption(userLocation, destination, userStations, destStations, travellers) {
     if (!userStations.length || !destStations.length) {
-        console.log(`   ⚠️ Train: Missing user or dest stations`);
         return null;
     }
 
@@ -309,7 +291,6 @@ function calculateTrainOption(userLocation, destination, userStations, destStati
             // ✅ UNIVERSAL LAST-MILE CHECK (fixes NJP @ 148km for Gangtok!)
             const lastMileLimit = getEffectiveLastMileLimit(destination, 'station', destHub.distance);
             if (destHubToFinalKm > lastMileLimit) {
-                console.log(`   ⚠️ Skipping ${destHub.name}: last-mile ${destHubToFinalKm}km > limit ${lastMileLimit}km`);
                 continue;
             }
 

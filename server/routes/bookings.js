@@ -3,20 +3,13 @@ const router = express.Router();
 const Booking = require('../models/Booking');
 
 // POST /api/bookings/create
-// POST /api/bookings/create
-// POST /api/bookings/create
 router.post('/create', async (req, res) => {
-  try {
-    console.log('📦 Quote request received with full data');
-    console.log('📊 Destination data type:', typeof req.body.destinationData);
-    console.log('📊 Destination data:', req.body.destinationData);
-    
+  try {  
     // Check if destinationData is a string (incorrectly sent)
     let destinationData = req.body.destinationData;
     if (typeof destinationData === 'string') {
       try {
         destinationData = JSON.parse(destinationData);
-        console.log('🔄 Parsed string destinationData to object');
       } catch (parseError) {
         console.error('❌ Failed to parse destinationData:', parseError);
         // Keep as is if parsing fails
@@ -57,13 +50,6 @@ router.post('/create', async (req, res) => {
       createdAt: new Date(),
       updatedAt: new Date()
     };
-
-    console.log('📋 Final booking data to save:', {
-      destinationName: bookingData.destinationData?.name,
-      budget: bookingData.userSearchData?.budget,
-      location: bookingData.userSearchData?.userLocation?.name,
-      totalCost: bookingData.destinationData?.totalCost
-    });
 
     const booking = new Booking(bookingData);
     await booking.save();

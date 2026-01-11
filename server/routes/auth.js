@@ -26,10 +26,8 @@ router.post(
     ).isLength({ min: 6 }),
   ],
   async (req, res) => { 
-    // console.log('Request body:', req.body); // Add this line to log the request body
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
-      // console.log('Validation errors:', errors.array()); // Add this line to log validation errors
       return res.status(400).json({ errors: errors.array() });
     }
 

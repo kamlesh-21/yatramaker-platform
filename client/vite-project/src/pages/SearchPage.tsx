@@ -6,6 +6,8 @@ import { Button } from "@/components/ui/button";
 import { Card } from "@/components/ui/card";
 import { ArrowLeft, Search as SearchIcon } from "lucide-react";
 import type { SearchRequest } from "@/shared/schema";
+import { trackEvent } from "@/analytics/ga";
+
 
 export default function SearchPage() {
   const navigate = useNavigate();
@@ -26,6 +28,16 @@ export default function SearchPage() {
   }, []);
 
   const handleSubmit = (data: SearchRequest) => {
+
+    // ✅ TRACK SEARCH (SEARCH PAGE)
+    trackEvent("search_submit", {
+      trip_type: data.tripType,
+      origin_city: data.userLocation.name,
+      budget: data.budget,
+      days: data.tripDuration,
+      travellers: data.travellers.adults + data.travellers.children
+    });
+
     sessionStorage.setItem("searchData", JSON.stringify(data));
     localStorage.setItem("lastSearchData", JSON.stringify(data));
     navigate("/results");

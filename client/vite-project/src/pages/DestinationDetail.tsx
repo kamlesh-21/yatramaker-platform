@@ -604,6 +604,8 @@ import { DestinationGuideSection } from "@/components/results/DestinationGuideSe
 import { TravelOptionsSection } from "@/components/results/TravelOptionsSection";
 import { BackButton } from "@/components/BackButton";
 import { BookingModal } from "@/components/BookingModal"; // Add this import
+import { trackEvent } from "@/analytics/ga";
+
 
 // Import date-fns for formatting if needed
 import { format } from "date-fns";
@@ -997,9 +999,15 @@ export default function DestinationDetail() {
   };
 
   // Create a SEPARATE function for getting quote (no login required)
-const handleGetQuote = () => {
-  setShowBookingModal(true);
-};
+  const handleGetQuote = () => {
+    // ✅ TRACK QUOTE CLICK
+    trackEvent("quote_clicked", {
+      destination_name: name,
+      total_cost: costs.total
+    });
+
+    setShowBookingModal(true);
+  };
 
   // BOOKING FUNCTION - Fixed version
 const handleBookPackage = async (bookingData: any) => {
@@ -1067,8 +1075,6 @@ const handleBookPackage = async (bookingData: any) => {
       })
     };
     
-    console.log("📤 Sending booking data:", JSON.stringify(payload, null, 2));
-
     // Send to backend
     const bookingResponse = await fetch('/api/bookings/create', {
       method: 'POST',

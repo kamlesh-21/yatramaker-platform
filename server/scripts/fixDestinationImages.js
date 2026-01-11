@@ -25,7 +25,6 @@ async function fetchRelevantImages(destinationName, destinationType) {
         });
         
         if (response.data.results.length === 0) {
-            console.log(`   ⚠️ No images found for "${searchQuery}", trying generic...`);
             
             // Fallback to type-based search
             const fallbackQuery = `${destinationType[0]} India`;
@@ -54,23 +53,19 @@ async function fetchRelevantImages(destinationName, destinationType) {
 async function fixAllDestinationImages() {
     try {
         await mongoose.connect(process.env.MONGODB_URI);
-        console.log('✅ Connected to MongoDB\n');
         
         const destinations = await Destination.find({}).lean();
-        console.log(`📸 Fixing images for ${destinations.length} destinations...\n`);
         
         for (const dest of destinations) {
             const destName = Array.isArray(dest.name) ? dest.name[0] : dest.name;
             const destType = dest.type || [];
             
-            console.log(`Processing: ${destName} (${destType.join(', ')})`);
             
             // Check if images are already good
             const hasRelevantImages = dest.images && dest.images.length > 0 && 
                                       dest.images[0].title.toLowerCase().includes(destName.toLowerCase().split(' ')[0]);
             
             if (hasRelevantImages) {
-                console.log(`   ✅ Already has relevant images, skipping\n`);
                 continue;
             }
             
@@ -78,7 +73,6 @@ async function fixAllDestinationImages() {
             const unsplashResults = await fetchRelevantImages(destName, destType);
             
             if (unsplashResults.length === 0) {
-                console.log(`   ⚠️ Could not find images, keeping existing\n`);
                 continue;
             }
             
@@ -97,13 +91,11 @@ async function fixAllDestinationImages() {
                 { $set: { images: newImages } }
             );
             
-            console.log(`   ✅ Updated with ${newImages.length} new images\n`);
             
             // Rate limit: 50 requests per hour
             await new Promise(resolve => setTimeout(resolve, 2000));
         }
         
-        console.log('\n✅ Image fix complete!');
         await mongoose.connection.close();
         
     } catch (error) {

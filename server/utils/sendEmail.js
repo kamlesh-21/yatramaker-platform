@@ -72,7 +72,7 @@ const sendRegistrationNotification = (to, userName) => {
     if (error) {
       console.error('Error sending email:', error);
     } else {
-      console.log('Registration email sent:', info.response);
+      // console.log('Registration email sent:', info.response);
     }
   });
 };
@@ -91,7 +91,7 @@ const sendAdminNotification = (adminEmail, userName, userEmail) => {
     if (error) {
       console.error('Error sending admin notification:', error);
     } else {
-      console.log('Admin notification sent:', info.response);
+      // console.log('Admin notification sent:', info.response);
     }
   });
 };
@@ -109,7 +109,7 @@ const sendPasswordResetEmail = (to, token) => {
     if (error) {
       console.error('Error sending password reset email:', error);
     } else {
-      console.log('Password reset email sent:', info.response);
+      // console.log('Password reset email sent:', info.response);
     }
   });
 };
@@ -118,7 +118,7 @@ transporter.verify((error, success) => {
   if (error) {
     console.error('Error connecting to email server:', error);
   } else {
-    console.log('Server is ready to take messages:', success);
+    // console.log('Server is ready to take messages:', success);
   }
 });
 

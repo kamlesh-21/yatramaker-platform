@@ -5,14 +5,12 @@ const Destination = require('../models/Destination');
 
 dotenv.config(); // Load environment variables
 
-console.log("Connecting to:", process.env.MONGODB_URI);
 
 async function migrateDestinations() {
   try {
     // Connect to YOUR database (check your .env for MONGODB_URI)
     await mongoose.connect(process.env.MONGODB_URI);
     
-    console.log('Connected to:', mongoose.connection.db.databaseName); // Verify database name
     
     const result = await mongoose.connection.db.collection('cities').updateMany(
       { experienceProfile: { $exists: false } },
@@ -34,7 +32,6 @@ async function migrateDestinations() {
       }
     );
     
-    console.log(`✅ Migrated ${result.modifiedCount} destinations`);
     process.exit(0);
   } catch (error) {
     console.error('❌ Migration failed:', error);

@@ -454,3 +454,11 @@ export interface UserItinerary {
   userQuery?: SearchRequest;
   recommendation?: SingleDestinationResult | MultiCityItinerary;
 }
+
+export {};
+
+declare global {
+  interface Window {
+    gtag?: (...args: any[]) => void;
+  }
+}

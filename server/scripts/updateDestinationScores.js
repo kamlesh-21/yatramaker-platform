@@ -3,8 +3,6 @@ const mongoose = require('mongoose');
 const dotenv = require('dotenv');
 dotenv.config();
 
-console.log("Connecting to:", process.env.MONGODB_URI);
-
 const updates = [
   {
     name: "Rajgir",
@@ -161,15 +159,12 @@ const updates = [
 async function runUpdates() {
   try {
     await mongoose.connect(process.env.MONGODB_URI);
-    console.log('Connected to:', mongoose.connection.db.databaseName);
 
     const cities = mongoose.connection.db.collection('cities');
     for (const u of updates) {
       const res = await cities.updateOne({ name: u.name }, { $set: u }, { upsert: false });
-      console.log(`✅ Updated: ${u.name} (${res.modifiedCount} modified)`);
     }
 
-    console.log('🎯 All destination scores updated successfully.');
     process.exit(0);
   } catch (err) {
     console.error('❌ Error updating destinations:', err);

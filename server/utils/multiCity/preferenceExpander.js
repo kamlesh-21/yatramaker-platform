@@ -36,14 +36,10 @@ async function expandPreference(preferenceName, userLocation, userQuery) {
     try {
         const { budget, tripDuration, travellers, accommodationPreference } = userQuery;
         
-        console.log(`   🔍 Expanding "${preferenceName}"...`);
-        
         // ✅ STEP 1: Direct type match (destination.type includes preferenceName)
         const directMatches = await Destination.find({
             type: preferenceName  // ✅ Exact match since your DB has same values
         }).lean();
-        
-        console.log(`      Found ${directMatches.length} direct type matches`);
         
         // ✅ STEP 2: Experience profile boost (destinations with high scores in related experiences)
         const experienceKeys = PREFERENCE_TO_EXPERIENCE_MAP[preferenceName] || [];
@@ -59,13 +55,11 @@ async function expandPreference(preferenceName, userLocation, userQuery) {
         let experienceMatches = [];
         if (experienceQuery.$or) {
             experienceMatches = await Destination.find(experienceQuery).lean();
-            console.log(`      Found ${experienceMatches.length} experience profile matches`);
         }
         
         // ✅ STEP 3: Merge and deduplicate
         const allMatches = deduplicateDestinations([...directMatches, ...experienceMatches]);
-        console.log(`      Total unique matches: ${allMatches.length}`);
-        
+       
         if (allMatches.length === 0) {
             console.warn(`      ⚠️ No destinations found for ${preferenceName}`);
             return [];
@@ -124,21 +118,17 @@ async function expandPreference(preferenceName, userLocation, userQuery) {
             });
             
             if (isSameCity && dest.state?.toLowerCase() === userStateLower) {
-                console.log(`      ❌ Excluded user's city: ${dest.name}`);
                 return false;
             }
             
             // ✅ Exclude very nearby destinations (< 50km)
             if (dest.distanceFromUser < 50) {
-                console.log(`      ❌ Too close: ${dest.name} (${Math.round(dest.distanceFromUser)}km)`);
                 return false;
             }
             
             return true;
         });
-        
-        console.log(`      ✅ ${feasible.length} feasible destinations after filtering`);
-        
+             
         // ✅ STEP 6: Sort by preference score and return top 20
         const sorted = feasible.sort((a, b) => b.preferenceScore - a.preferenceScore);
         
@@ -211,8 +201,6 @@ async function expandAllPreferences(preferences, userLocation, userQuery) {
     try {
         const results = {};
         
-        console.log(`\n🔍 Expanding ${preferences.length} preferences...`);
-        
         for (const pref of preferences) {
             // ✅ Validate preference is in allowed list
             if (!FRONTEND_PREFERENCES.includes(pref)) {
@@ -226,16 +214,13 @@ async function expandAllPreferences(preferences, userLocation, userQuery) {
         
         // ✅ Log summary
         const totalDestinations = Object.values(results).reduce((sum, arr) => sum + arr.length, 0);
-        console.log(`✅ Total destinations found: ${totalDestinations}\n`);
         
         // ✅ Debug: Show top destination per preference
         Object.entries(results).forEach(([pref, dests]) => {
             if (dests.length > 0) {
                 const top = dests[0];
-                console.log(`   ${pref}: ${top.name} (score: ${top.preferenceScore}, ${Math.round(top.distanceFromUser)}km)`);
             }
         });
-        console.log('');
         
         return results;
         

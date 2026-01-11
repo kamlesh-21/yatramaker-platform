@@ -21,12 +21,7 @@ async function generateMultiCityRecommendations(userQuery) {
     const startTime = Date.now();
     
     try {
-        console.log('\n🚀 Starting multi-city trip planning...');
-        console.log(`   Budget: ₹${userQuery.budget.toLocaleString()}`);
-        console.log(`   Duration: ${userQuery.tripDuration} days`);
-        console.log(`   Preferences: ${userQuery.preferences.join(', ')}`);
-        console.log(`   From: ${userQuery.userLocation.name}\n`);
-        
+      
         // Validate input
         const validation = helperFunctions.validateUserQuery(userQuery);
         if (!validation.isValid) {
@@ -34,7 +29,6 @@ async function generateMultiCityRecommendations(userQuery) {
         }
         
         // PHASE 1: Expand preferences to destinations
-        console.log('📍 PHASE 1: Expanding preferences...');
         const preferenceMap = await preferenceExpander.expandAllPreferences(
             userQuery.preferences,
             userQuery.userLocation,
@@ -46,7 +40,6 @@ async function generateMultiCityRecommendations(userQuery) {
         const seenIds = new Set();
         
         Object.entries(preferenceMap).forEach(([pref, dests]) => {
-            console.log(`   ${pref}: ${dests.length} destinations`);
             dests.forEach(d => {
                 if (!seenIds.has(d.destination_id)) {
                     seenIds.add(d.destination_id);
@@ -55,50 +48,43 @@ async function generateMultiCityRecommendations(userQuery) {
             });
         });
         
-        console.log(`   ✅ Total unique destinations: ${allDestinations.length}\n`);
-        
+   
         if (allDestinations.length < 3) {
             throw new Error('INSUFFICIENT_DESTINATIONS: Less than 3 destinations match your criteria within budget and distance constraints. Try broadening your preferences or increasing your budget.');
         }
         
         // PHASE 2: Build geographic clusters
-        console.log('🗺️  PHASE 2: Building geographic clusters...');
         const clusters = await clusterBuilder.buildClusters(
             allDestinations,
             userQuery.userLocation,
             userQuery
         );
-        
-        console.log(`   ✅ Generated ${clusters.length} clusters\n`);
+
         
         if (clusters.length === 0) {
             throw new Error('NO_CLUSTERS: Could not form any valid routes from available destinations. Try selecting closer destinations or increasing trip duration.');
         }
         
         // PHASE 3: Generate routes from clusters
-        console.log('🛤️  PHASE 3: Generating routes from clusters...');
         const allRoutes = [];
         
         for (const cluster of clusters) {
             try {
                 const variants = await routeGenerator.generateRouteVariants(cluster, userQuery);
                 allRoutes.push(...variants);
-                console.log(`   Generated ${variants.length} variants from cluster`);
             } catch (err) {
                 console.warn(`   ⚠️  Skipping cluster: ${err.message}`);
                 continue;
             }
         }
         
-        console.log(`   ✅ Generated ${allRoutes.length} total routes\n`);
-        
+       
         if (allRoutes.length === 0) {
             const minBudget = helperFunctions.estimateMinimumBudget(userQuery);
             throw new Error(`NO_ROUTES: Could not generate any routes within budget ₹${userQuery.budget.toLocaleString()}. Minimum required: ₹${minBudget.toLocaleString()}. Try reducing trip duration, choosing closer destinations, or selecting budget accommodation.`);
         }
         
         // PHASE 4: Diversify to 12-14 routes
-        console.log('🎨 PHASE 4: Diversifying routes...');
         const targetCount = Math.min(14, Math.max(12, allRoutes.length));
         let diverseRoutes = diversifier.diversifyRoutes(allRoutes, targetCount);
         
@@ -109,23 +95,21 @@ async function generateMultiCityRecommendations(userQuery) {
             targetCount
         );
         
-        console.log(`   ✅ Selected ${diverseRoutes.length} diverse routes\n`);
-        
         // PHASE 5: Build daily schedules
-        console.log('📅 PHASE 5: Building daily schedules...');
         for (const route of diverseRoutes) {
             try {
                 route.dailySchedule = await dailyScheduleBuilder.buildDailySchedule(route);
-                console.log(`   ✅ Built schedule for ${route.name}`);
             } catch (err) {
-                console.warn(`   ⚠️  Schedule build failed for ${route.name}: ${err.message}`);
+                console.error(
+                    `Schedule build failed for ${route.name}:`,
+                    err.message
+                );
                 route.dailySchedule = [];
             }
         }
-        console.log();
         
         // PHASE 6: Add explanations
-        console.log('💡 PHASE 6: Generating explanations...');
+
         const enrichedRoutes = diverseRoutes.map((route, index) => {
             try {
                 const explanations = explanationGenerator.generateExplanations(
@@ -150,11 +134,7 @@ async function generateMultiCityRecommendations(userQuery) {
                 };
             }
         });
-        
-        console.log(`   ✅ Added explanations to all routes\n`);
-        
-        // PHASE 7: Final sort and ranking
-        console.log('🏆 PHASE 7: Final ranking...');
+
         enrichedRoutes.sort((a, b) => b.scores.overallScore - a.scores.overallScore);
         
         // Re-assign ranks after sorting
@@ -163,27 +143,6 @@ async function generateMultiCityRecommendations(userQuery) {
         });
         
         const computationTime = ((Date.now() - startTime) / 1000).toFixed(1);
-        console.log(`\n✅ Multi-city planning complete in ${computationTime}s`);
-        console.log(`   Generated ${enrichedRoutes.length} personalized routes\n`);
-        
-        // Before returning the result in multiCityOrchestrator.js
-        console.log('🔍 DEBUG - Final orchestrator output:', {
-            success: true,
-            routesCount: enrichedRoutes.length,
-            routesStructure: enrichedRoutes.length > 0 ? {
-                firstRoute: {
-                    name: enrichedRoutes[0].name,
-                    destinations: enrichedRoutes[0].destinations?.map(d => d.destination?.name || d.destination),
-                    legs: enrichedRoutes[0].legs?.length,
-                    totalCost: enrichedRoutes[0].totalCost,
-                    dailySchedule: enrichedRoutes[0].dailySchedule?.length
-                }
-            } : 'No routes',
-            metadata: {
-                routesGenerated: enrichedRoutes.length,
-                computationTime: `${computationTime}s`
-            }
-        });
 
         return {
             success: true,
@@ -204,6 +163,7 @@ async function generateMultiCityRecommendations(userQuery) {
                 }
             }
         };
+
         
     } catch (error) {
         console.error('\n❌ Multi-city planning failed:', error.message);

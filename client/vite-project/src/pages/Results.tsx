@@ -9,6 +9,8 @@ import type { SearchRequest, SearchResponse } from "../shared/schema";
 import { Loader2, AlertCircle, MapPin, Calendar, Users, Download, Save } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
+import { trackEvent } from "@/analytics/ga";
+
 
 export default function Results() {
   const navigate = useNavigate();
@@ -119,26 +121,7 @@ export default function Results() {
       };
 
       const response = await searchDestinations(payload as SearchRequest) as SearchResponse;
-      
-      // Enhanced debugging
-      console.log("🔍 Full Backend Response:", JSON.parse(JSON.stringify(response)));
-      
-      if (response.success && response.tripType === 'multi-city') {
-        console.log("📊 Multi-City Analysis:", {
-          routesCount: response.multiCityResults?.recommendedItineraries?.length || 0,
-          firstRoute: response.multiCityResults?.recommendedItineraries?.[0] ? {
-            name: response.multiCityResults.recommendedItineraries[0].name,
-            destinations: response.multiCityResults.recommendedItineraries[0].destinations?.length,
-            legs: response.multiCityResults.recommendedItineraries[0].legs?.length,
-            totalCost: response.multiCityResults.recommendedItineraries[0].totalCost,
-            hasExplanations: !!response.multiCityResults.recommendedItineraries[0].explanations,
-            hasDynamicPricing: !!response.multiCityResults.recommendedItineraries[0].dynamicPricing,
-            metadata: response.multiCityResults.recommendedItineraries[0].metadata
-          } : 'No routes',
-          metadata: response.metadata
-        });
-      }
-      
+           
       return response;
     },
     enabled: !!searchData,
@@ -146,6 +129,19 @@ export default function Results() {
   });
 
   const result = data;
+
+  useEffect(() => {
+    if (result && result.success) {
+      const resultCount = isSingleDestination ? singleResults.length : multiRoutes.length;
+      
+      // ✅ TRACK RESULTS VIEWED
+      trackEvent("results_viewed", {
+        result_count: resultCount,
+        trip_type: searchData?.tripType || "unknown",
+        budget: searchData?.budget || 0
+      });
+    }
+  }, [result]); // Only trigger when result changes
 
   // Extract data based on trip type
   const isSingleDestination = result?.tripType === "single-destination";
@@ -163,9 +159,7 @@ export default function Results() {
                   result.multiCityResults?.recommendedItineraries || 
                   result.multiCityResults?.routes || 
                   [];
-
-    console.log("🛣️ Raw Multi Routes:", routes.length);
-    
+ 
     // Remove duplicate routes (same destinations in same order)
     const seen = new Set();
     const uniqueRoutes = [];
@@ -179,13 +173,9 @@ export default function Results() {
       if (!seen.has(signature)) {
         seen.add(signature);
         uniqueRoutes.push(route);
-      } else {
-        console.log(`🗑️ Filtered duplicate route: ${route.name}`);
       }
     }
-
-    console.log(`✅ Deduplicated: ${routes.length} → ${uniqueRoutes.length} routes`);
-    
+  
     // Sort by rank or overall score
     return uniqueRoutes.sort((a, b) => (a.rank || 0) - (b.rank || 0));
   }, [result, isMultiCity]);
@@ -416,17 +406,12 @@ export default function Results() {
                       rank={route.rank || idx + 1}
                       tripDuration={searchData.tripDuration}
                       onView={() => {
-                        console.log("🚀 Selected Route Details:", {
-                          routeId: route.routeId,
-                          name: route.name,
-                          destinations: route.destinations,
-                          legs: route.legs,
-                          totalCost: route.totalCost,
-                          explanations: route.explanations,
-                          dynamicPricing: route.dynamicPricing,
-                          dailySchedule: route.dailySchedule,
-                          scores: route.scores,
-                          metadata: route.metadata
+                      // ✅ TRACK RESULT CLICK
+                        trackEvent("result_clicked", {
+                          destination_name: route.name || `${route.destinations?.length || 0} destinations`,
+                          position: idx + 1,
+                          total_cost: route.totalCost?.total || route.totalCost?.base || 0,
+                          trip_type: "multi-city"
                         });
                         sessionStorage.setItem("selectedItinerary", JSON.stringify(route));
                         localStorage.setItem("lastViewedItinerary", JSON.stringify(route));
@@ -467,6 +452,13 @@ export default function Results() {
                     key={id}
                     data={dest}
                     onClick={() => {
+                      // ✅ TRACK RESULT CLICK
+                      trackEvent("result_clicked", {
+                        destination_name: dest.destination?.name || "Unknown",
+                        position: idx + 1,
+                        total_cost: dest.totalCost?.base || dest.totalCost?.total || 0,
+                        trip_type: "single-destination"
+                      });
                       sessionStorage.setItem("selectedDestination", JSON.stringify(dest));
                       localStorage.setItem("lastViewedDestination", JSON.stringify(dest));
                       navigate(`/destination/${id}`, { 

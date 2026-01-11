@@ -55,7 +55,6 @@ function filterByTravelTimeFeasibility(travelOptions, tripDuration) {
         const effectiveMaxTime = isLongDistanceFlight ? maxTravelTime * 1.2 : maxTravelTime;
         
         if (roundTripTime > effectiveMaxTime) {
-            console.log(`   ⏱️ Excluded ${opt.mode}: ${Math.round(roundTripTime)}h exceeds ${Math.round(effectiveMaxTime)}h limit`);
             return false;
         }
         return true;
@@ -161,8 +160,6 @@ const travelOptions = calculateTravelCost(userLocation, destination, travellers)
         estimationReason: 'No hotels in database for this destination',
         destination_id: destination.destination_id
       };
-      
-      console.log(`✅ Created estimated accommodation: ₹${totalAccommodationCost} (${numberOfRooms} rooms × ${totalNights} nights × ₹${adjustedRate}/night)`);
     }
 
     // ============================================

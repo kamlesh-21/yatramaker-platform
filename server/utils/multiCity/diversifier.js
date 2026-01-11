@@ -16,7 +16,6 @@ function diversifyRoutes(allRoutes, targetCount = 14) {
             return [];
         }
         
-        console.log(`🎨 Diversifying ${allRoutes.length} routes to ${targetCount}...`);
         
         // If we have fewer routes than target, return all
         if (allRoutes.length <= targetCount) {
@@ -31,7 +30,6 @@ function diversifyRoutes(allRoutes, targetCount = 14) {
         const selected = [sortedByScore[0]];
         let remaining = sortedByScore.slice(1);
         
-        console.log(`   Starting with top route: ${selected[0].name}`);
         
         // Step 2: Greedily add most diverse routes
         while (selected.length < targetCount && remaining.length > 0) {
@@ -48,7 +46,6 @@ function diversifyRoutes(allRoutes, targetCount = 14) {
             const mostDiverse = diversityScores[0];
             selected.push(mostDiverse.route);
             
-            console.log(`   Added (${selected.length}/${targetCount}): ${mostDiverse.route.name} (diversity: ${mostDiverse.diversityScore.toFixed(2)})`);
             
             // Remove from remaining
             remaining = remaining.filter(r => r.routeId !== mostDiverse.route.routeId);
@@ -56,9 +53,7 @@ function diversifyRoutes(allRoutes, targetCount = 14) {
         
         // Step 3: Final sort by overall score
         selected.sort((a, b) => b.scores.overallScore - a.scores.overallScore);
-        
-        console.log(`   ✅ Selected ${selected.length} diverse routes`);
-        
+                
         return selected;
         
     } catch (error) {

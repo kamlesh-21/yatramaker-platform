@@ -1,81 +1,3 @@
-// // server/server.js
-// const { generateSitemap } = require('./scripts/generateSitemap');
-// const fs = require('fs');
-// const path = require('path');
-// const express = require('express');
-// const mongoose = require('mongoose');
-// const morgan = require('morgan'); // Import morgan
-// const cors = require('cors')
-// const bookingRoutes = require('./routes/bookings');
-// const quoteRoutes = require('./routes/quotes');
-
-// require('dotenv').config();
-
-// const app = express();
-// app.use(cors())
-
-// // Connect to MongoDB
-// mongoose
-//   .connect(process.env.MONGODB_URI, {
-//     // Remove deprecated options
-//   })
-//   .then(() => console.log('MongoDB connected'))
-//   .catch((err) => console.log('MongoDB connection error:', err));
-
-// // Morgon dev
-// app.use(require('morgan')('dev'));
-
-// //Middleware
-// app.use(express.json());
-
-// // Serve robots.txt and sitemap.xml
-// app.use(express.static(path.join(__dirname, 'public')));
-
-// app.get('/sitemap.xml', async (req, res) => {
-//   const sitemapPath = path.join(__dirname, 'public', 'sitemap.xml');
-//   try {
-//     // In development, serve existing sitemap without generating
-//     if (process.env.NODE_ENV === 'development' && fs.existsSync(sitemapPath)) {
-//       return res.sendFile(sitemapPath, { headers: { 'Content-Type': 'application/xml' } });
-//     }
-//     // Existing logic for production or if file is missing
-//     const stats = fs.statSync(sitemapPath);
-//     const mtime = new Date(stats.mtime);
-//     const now = new Date();
-//     const hoursSinceLastGeneration = (now - mtime) / (1000 * 60 * 60);
-//     if (!fs.existsSync(sitemapPath) || hoursSinceLastGeneration > 24) {
-//       await generateSitemap();
-//     }
-//     res.sendFile(sitemapPath, { headers: { 'Content-Type': 'application/xml' } });
-//   } catch (error) {
-//     console.error('Error serving sitemap:', error);
-//     res.status(500).send('Error generating sitemap');
-//   }
-// });
-
-// app.use('/api/blog', require('./routes/blog'));
-
-// // Add auth Routes
-// app.use('/api/auth', require('./routes/auth'));
-
-// // Add subscription route
-// app.use('/api/subscribe', require('./routes/subscribe')); 
-
-// //added this new file. v2.0
-// const travelDataRoutes = require('./routes/travelData');
-// app.use('/api/travelData', travelDataRoutes);
-
-// const hotelRoute = require('./routes/hotelData'); 
-// app.use('/api/hotelData', hotelRoute);
-
-// app.use('/api/bookings', bookingRoutes);
-// app.use('/api/quotes', quoteRoutes);
-
-// const PORT = process.env.PORT || 5000;
-
-// app.listen(PORT, () => console.log(`Server started on port ${PORT}`));
-
-
 // server/server.js
 const express = require('express');
 const mongoose = require('mongoose');
@@ -131,10 +53,8 @@ mongoose.connect(process.env.MONGODB_URI || 'mongodb://localhost:27017/travel-ap
   serverSelectionTimeoutMS: 5000,
   socketTimeoutMS: 45000,
 })
-.then(() => console.log('✅ MongoDB connected successfully'))
-.catch((err) => {
-  console.error('❌ MongoDB connection error:', err.message);
-  console.log('⚠️  Running in mock mode - data will not persist');
+.catch(err => {
+  console.error('MongoDB connection failed:', err.message);
 });
 
 // ✅ Health check endpoint
@@ -166,7 +86,6 @@ if (generateSitemap) {
         
         // Regenerate if older than 24 hours or in production
         if (process.env.NODE_ENV === 'production' && hoursSinceLastGeneration > 24) {
-          console.log('🔄 Regenerating sitemap...');
           await generateSitemap();
         }
         
@@ -175,7 +94,6 @@ if (generateSitemap) {
         });
       } else {
         // Generate sitemap if doesn't exist
-        console.log('📝 Generating new sitemap...');
         await generateSitemap();
         return res.sendFile(sitemapPath, { 
           headers: { 'Content-Type': 'application/xml' } 
@@ -281,23 +199,14 @@ app.use((err, req, res, next) => {
   });
 });
 
-// ✅ Start server
+// Start server
 const PORT = process.env.PORT || 5000;
 
-// Only start server if not in test mode
 if (process.env.NODE_ENV !== 'test') {
   app.listen(PORT, () => {
-    console.log(`🚀 Server running on port ${PORT}`);
-    console.log(`📡 Environment: ${process.env.NODE_ENV || 'development'}`);
-    console.log(`🌐 CORS Origin: ${process.env.CORS_ORIGIN || '*'}`);
-    console.log(`🗄️  Database: ${mongoose.connection.readyState === 1 ? 'Connected' : 'Disconnected'}`);
-    console.log('📋 Available endpoints:');
-    console.log('   GET  /health');
-    console.log('   POST /api/bookings/create');
-    console.log('   POST /api/quotes/request');
-    console.log('   POST /api/travelData/recommendations');
-    console.log('   GET  /api/auth/user');
-    console.log('   GET  /sitemap.xml');
+    console.log(`🚀 Server is running on port ${PORT}`);
+    // optional second line:
+    console.log(`Mode: ${process.env.NODE_ENV || 'development'}`);
   });
 }
 

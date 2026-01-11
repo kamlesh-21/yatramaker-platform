@@ -12,7 +12,6 @@ async function createIndexes() {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });
-    console.log('✅ Connected to MongoDB');
 
     // --- Destinations ---
     await mongoose.connection.db.collection('destinations').createIndex(
@@ -22,13 +21,11 @@ async function createIndexes() {
       { destination_id: 1 },
       { unique: true }
     );
-    console.log('✅ Destination indexes created');
 
     // --- Clusters ---
     await mongoose.connection.db.collection('clusters').createIndex(
       { type: 1, minDays: 1 }
     );
-    console.log('✅ Cluster indexes created');
 
     // --- Hotel Collections ---
     await mongoose.connection.db.collection('hotelcollections').createIndex(
@@ -37,15 +34,12 @@ async function createIndexes() {
     await mongoose.connection.db.collection('hotelcollections').createIndex(
       { 'hotels.category': 1 }
     );
-    console.log('✅ HotelCollection indexes created');
 
     // --- Activity Collections ---
     await mongoose.connection.db.collection('activitycollections').createIndex(
       { destination_id: 1 }
     );
-    console.log('✅ ActivityCollection indexes created');
 
-    console.log('🎉 All indexes created successfully');
     process.exit(0);
   } catch (err) {
     console.error('❌ Error creating indexes:', err);

@@ -18,8 +18,6 @@ export async function searchDestinations(data: SearchRequest): Promise<SearchRes
     return transformBackendResponse(backendData, data);
   }
 
-  console.log("Payload being sent to backend:", JSON.stringify(data, null, 2));
-
   const response = await fetch(REAL_API, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
@@ -73,116 +71,6 @@ const multiCityResults =
 
   return transformed;
 }
-
-// export const saveItinerary = async (data: {
-//   itineraryId: string;
-//   itineraryData: any;
-//   searchData: any;
-//   savedAt: string;
-// }) => {
-//   try {
-//     if (MOCK_MODE) {
-//       return { success: true, message: "Itinerary saved successfully (mock)" };
-//     }
-
-//     // Get token from localStorage
-//     const token = localStorage.getItem('token');
-//     if (!token) {
-//       throw new Error("Authentication token not found");
-//     }
-
-//     // First, try to get search data from sessionStorage (where Home.tsx saves it)
-//     let searchData = data.searchData;
-    
-//     // If searchData is empty, try to get from sessionStorage
-//     if (!searchData || !searchData.userLocation) {
-//       const savedSearch = sessionStorage.getItem("searchData");
-//       if (savedSearch) {
-//         try {
-//           searchData = JSON.parse(savedSearch);
-//         } catch (e) {
-//           console.warn("Could not parse saved search data from sessionStorage");
-//         }
-//       }
-//     }
-
-//     // If still no search data, try localStorage as fallback
-//     if (!searchData || !searchData.userLocation) {
-//       const lastSearch = localStorage.getItem("lastSearchData");
-//       if (lastSearch) {
-//         try {
-//           searchData = JSON.parse(lastSearch);
-//         } catch (e) {
-//           console.warn("Could not parse last search data from localStorage");
-//         }
-//       }
-//     }
-
-//     // Extract userLocation from searchData
-//     let userLocation = searchData?.userLocation;
-    
-//     // If userLocation is a string, convert it to object format
-//     if (typeof userLocation === 'string') {
-//       userLocation = {
-//         name: userLocation,
-//         latitude: 0,
-//         longitude: 0,
-//         state: "Unknown"
-//       };
-//     }
-
-//     // Ensure required fields exist with defaults
-//     const safeUserLocation = {
-//       name: userLocation?.name || "Unknown Location",
-//       latitude: userLocation?.latitude || 0,
-//       longitude: userLocation?.longitude || 0,
-//       state: userLocation?.state || "Unknown",
-//       nearest_hubs: userLocation?.nearest_hubs || {
-//         airports: [],
-//         railway_stations: []
-//       }
-//     };
-
-//     console.log("Extracted userLocation:", safeUserLocation);
-//     console.log("Full searchData:", searchData);
-
-//     // Format the data to match your Itinerary schema
-//     const itineraryPayload = {
-//       budget: searchData?.budget || data.itineraryData.totalCost || 0,
-//       userLocation: safeUserLocation,
-//       tripDuration: searchData?.tripDuration || 1,
-//       travellers: searchData?.travellers || { adults: 1, children: 0, infants: 0 },
-//       preferences: searchData?.preferences || [],
-//       accommodationPreference: searchData?.accommodationPreference || 'Comfort',
-//       tripType: searchData?.tripType || 'single-destination',
-//       singleDestinationRecommendation: data.itineraryData,
-//       notes: `Saved on ${new Date().toLocaleDateString()}`,
-//       tags: ['saved', 'customized']
-//     };
-
-//     console.log("Saving itinerary payload:", itineraryPayload);
-
-//     const response = await fetch(`${API_BASE}/api/auth/itineraries`, {
-//       method: "POST",
-//       headers: { 
-//         "Content-Type": "application/json",
-//         "x-auth-token": token
-//       },
-//       body: JSON.stringify(itineraryPayload),
-//     });
-
-//     if (!response.ok) {
-//       const errorText = await response.text();
-//       console.error("Backend error response:", errorText);
-//       throw new Error(`Save failed: ${response.status} - ${errorText}`);
-//     }
-
-//     return await response.json();
-//   } catch (error) {
-//     console.error("Save itinerary error:", error);
-//     throw error;
-//   }
-// };
 
 export const saveItinerary = async (data: {
   itineraryId: string;
@@ -238,9 +126,6 @@ export const saveItinerary = async (data: {
         railway_stations: []
       }
     };
-    console.log("Extracted userLocation:", safeUserLocation);
-    console.log("Full searchData:", searchData);
-
     // FIX: Determine tripType and set the correct recommendation field
     const tripType = searchData?.tripType || 'single-destination';
     const fullRecommendation = data.itineraryData;  // ← This comes from DestinationDetail
@@ -267,7 +152,6 @@ export const saveItinerary = async (data: {
       itineraryPayload.multiCityRecommendation = data.itineraryData;
     }
 
-    console.log("Saving itinerary payload:", itineraryPayload);
     const response = await fetch(`${API_BASE}/api/auth/itineraries`, {
       method: "POST",
       headers: {
@@ -402,7 +286,6 @@ export const getSavedItineraryById = async (itineraryId: string) => {
     }
 
     const data = await response.json();
-    console.log("DB Itinerary response:", data); // Debugging
     return data;
   } catch (error) {
     console.error("Error fetching saved itinerary:", error);

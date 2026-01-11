@@ -34,6 +34,8 @@ import Results from '@/pages/Results';
 import DestinationDetail from '@/pages/DestinationDetail';
 import ItineraryDetail from '@/pages/ItineraryDetail';
 import NotFound from '@/pages/not-found';
+import TrackPageView from "@/analytics/TrackPageView";
+
 
 function App() {
   return (
@@ -42,6 +44,7 @@ function App() {
         <Toaster />
         <HelmetProvider>
           <NavigationProvider>
+             <TrackPageView />
           <div className="app-container">
             <ScrollToTop />
             <Header />

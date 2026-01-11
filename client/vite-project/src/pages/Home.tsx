@@ -59,6 +59,7 @@ import hotelImg from "@assets/generated_images/Luxury_heritage_hotel_exterior_06
 import roomImg from "@assets/generated_images/Mid-range_hotel_room_interior_3a9102f4.png";
 import LocationInput from "@/components/LocationInput";
 import type { SearchRequest } from "../shared/schema";
+import { trackEvent } from "@/analytics/ga";
 
 const PREFERENCES_OPTIONS = ['Mountains', 'Beaches', 'Cities', 'Jungles', 'Temples', 'Riverside', 'Culture', 'Desert'];
 
@@ -157,6 +158,15 @@ export default function Home() {
       filters: { regions: [], states: [], maxDistance: null },
       page: 1,
     };
+
+      // ✅ TRACK SEARCH (HOME PAGE)
+  trackEvent("search_submit", {
+    trip_type: tripType,
+    origin_city: searchData.userLocation.name,
+    budget: parseInt(searchData.budget),
+    days: searchData.tripDuration,
+    travellers: searchData.travellers.adults + searchData.travellers.children
+  });
 
     sessionStorage.setItem("searchData", JSON.stringify(finalSearchData));
     navigate("/results");

@@ -16,13 +16,11 @@ const generateSitemap = async () => {
   try {
     // Backend sitemap path
     const backendSitemapPath = resolve(__dirname, '../public/sitemap.xml');
-    console.log('Sitemap will be written to:', backendSitemapPath);
 
     const smStream = new SitemapStream({ hostname: 'https://yatramaker.com' });
     const pipeline = smStream.pipe(createWriteStream(backendSitemapPath));
 
     // Add static pages
-    console.log('Adding static pages to sitemap...');
     smStream.write({ url: '/', changefreq: 'daily', priority: 1.0 });
     smStream.write({ url: '/blog', changefreq: 'weekly', priority: 0.9 });
     smStream.write({ url: '/about', changefreq: 'monthly', priority: 0.7 });
@@ -35,14 +33,12 @@ const generateSitemap = async () => {
     smStream.write({ url: '/privacy', changefreq: 'monthly', priority: 0.7 });
 
     // Fetch blog posts from Contentful
-    console.log('Fetching blog posts from Contentful...');
     const response = await axios.get(`${CONTENTFUL_API_URL}/entries`, {
       params: { content_type: 'blogPage', order: '-sys.createdAt', limit: 1000 },
       headers: { Authorization: `Bearer ${CONTENTFUL_ACCESS_TOKEN}` },
     });
 
     const blogPosts = response.data.items || [];
-    console.log(`Found ${blogPosts.length} blog posts.`);
 
     // Add blog post URLs to sitemap
     blogPosts.forEach(post => {
@@ -58,7 +54,6 @@ const generateSitemap = async () => {
 
     // End the stream
     smStream.end();
-    console.log('Stream ended.');
 
     // Wait for the pipeline to finish
     await new Promise((resolve, reject) => {
@@ -66,12 +61,10 @@ const generateSitemap = async () => {
       pipeline.on('error', reject);
     });
 
-    console.log('✅ Sitemap generated successfully');
 
     // Copy sitemap to frontend Vite project (cross-platform)
     const frontendSitemapPath = resolve(__dirname, '../../client/vite-project/public/sitemap.xml');
     fs.copyFileSync(backendSitemapPath, frontendSitemapPath);
-    console.log(`✅ Sitemap copied to frontend: ${frontendSitemapPath}`);
   } catch (error) {
     console.error('Error generating sitemap:', error);
     process.exit(1);

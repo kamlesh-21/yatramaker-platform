@@ -5,12 +5,6 @@ const Quote = require('../models/Quote');
 // POST /api/quotes/request - Request a quote
 router.post('/request', async (req, res) => {
   try {
-    console.log('📧 Quote request received:', {
-      destination: req.body.destination,
-      totalCost: req.body.totalCost,
-      contact: req.body.contactInfo?.name
-    });
-
     // Create quote in database
     const quote = new Quote({
       destination: req.body.destination,
@@ -48,12 +42,6 @@ router.post('/request', async (req, res) => {
     });
 
     await quote.save();
-
-    // TODO: Send email notification to admin
-    // TODO: Send confirmation email to user
-    
-    // For now, just log and respond
-    console.log(`✅ Quote saved: ${quote._id}`);
 
     res.json({
       success: true,
