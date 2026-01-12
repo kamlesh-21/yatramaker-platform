@@ -6,11 +6,10 @@ import DestinationCard from "@/components/DestinationCard";
 import MultiCityCard from "@/components/MultiCityCard";
 import { searchDestinations, saveItinerary } from "@/lib/api";
 import type { SearchRequest, SearchResponse } from "../shared/schema";
-import { Loader2, AlertCircle, MapPin, Calendar, Users, Download, Save } from "lucide-react";
+import { Loader2, AlertCircle, MapPin, Calendar, Users, Download } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/hooks/use-toast";
 import { trackEvent } from "@/analytics/ga";
-
 
 export default function Results() {
   const navigate = useNavigate();
@@ -432,7 +431,6 @@ export default function Results() {
                         handleSaveItinerary(route);
                       }}
                     >
-                      <Save className={`h-4 w-4 ${isSaved ? 'fill-primary' : ''}`} />
                     </Button>
                   </div>
                 );

@@ -65,20 +65,43 @@ async function generateMultiCityRecommendations(userQuery) {
             throw new Error('NO_CLUSTERS: Could not form any valid routes from available destinations. Try selecting closer destinations or increasing trip duration.');
         }
         
-        // PHASE 3: Generate routes from clusters
-        const allRoutes = [];
-        
-        for (const cluster of clusters) {
-            try {
-                const variants = await routeGenerator.generateRouteVariants(cluster, userQuery);
-                allRoutes.push(...variants);
-            } catch (err) {
-                console.warn(`   ⚠️  Skipping cluster: ${err.message}`);
-                continue;
+            // PHASE 3: Generate routes from clusters
+            const allRoutes = [];
+            
+            for (const cluster of clusters) {
+                // try {
+                //     const variants = await routeGenerator.generateRouteVariants(cluster, userQuery);
+                //     allRoutes.push(...variants);
+                // } catch (err) {
+                //     console.warn(`   ⚠️  Skipping cluster: ${err.message}`);
+                //     continue;
+                // }
+                try {
+                    const variants = await routeGenerator.generateRouteVariants(cluster, userQuery);
+                    allRoutes.push(...variants);
+                } catch (err) {
+                    console.warn(` ⚠️ Skipping cluster: ${err.message}`);
+                // Retry with subset: remove last dest
+                    if (cluster.destinations.length > 2) {
+                        const reducedCluster = {
+                            ...cluster,
+                            destinations: cluster.destinations.slice(0, -1)
+                        };
+
+                        try {
+                            const retryVariants =
+                                await routeGenerator.generateRouteVariants(reducedCluster, userQuery);
+
+                            allRoutes.push(...retryVariants);
+                        } catch (retryErr) {
+                            console.warn(` ⚠️ Retry failed: ${retryErr.message}`);
+                        }
+                    }
+
+                    continue;
+                }
             }
-        }
         
-       
         if (allRoutes.length === 0) {
             const minBudget = helperFunctions.estimateMinimumBudget(userQuery);
             throw new Error(`NO_ROUTES: Could not generate any routes within budget ₹${userQuery.budget.toLocaleString()}. Minimum required: ₹${minBudget.toLocaleString()}. Try reducing trip duration, choosing closer destinations, or selecting budget accommodation.`);

@@ -73,14 +73,14 @@ export function TravelOptionCard({
               <span className="capitalize">{mode}</span>
             </Badge>
           )}
-          <p className="text-sm text-muted-foreground capitalize mt-1">{type} option</p>
+          <p className="text-sm text-muted-foreground capitalize mt-1">{type} travel option</p>
         </div>
 
         <div className="space-y-2 pt-2 border-t">
           <div className="flex items-center justify-between">
             <span className="text-sm text-muted-foreground flex items-center gap-1.5">
               <IndianRupee className="h-4 w-4" />
-              Cost
+              Full Trip Cost
             </span>
             <span className="font-semibold" data-testid={`text-cost-${type}`}>
               ₹{totalCost.toLocaleString()}
@@ -89,7 +89,7 @@ export function TravelOptionCard({
           <div className="flex items-center justify-between">
             <span className="text-sm text-muted-foreground flex items-center gap-1.5">
               <Clock className="h-4 w-4" />
-              Time
+              Travel Time
             </span>
             <span className="font-semibold">{totalTimeH}h</span>
           </div>

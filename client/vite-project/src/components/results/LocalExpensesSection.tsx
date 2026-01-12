@@ -18,18 +18,18 @@ export function LocalExpensesSection({ localExpenses }: LocalExpensesSectionProp
         <div className="grid grid-cols-3 gap-4 mb-4">
           <div className="text-center p-4 bg-muted rounded-lg">
             <Car className="h-6 w-6 mx-auto mb-2 text-primary" />
-            <div className="text-xs text-muted-foreground mb-1">Transportation</div>
-            <div className="font-semibold">₹{(localExpenses.transportation || 0).toLocaleString()}</div>
+            <div className="text-xs text-muted-foreground mb-1">Local Transportation</div>
+            <div className="font-semibold text-white dark:text-inherit">₹{(localExpenses.transportation || 0).toLocaleString()}</div>
           </div>
           <div className="text-center p-4 bg-muted rounded-lg">
             <Utensils className="h-6 w-6 mx-auto mb-2 text-primary" />
             <div className="text-xs text-muted-foreground mb-1">Meals</div>
-            <div className="font-semibold">₹{(localExpenses.meals || 0).toLocaleString()}</div>
+            <div className="font-semibold text-white dark:text-inherit">₹{(localExpenses.meals || 0).toLocaleString()}</div>
           </div>
           <div className="text-center p-4 bg-muted rounded-lg">
             <MapPin className="h-6 w-6 mx-auto mb-2 text-primary" />
             <div className="text-xs text-muted-foreground mb-1">Attractions</div>
-            <div className="font-semibold">₹{(localExpenses.attractions || 0).toLocaleString()}</div>
+            <div className="font-semibold text-white dark:text-inherit">₹{(localExpenses.attractions || 0).toLocaleString()}</div>
           </div>
         </div>
 
