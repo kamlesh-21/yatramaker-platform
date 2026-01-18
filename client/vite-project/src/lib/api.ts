@@ -296,7 +296,7 @@ export const getSavedItineraryById = async (itineraryId: string) => {
 // Add to your existing api.ts file
 export const createBooking = async (bookingData: any) => {
   try {
-    const response = await fetch('/api/bookings/create', {
+    const response = await fetch(`${API_BASE}/api/bookings/create`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -317,7 +317,7 @@ export const createBooking = async (bookingData: any) => {
 
 export const sendQuoteRequest = async (quoteData: any) => {
   try {
-    const response = await fetch('/api/quotes/request', {
+    const response = await fetch(`${API_BASE}/api/quotes/request`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(quoteData)
