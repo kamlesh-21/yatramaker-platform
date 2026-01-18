@@ -5,44 +5,51 @@ const Quote = require('../models/Quote');
 // POST /api/quotes/request - Request a quote
 router.post('/request', async (req, res) => {
   try {
-    // Create quote in database
+    // console.log('🔍 QUOTE REQUEST RECEIVED:', req.body);
+
     const quote = new Quote({
-      destination: req.body.destination,
-      totalCost: req.body.totalCost,
+      // Pull from nested fields
+      destination: req.body.destinationData?.name || req.body.packageDetails?.destination || "Unknown",
+      totalCost: req.body.destinationData?.totalCost || req.body.packageDetails?.totalCost || 0,
+
+      contactInfo: req.body.contactInfo || {},
       
-      // Contact info
-      contactInfo: {
-        name: req.body.contactInfo?.name,
-        email: req.body.contactInfo?.email,
-        phone: req.body.contactInfo?.phone,
-        preferredContact: req.body.contactInfo?.preferredContact || 'email'
-      },
-      
-      // Package details
       packageDetails: {
-        priority: req.body.packageDetails?.priority,
-        travelMode: req.body.packageDetails?.travelMode,
-        activities: req.body.packageDetails?.activities || [],
-        breakdown: req.body.packageDetails?.breakdown || {}
+        priority: req.body.packageDetails?.priority || req.body.destinationData?.selectedVariant || "unknown",
+        travelMode: req.body.packageDetails?.travelMode || req.body.destinationData?.selectedTravelMode || "unknown",
+        activities: req.body.destinationData?.selectedActivities || [],
+        breakdown: req.body.destinationData?.breakdown || {}
       },
+
+      travelDates: req.body.travelDates || {},
+      notes: req.body.notes || '',
       
-      // Travel dates
-      travelDates: req.body.travelDates,
-      notes: req.body.notes,
+      source: req.body.source || 'website',
+      status: 'pending',
+
+      // Add more useful fields for your quotes
+      userSearchData: req.body.userSearchData || {},          // ← Save full search!
+      destinationData: req.body.destinationData || {},        // ← Save full destination!
       
-      // Status
-      status: 'pending', // pending, sent, converted, expired
-      
-      // Metadata
-      source: 'website',
-      ipAddress: req.ip,
-      userAgent: req.headers['user-agent'],
       createdAt: new Date(),
       updatedAt: new Date()
     });
 
     await quote.save();
+    console.log('✅ Quote saved:', quote._id);
 
+    // Simple console notification (expand to email later)
+    // console.log(`
+    //   NEW QUOTE REQUEST!
+    //   Destination: ${quote.destination}
+    //   Total Cost: ₹${quote.totalCost}
+    //   Name: ${quote.contactInfo?.name}
+    //   Email: ${quote.contactInfo?.email}
+    //   Phone: ${quote.contactInfo?.phone}
+    //   -------------------
+    // `);
+    console.log('✅ Quote saved:', quote._id);
+    
     res.json({
       success: true,
       message: 'Quote request received successfully!',

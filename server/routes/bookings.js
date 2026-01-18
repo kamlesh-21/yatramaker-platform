@@ -4,85 +4,69 @@ const Booking = require('../models/Booking');
 
 // POST /api/bookings/create
 router.post('/create', async (req, res) => {
-  try {  
-    // Check if destinationData is a string (incorrectly sent)
-    let destinationData = req.body.destinationData;
-    if (typeof destinationData === 'string') {
-      try {
-        destinationData = JSON.parse(destinationData);
-      } catch (parseError) {
-        console.error('❌ Failed to parse destinationData:', parseError);
-        // Keep as is if parsing fails
-      }
-    }
-    
+  try {
+    // console.log('🔍 BOOKING CREATE - Full received payload:', JSON.stringify(req.body, null, 2));
+
+    // No need for string parsing — your frontend already sends objects
     const bookingData = {
-      // Contact info
       contactInfo: req.body.contactInfo || {},
       
-      // User search preferences
+      // Save the full rich objects (this is the key fix!)
       userSearchData: req.body.userSearchData || {},
+      destinationData: req.body.destinationData || {},
       
-      // Destination details - Ensure it's an object
-      destinationData: destinationData || {},
-      
-      // Travel dates
       travelDates: req.body.travelDates || {},
-      
-      // Package summary
-      packageDetails: req.body.packageDetails || {},
-      
-      // Notes
       notes: req.body.notes || '',
       
-      // User info if available
+      packageDetails: req.body.packageDetails || {},
+      
+      // User info
       ...(req.body.userId && { userId: req.body.userId }),
       ...(req.body.userEmail && { userEmail: req.body.userEmail }),
       
-      // Status
-      status: 'pending',
+      // Status & metadata
+      status: req.body.status || 'pending',
       type: req.body.type || 'quote_request',
       source: req.body.source || 'website',
       
-      // Metadata
       ipAddress: req.ip,
       userAgent: req.headers['user-agent'],
+      
       createdAt: new Date(),
       updatedAt: new Date()
     };
 
+    // console.log('🔍 Prepared bookingData for save:', JSON.stringify(bookingData, null, 2));
+
     const booking = new Booking(bookingData);
     await booking.save();
 
+    console.log('✅ Booking saved successfully:', booking._id);
+
+    // Better notification
+    // console.log(`
+    //   NEW BOOKING/QUOTE REQUEST!
+    //   Destination: ${booking.destinationData?.name || 'N/A'}
+    //   Total Cost: ₹${booking.destinationData?.totalCost || 'N/A'}
+    //   Budget: ₹${booking.userSearchData?.budget || 'N/A'}
+    //   Preferences: ${booking.userSearchData?.preferences?.join(', ') || 'N/A'}
+    //   Name: ${booking.contactInfo?.name || 'N/A'}
+    //   Email: ${booking.contactInfo?.email || 'N/A'}
+    //   Phone: ${booking.contactInfo?.phone || 'N/A'}
+    //   -------------------
+    // `);
+
     res.json({
       success: true,
-      message: 'Quote request received successfully',
-      bookingId: booking._id,
-      debug: {
-        receivedDataTypes: {
-          destinationData: typeof req.body.destinationData,
-          userSearchData: typeof req.body.userSearchData,
-          contactInfo: typeof req.body.contactInfo
-        }
-      }
+      message: 'Request received successfully',
+      bookingId: booking._id
     });
-    
+
   } catch (error) {
-    console.error('❌ Booking error:', error.message);
-    console.error('❌ Full error:', error);
-    
+    console.error('❌ Booking error details:', error);
     res.status(500).json({
       success: false,
-      error: error.message,
-      message: 'Please try again or contact support',
-      debug: {
-        receivedBody: {
-          destinationDataType: typeof req.body?.destinationData,
-          destinationDataSample: req.body?.destinationData?.substring 
-            ? req.body.destinationData.substring(0, 100) + '...' 
-            : req.body?.destinationData
-        }
-      }
+      error: error.message || 'Internal server error'
     });
   }
 });
