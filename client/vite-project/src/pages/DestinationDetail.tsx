@@ -34,6 +34,7 @@ import { TravelOptionsSection } from "@/components/results/TravelOptionsSection"
 import { BackButton } from "@/components/BackButton";
 import { BookingModal } from "@/components/BookingModal"; // Add this import
 import { trackEvent } from "@/analytics/ga";
+import { createBooking } from "@/lib/api";
 
 
 // Import date-fns for formatting if needed
@@ -467,6 +468,106 @@ export default function DestinationDetail() {
   };
 
   // BOOKING FUNCTION - Fixed version
+// const handleBookPackage = async (bookingData: any) => {
+//   setBookingInProgress(true);
+//   try {
+//     // Get user search data from sessionStorage
+//     const searchData = JSON.parse(
+//       sessionStorage.getItem("searchData") || 
+//       localStorage.getItem("lastSearchData") || 
+//       "{}"
+//     );
+    
+//     // Get full destination data - DON'T stringify it here
+//     const fullDestinationData = {
+//       name: name,
+//       type: dest?.type || [],
+//       location: dest?.location || {},
+//       selectedVariant: selectedLabel,
+//       selectedTravelMode: selectedTravelMode,
+//       selectedActivities: selectedActivities,
+//       totalCost: costs.total,
+//       breakdown: costs,
+//       travelDetails: currentTravel
+//     };
+    
+//     // Prepare the payload - Make sure destinationData is an object, not string
+//     const payload = {
+//       // User contact info from modal
+//       contactInfo: bookingData.contactInfo,
+//       travelDates: bookingData.travelDates,
+//       notes: bookingData.notes,
+      
+//       // User search preferences
+//       userSearchData: {
+//         budget: searchData.budget,
+//         userLocation: searchData.userLocation,
+//         tripDuration: searchData.tripDuration,
+//         travellers: searchData.travellers,
+//         preferences: searchData.preferences || [],
+//         accommodationPreference: searchData.accommodationPreference,
+//         includeMultiCityTrips: searchData.includeMultiCityTrips
+//       },
+      
+//       // Destination data - Send as OBJECT, not string
+//       destinationData: fullDestinationData,
+      
+//       // Package details
+//       packageDetails: {
+//         destination: name,
+//         totalCost: costs.total,
+//         travelMode: `${selectedLabel} (${selectedTravelMode})`,
+//         priority: selectedLabel
+//       },
+      
+//       // Metadata
+//       type: "quote_request",
+//       status: "pending",
+//       source: "website",
+//       createdAt: new Date().toISOString(),
+      
+//       // User info if logged in
+//       ...(user && {
+//         userId: user._id,
+//         userEmail: user.email
+//       })
+//     };
+    
+//     // Send to backend
+//     const bookingResponse = await fetch('/api/bookings/create', {
+//       method: 'POST',
+//       headers: {
+//         'Content-Type': 'application/json',
+//       },
+//       body: JSON.stringify(payload) // This will properly stringify the entire object
+//     });
+
+//     if (!bookingResponse.ok) {
+//       throw new Error('Booking request failed');
+//     }
+
+//     const result = await bookingResponse.json();
+    
+//     setQuoteSubmitted(true);
+//     toast({
+//       title: "✅ Quote Request Received!",
+//       description: "We'll contact you within 24 hours.",
+//     });
+
+//     setShowBookingModal(false);
+
+//   } catch (error: any) {
+//     console.error("Booking error:", error);
+//     toast({
+//       title: "Request Failed",
+//       description: error.message || "Please try again or contact support.",
+//       variant: "destructive",
+//     });
+//   } finally {
+//     setBookingInProgress(false);
+//   }
+// };
+
 const handleBookPackage = async (bookingData: any) => {
   setBookingInProgress(true);
   try {
@@ -532,20 +633,8 @@ const handleBookPackage = async (bookingData: any) => {
       })
     };
     
-    // Send to backend
-    const bookingResponse = await fetch('/api/bookings/create', {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(payload) // This will properly stringify the entire object
-    });
-
-    if (!bookingResponse.ok) {
-      throw new Error('Booking request failed');
-    }
-
-    const result = await bookingResponse.json();
+    // Send to backend - USE THE API FUNCTION INSTEAD OF DIRECT FETCH
+    const result = await createBooking(payload);
     
     setQuoteSubmitted(true);
     toast({
@@ -566,7 +655,6 @@ const handleBookPackage = async (bookingData: any) => {
     setBookingInProgress(false);
   }
 };
-
   // Extract travel details for CostBreakdown component
   const travelDetails = currentTravel?.breakdown ? [
     ...(currentTravel.breakdown.userToUserHubKm && currentTravel.breakdown.userToUserHubKm > 0

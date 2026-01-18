@@ -3,6 +3,20 @@ import type { SearchRequest, SearchResponse } from "../shared/schema";
 
 const API_BASE = import.meta.env.VITE_API_BASE || "http://localhost:5000";
 
+// ADD THIS HELPER FUNCTION:
+const getApiUrl = (path: string) => {
+  // If we have an explicit API_BASE, use it
+  if (import.meta.env.VITE_API_BASE) {
+    return `${API_BASE}/api/${path.replace(/^\/?api\//, '')}`;
+  }
+  // In development without VITE_API_BASE, use relative path (Vite proxy)
+  if (!import.meta.env.PROD) {
+    return `/api/${path.replace(/^\/?api\//, '')}`;
+  }
+  // Fallback: use API_BASE
+  return `${API_BASE}/api/${path.replace(/^\/?api\//, '')}`;
+};
+
 const MOCK_MODE = false; // <-- toggle here: true = use /public/mock/backendResponse.json, false = call real backend
 const MOCK_PATH = "/mock/backendResponse.json";
 const REAL_API = `${API_BASE}/api/travelData/recommendations`;
@@ -294,9 +308,11 @@ export const getSavedItineraryById = async (itineraryId: string) => {
 };
 
 // Add to your existing api.ts file
+// Replace these two functions (keep everything else exactly the same):
+
 export const createBooking = async (bookingData: any) => {
   try {
-    const response = await fetch(`${API_BASE}/api/bookings/create`, {
+    const response = await fetch(getApiUrl('bookings/create'), {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
@@ -317,7 +333,7 @@ export const createBooking = async (bookingData: any) => {
 
 export const sendQuoteRequest = async (quoteData: any) => {
   try {
-    const response = await fetch(`${API_BASE}/api/quotes/request`, {
+    const response = await fetch(getApiUrl('quotes/request'), {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(quoteData)
