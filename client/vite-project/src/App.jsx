@@ -15,12 +15,12 @@ import ResetPassword from './auth/ResetPassword';
 import Onboarding from './components/User/UserOnboarding';
 import SavedDestinationDetail from './components/User/SavedDestinationDetail';
 import FAQ from './components/Corporate/FAQ';
-// import News from './components/Corporate/News';
+import News from './components/Corporate/News';
 import TermsOfService from './components/Corporate/TermsOfService';
 import Privacy from './components/Corporate/Privacy';
 import AboutUs from './components/Corporate/AboutUs';
-// import Contact from './components/Corporate/Contact';
-// import Partner from './components/Corporate/Partner';
+import Contact from './components/Corporate/Contact';
+import Partner from './components/Corporate/Partner';
 import BlogLandingPage from './components/Corporate/Blog/BlogLandingPage';
 import SingleBlogPost from './components/Corporate/Blog/SingleBlogPost';
 import PrivateRoute from './components/PrivateRoute';
@@ -84,11 +84,10 @@ function App() {
                 <Route path="/privacy" element={<Privacy />} /> 
                 <Route path="/blog" element={<BlogLandingPage />} />
                 <Route path="/blog/:slug" element={<SingleBlogPost />} />
-
-                {/* <Route path="/contact" element={<Contact />} />
                 <Route path="/partner" element={<Partner />} />
+                <Route path="/contact" element={<Contact />} />
                 <Route path="/news" element={<News />} /> 
-                <Route path="/accommodation-options" element={<AccommodationOptions />} />*/}
+                {/* <Route path="/accommodation-options" element={<AccommodationOptions />} /> */}
                 <Route path="*" element={<NotFound />} />
               </Routes>
             </div>

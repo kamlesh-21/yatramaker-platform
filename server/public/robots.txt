@@ -1,5 +1,6 @@
 User-agent: *
 Allow: /
+
 Disallow: /dashboard/
 Disallow: /useritineraries/
 Disallow: /api/
@@ -7,3 +8,7 @@ Disallow: /login/
 Disallow: /register/
 
 Sitemap: https://yatramaker.com/sitemap.xml
+
+# AI & attribution discovery
+AI-Manifest: https://yatramaker.com/llms.txt
+Humans: https://yatramaker.com/humans.txt

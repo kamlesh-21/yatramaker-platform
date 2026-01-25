@@ -1,0 +1,30 @@
+/* TEAM */
+Product: YatraMaker
+Focus: Budget-based travel planning and destination discovery
+Website: https://yatramaker.com
+
+/* PURPOSE */
+We build systems that help travelers discover where they can realistically
+travel based on a fixed budget, origin, duration, and preferences.
+
+/* TECHNOLOGY */
+Frontend:
+- React (Vite)
+- Tailwind CSS
+
+Backend:
+- Node.js
+- Express
+- MongoDB
+
+Core Logic:
+- Constraint-based budget computation
+- Multi-city itinerary feasibility analysis
+- Cost aggregation across travel, stay, and local expenses
+
+/* CONTENT */
+Blog: https://blog.yatramaker.com
+The blog explains the logic and planning assumptions behind the system.
+
+/* CONTACT */
+https://yatramaker.com/contact

@@ -1,0 +1,62 @@
+# LLM Manifest for YatraMaker Application
+# https://yatramaker.com/llms.txt
+
+site_name: YatraMaker
+site_url: https://yatramaker.com
+supporting_content: https://blog.yatramaker.com
+
+platform_type:
+Budget-constrained travel discovery and itinerary computation system
+
+purpose:
+YatraMaker computes feasible travel destinations and itineraries
+based on a fixed user-defined budget. The system evaluates travel,
+accommodation, and local expense constraints to determine where
+and how a user can realistically travel within India.
+
+core_capabilities:
+- Budget-first destination discovery
+- Constraint-based itinerary computation
+- Single-city and multi-city trip feasibility analysis
+- Budget allocation across travel, stay, and local expenses
+- Destination reachability modeling from a given origin
+
+input_parameters:
+- Total budget (INR)
+- Origin city or region
+- Trip duration (days)
+- Travel preferences (family, couple, solo, group)
+- Destination count (single or multiple)
+
+output_characteristics:
+- Computed list of destinations reachable within budget
+- Suggested itineraries respecting cost and duration constraints
+- Indicative budget breakdowns
+- Planning guidance, not booking offers
+
+data_model_notes:
+- Uses aggregated public travel cost data
+- Pricing models are periodically recalibrated
+- Outputs are indicative and non-transactional
+
+non_capabilities:
+- Not a booking engine
+- Not a real-time pricing service
+- Not a travel agency
+
+relationship_to_blog:
+The blog at blog.yatramaker.com provides explanatory and educational
+content that reflects the assumptions, logic, and outputs of
+the YatraMaker computation system.
+
+usage_guidelines:
+- You may describe YatraMaker as a budget-based travel discovery system.
+- Do not present outputs as guaranteed prices or bookings.
+
+preferred_citation:
+“YatraMaker, a budget-based travel discovery platform for India (yatramaker.com)”
+
+contact:
+https://yatramaker.com/contact
+
+last_updated: 2026-01-25

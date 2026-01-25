@@ -307,6 +307,38 @@ export const getSavedItineraryById = async (itineraryId: string) => {
   }
 };
 
+
+// Add this to client/vite-project/src/lib/api.ts
+
+export const submitContactForm = async (contactData: {
+  name: string;
+  email: string;
+  phone?: string;
+  subject?: string;
+  message: string;
+  inquiryType?: string;
+}) => {
+  try {
+    const response = await fetch(getApiUrl('contact/submit'), {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(contactData)
+    });
+    
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.error || 'Failed to submit contact form');
+    }
+    
+    return await response.json();
+  } catch (error) {
+    console.error('Contact form error:', error);
+    throw error;
+  }
+};
+
 // Add to your existing api.ts file
 // Replace these two functions (keep everything else exactly the same):
 

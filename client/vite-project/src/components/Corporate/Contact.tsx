@@ -1,23 +1,80 @@
-import { useEffect } from 'react';
-import BaseSEO from '../BaseSEO';
+// client/vite-project/src/components/Corporate/Contact.tsx
+import { useState } from 'react';
+import BaseSEO from '@/components/BaseSEO';
 import { Link } from 'react-router-dom';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { Textarea } from '@/components/ui/textarea';
+import { useToast } from '@/hooks/use-toast';
+import { MapPin, Phone, Mail, Loader2, Check } from 'lucide-react';
+import { submitContactForm } from '@/lib/api';
 
 const Contact = () => {
-  useEffect(() => {
-    const script1 = document.createElement('script');
-    script1.src = 'https://cdn.jotfor.ms/s/umd/latest/for-form-embed-handler.js';
-    script1.async = true;
-    document.body.appendChild(script1);
+  const { toast } = useToast();
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const [isSubmitted, setIsSubmitted] = useState(false);
+  
+  const [formData, setFormData] = useState({
+    name: '',
+    email: '',
+    phone: '',
+    subject: '',
+    message: '',
+    inquiryType: 'general' as 'general' | 'travel' | 'support' | 'booking' | 'feedback' | 'other'
+  });
 
-    script1.onload = () => {
-      // Declare the type for jotformEmbedHandler to avoid TypeScript error
-      (window as any).jotformEmbedHandler("iframe[id='JotFormIFrame-242030028752446']", "https://form.jotform.com/");
-    };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>) => {
+    setFormData({
+      ...formData,
+      [e.target.name]: e.target.value
+    });
+  };
 
-    return () => {
-      document.body.removeChild(script1);
-    };
-  }, []);
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    
+    // Basic validation
+    if (!formData.name || !formData.email || !formData.message) {
+      toast({
+        title: "Missing Information",
+        description: "Please fill in all required fields",
+        variant: "destructive"
+      });
+      return;
+    }
+
+    setIsSubmitting(true);
+    
+    try {
+      await submitContactForm(formData);
+      
+      setIsSubmitted(true);
+      toast({
+        title: "✅ Message Sent!",
+        description: "We'll get back to you within 24 hours."
+      });
+      
+      // Reset form
+      setFormData({
+        name: '',
+        email: '',
+        phone: '',
+        subject: '',
+        message: '',
+        inquiryType: 'general'
+      });
+      
+    } catch (error: any) {
+      toast({
+        title: "Submission Failed",
+        description: error.message || "Please try again or contact us directly",
+        variant: "destructive"
+      });
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   return (
     <>
@@ -39,21 +96,32 @@ const Contact = () => {
           {/* Left Column - Contact Info */}
           <div className="space-y-6">
             <div>
-              <h2 className="text-xl font-semibold mb-2">Visit us</h2>
+              <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
+                <MapPin className="h-5 w-5" />
+                Visit us
+              </h2>
               <p className="text-muted-foreground">
                 R: 175, Sri Ram Kunj, Phase 3, Nawadih, Dhanbad, Jharkhand - 828130
               </p>
             </div>
             
             <div>
-              <h2 className="text-xl font-semibold mb-2">Call us</h2>
+              <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
+                <Phone className="h-5 w-5" />
+                Call us
+              </h2>
               <p className="text-muted-foreground">
-                +91 9646 56 2880
+                <a href="tel:+919646562880" className="text-primary hover:underline">
+                  +91 9646 56 2880
+                </a>
               </p>
             </div>
             
             <div>
-              <h2 className="text-xl font-semibold mb-2">Email us</h2>
+              <h2 className="text-xl font-semibold mb-2 flex items-center gap-2">
+                <Mail className="h-5 w-5" />
+                Email us
+              </h2>
               <div className="space-y-1">
                 <p className="text-muted-foreground">
                   Travel related queries:{' '}
@@ -71,10 +139,6 @@ const Contact = () => {
                   For any other query:{' '}
                   <a href="mailto:info@yatramaker.com" className="text-primary hover:underline">
                     info@yatramaker.com
-                  </a>
-                  ,{' '}
-                  <a href="mailto:makeayatra@gmail.com" className="text-primary hover:underline">
-                    makeayatra@gmail.com
                   </a>
                 </p>
               </div>
@@ -108,22 +172,128 @@ const Contact = () => {
                 loading="lazy"
                 title="Google Maps Location"
                 className="rounded-lg"
-              ></iframe>
+              />
             </div>
           </div>
           
           {/* Right Column - Contact Form */}
-          <div>
-            <iframe
-              id="JotFormIFrame-242030028752446"
-              title="Information Request Form"
-              onLoad={() => window.parent.scrollTo(0, 0)}
-              allow="geolocation; microphone; camera; fullscreen"
-              src="https://form.jotform.com/242030028752446"
-              frameBorder="0"
-              style={{ width: '100%', height: '800px', border: 'none' }}
-              scrolling="no"
-            ></iframe>
+          <div className="bg-card border rounded-lg p-6">
+            {isSubmitted ? (
+              <div className="text-center py-8">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mx-auto mb-4">
+                  <Check className="h-8 w-8 text-green-600" />
+                </div>
+                <h3 className="text-xl font-semibold mb-2">Message Sent!</h3>
+                <p className="text-muted-foreground mb-6">
+                  Thank you for contacting us. We'll respond within 24 hours.
+                </p>
+                <Button onClick={() => setIsSubmitted(false)}>
+                  Send Another Message
+                </Button>
+              </div>
+            ) : (
+              <form onSubmit={handleSubmit} className="space-y-4">
+                <h2 className="text-2xl font-semibold mb-4">Send us a message</h2>
+                
+                <div className="space-y-2">
+                  <Label htmlFor="name">Name *</Label>
+                  <Input
+                    id="name"
+                    name="name"
+                    value={formData.name}
+                    onChange={handleChange}
+                    placeholder="Your full name"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="email">Email *</Label>
+                  <Input
+                    id="email"
+                    name="email"
+                    type="email"
+                    value={formData.email}
+                    onChange={handleChange}
+                    placeholder="your@email.com"
+                    required
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="phone">Phone Number</Label>
+                  <Input
+                    id="phone"
+                    name="phone"
+                    type="tel"
+                    value={formData.phone}
+                    onChange={handleChange}
+                    placeholder="+91 98765 43210"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="inquiryType">Inquiry Type</Label>
+                  <select
+                    id="inquiryType"
+                    name="inquiryType"
+                    value={formData.inquiryType}
+                    onChange={handleChange}
+                    className="w-full rounded-md border border-input bg-background px-3 py-2 text-sm"
+                  >
+                    <option value="general">General Inquiry</option>
+                    <option value="travel">Travel Planning</option>
+                    <option value="support">Customer Support</option>
+                    <option value="booking">Booking Related</option>
+                    <option value="feedback">Feedback</option>
+                    <option value="other">Other</option>
+                  </select>
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="subject">Subject (Optional)</Label>
+                  <Input
+                    id="subject"
+                    name="subject"
+                    value={formData.subject}
+                    onChange={handleChange}
+                    placeholder="What is this regarding?"
+                  />
+                </div>
+
+                <div className="space-y-2">
+                  <Label htmlFor="message">Message *</Label>
+                  <Textarea
+                    id="message"
+                    name="message"
+                    value={formData.message}
+                    onChange={handleChange}
+                    placeholder="Tell us how we can help you..."
+                    className="min-h-[150px]"
+                    required
+                  />
+                </div>
+
+                <Button 
+                  type="submit" 
+                  className="w-full"
+                  disabled={isSubmitting}
+                >
+                  {isSubmitting ? (
+                    <>
+                      <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                      Sending...
+                    </>
+                  ) : (
+                    'Send Message'
+                  )}
+                </Button>
+
+                <p className="text-xs text-center text-muted-foreground">
+                  By submitting, you agree to our Privacy Policy
+                </p>
+              </form>
+            )}
           </div>
         </div>
         
