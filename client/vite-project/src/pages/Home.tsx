@@ -82,7 +82,7 @@ const heroBackgrounds = [
 export default function Home() {
   const navigate = useNavigate();
   const [selectedPreferences, setSelectedPreferences] = useState<string[]>([]);
-  const [tripType, setTripType] = useState<"multi-city" | "single-destination">("multi-city");
+  const [tripType, setTripType] = useState<"multi-city" | "single-destination">("single-destination");
   const [showAdvanced, setShowAdvanced] = useState(false);
   const [currentBackground, setCurrentBackground] = useState(0);
   const [isPlaying, setIsPlaying] = useState(true);
