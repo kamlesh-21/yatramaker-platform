@@ -10,56 +10,53 @@
         ├── cache.js
     └── 📁models
         ├── ActivityCollection.js
+        ├── Booking.js
         ├── Cluster.js
+        ├── Contact.js
         ├── Destination.js
         ├── HotelCollection.js
         ├── Itinerary.js
+        ├── Quote.js
         ├── Subscription.js
         ├── User.js
     └── 📁public
+        ├── humans.txt
+        ├── llms.txt
         ├── robots.txt
         ├── sitemap.xml
     └── 📁routes
         ├── auth.js
         ├── blog.js
+        ├── bookings.js
+        ├── contact.js
         ├── hotelData.js
+        ├── quotes.js
         ├── recommendationsV2.js
         ├── subscribe.js
         ├── travelData.js
     └── 📁scripts
+        ├── fixDestinationImages.js
         ├── generateSitemap.js
         ├── insertImages.js
         ├── migrateDestinationsForMultiCity.js
         ├── updateDestinationScores.js
     └── 📁utils
         └── 📁multiCity
-            ├── affinityCalculator.js
-            ├── anchorSelector.js
-            ├── destinationFilterer.js
-            ├── explanationEngine.js
-            ├── multiCityPlanner.js
-            ├── multiCityPlanner2.js
-            ├── relationshipGraphBuilder.js
-            ├── resourceAllocator.js
-            ├── routeOptimizer.js
-            ├── scoringEngine.js
-            ├── testComplete.js
-            ├── testPhase1.js
-            ├── testPhase2.js
-            ├── testPhase3.js
-            ├── testPhase4.js
-            ├── testPhase5.js
-            ├── tspSolver.js
-            ├── variantGenerator.js
+            ├── clusterBuilder.js
+            ├── dailyScheduleBuilder.js
+            ├── diversifier.js
+            ├── explanationGenerator.js
+            ├── helperFunctions.js
+            ├── multiCityOrchestrator.js
+            ├── preferenceExpander.js
+            ├── routeGenerator.js
         └── 📁singleDestination
             ├── batchQueries.js
-            ├── findTestDestination.js
             ├── singleDestinationEnhancer.js
-            ├── testEnhancer.js
+        ├── budgetValidator.js
         ├── calculateAccommodationCost.js
         ├── calculateLocalExpenses.js
         ├── calculateMultiCityAccommodationCost.js
-        ├── calculateMultiTravelCost.js
         ├── calculateProportionalDistribution.js
         ├── calculateTravelCost.js
         ├── distanceCalculator.js
@@ -71,10 +68,12 @@
         ├── pricingManager.js
         ├── safeNumber.js
         ├── sendEmail.js
+        ├── smartPreferenceMatching.js
     ├── .env
     ├── folderStructure.md
-    ├── package-lock.json
     ├── package.json
+    ├── payload.json
+    ├── quickTest.js
     ├── server.js
-    └── test-api.ps1
+    └── verifyDatabase.js
 ```
