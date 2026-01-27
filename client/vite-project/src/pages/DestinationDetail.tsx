@@ -18,7 +18,8 @@ import {
   MessageSquare,
   ShieldCheck,
   Wifi,
-  FileText
+  FileText,
+  ExternalLink
 } from "lucide-react";
 import type { SingleDestinationResult } from "../shared/schema";
 import keralaImg from "@assets/generated_images/Kerala_backwaters_with_houseboat_c52667af.png";
@@ -35,7 +36,7 @@ import { BackButton } from "@/components/BackButton";
 import { BookingModal } from "@/components/BookingModal"; // Add this import
 import { trackEvent } from "@/analytics/ga";
 import { createBooking } from "@/lib/api";
-
+import { getDestinationAffiliateLink, trackAffiliateClick, AFFILIATE_DISCLOSURE } from "@/utils/affiliateLinks";
 
 // Import date-fns for formatting if needed
 import { format } from "date-fns";
@@ -568,6 +569,38 @@ export default function DestinationDetail() {
 //   }
 // };
 
+// ADD THIS NEW HANDLER near your other handlers (handleSaveItinerary, handleGetQuote, etc.):
+
+/**
+ * Handle booking button click - Opens Booking.com affiliate link
+ */
+const handleBookingClick = () => {
+  // Prepare travel details from search data
+  const searchData = JSON.parse(
+    sessionStorage.getItem("searchData") || 
+    localStorage.getItem("lastSearchData") || 
+    "{}"
+  );
+
+  const travelDetails = {
+    duration: searchData.tripDuration || 3,
+    adults: searchData.travellers?.adults || 2,
+    children: searchData.travellers?.children || 0,
+  };
+
+  // Get the selected variant label for tracking
+  const variant = selectedLabel; // 'cheapest', 'fastest', or 'comfortable'
+
+  // Generate affiliate link
+  const affiliateLink = getDestinationAffiliateLink(destination, travelDetails, variant);
+
+  // Track click
+  trackAffiliateClick(name, 'detail', variant);
+
+  // Open in new tab
+  window.open(affiliateLink, '_blank', 'noopener,noreferrer');
+};
+
 const handleBookPackage = async (bookingData: any) => {
   setBookingInProgress(true);
   try {
@@ -753,7 +786,10 @@ const handleBookPackage = async (bookingData: any) => {
             />
 
             {/* Accommodation */}
-            <AccommodationSection accommodation={accommodation} />
+            <AccommodationSection
+                accommodation={accommodation}
+                destination={destination}
+              />
 
             {/* Local Expenses */}
             <LocalExpensesSection localExpenses={localExpenses} />
@@ -799,6 +835,16 @@ const handleBookPackage = async (bookingData: any) => {
                       </>
                     )}
                   </Button>
+
+              {/* ✨ NEW: Booking.com Affiliate Button */}
+              <Button 
+                className="w-full bg-blue-600 hover:bg-blue-700" 
+                size="lg"
+                onClick={handleBookingClick}
+              >
+                <ExternalLink className="mr-2 h-4 w-4" />
+                Book Hotels Now
+              </Button>
                   
                   {/* Save Button - Only for logged-in users */}
                   <Button 
