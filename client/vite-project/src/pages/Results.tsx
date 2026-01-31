@@ -202,21 +202,112 @@ export default function Results() {
     );
   }
 
+  // if (isLoading) {
+  //   return (
+  //     <div className="min-h-screen flex items-center justify-center bg-background">
+  //       <div className="text-center">
+  //         <Loader2 className="animate-spin h-16 w-16 text-primary mx-auto mb-4" />
+  //         <h2 className="text-xl font-semibold mb-2">Finding Your Perfect Trip</h2>
+  //         <p className="text-muted-foreground">
+  //           {searchData.tripType === "multi-city" 
+  //             ? "Analyzing routes, calculating costs, building itineraries..." 
+  //             : "Searching destinations, comparing prices..."}
+  //         </p>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
   if (isLoading) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-background">
-        <div className="text-center">
-          <Loader2 className="animate-spin h-16 w-16 text-primary mx-auto mb-4" />
-          <h2 className="text-xl font-semibold mb-2">Finding Your Perfect Trip</h2>
-          <p className="text-muted-foreground">
-            {searchData.tripType === "multi-city" 
-              ? "Analyzing routes, calculating costs, building itineraries..." 
-              : "Searching destinations, comparing prices..."}
-          </p>
+  return (
+    <div className="min-h-screen flex flex-col items-center justify-center bg-background">
+      {/* Animated spinner */}
+      <div className="relative mb-8">
+        <div className="absolute -inset-4 bg-primary/10 dark:bg-primary/20 rounded-full animate-ping" />
+        <Loader2 className="h-20 w-20 text-primary animate-spin relative" />
+      </div>
+      
+      {/* Main title */}
+      <h2 className="text-2xl md:text-3xl font-bold text-foreground mb-3">
+        {searchData?.tripType === "multi-city" 
+          ? "Crafting Your Multi-City Journey ✈️" 
+          : "Discovering Your Perfect Getaway 🗺️"}
+      </h2>
+      
+      {/* PROGRESSIVE LOADING TIPS */}
+      <div className="h-16 mb-6 flex items-center justify-center">
+        <LoadingTips tripType={searchData?.tripType || "single-destination"} />
+      </div>
+      
+      {/* Progress bar */}
+      <div className="w-80 max-w-full px-4 mb-8">
+        <div className="h-2 bg-muted rounded-full overflow-hidden">
+          <div 
+            className="h-full bg-gradient-to-r from-primary via-primary/80 to-primary rounded-full"
+            style={{ animation: 'progressBar 60s linear infinite' }}
+          />
+        </div>
+        <div className="flex justify-between text-xs text-muted-foreground mt-2">
+          <span>Starting up...</span>
+          <span>~60 seconds</span>
+          <span>Ready!</span>
         </div>
       </div>
-    );
-  }
+      
+      {/* Important note */}
+      <div className="max-w-md text-center px-4">
+        <p className="text-sm text-muted-foreground">
+          ⏳ Gathering fresh travel data, prices & availability for you...
+          <br />
+          <span className="text-primary">This one-time setup makes future searches instant! ⚡</span>
+        </p>
+      </div>
+    </div>
+  );
+}
+
+// LoadingTips component
+function LoadingTips({ tripType }: { tripType: string }) {
+  const [currentTip, setCurrentTip] = useState(0);
+  
+  const multiCityTips = [
+    "🔄 Analyzing possible route combinations...",
+    "💰 Calculating transport costs between cities...",
+    "🏨 Checking hotel availability & prices...",
+    "⭐ Finding highly-rated attractions...",
+    "🚗 Optimizing travel times & connections...",
+    "📊 Comparing 1000+ itinerary options...",
+    "✨ Adding local tips & hidden gems...",
+    "✅ Finalizing your perfect multi-city plan..."
+  ];
+  
+  const singleDestinationTips = [
+    "🔍 Scanning 1000+ destinations across India...",
+    "💰 Matching destinations to your budget...",
+    "⭐ Reading thousands of traveler reviews...",
+    "🌤️ Checking seasonal weather patterns...",
+    "📅 Finding the best time to visit...",
+    "🏨 Comparing accommodation options...",
+    "🍽️ Researching local food & experiences...",
+    "✅ Ranking the top matches for you..."
+  ];
+  
+  const tips = tripType === "multi-city" ? multiCityTips : singleDestinationTips;
+  
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentTip((prev) => (prev + 1) % tips.length);
+    }, 8000);
+    
+    return () => clearInterval(interval);
+  }, [tips.length]);
+  
+  return (
+    <p className="text-lg text-foreground text-center max-w-md px-4">
+      {tips[currentTip]}
+    </p>
+  );
+}
 
   // Error state with suggestions
   if (error || !result || !result.success) {
