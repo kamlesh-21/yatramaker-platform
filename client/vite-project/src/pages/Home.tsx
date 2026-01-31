@@ -175,13 +175,13 @@ export default function Home() {
     };
 
       // ✅ TRACK SEARCH (HOME PAGE)
-  trackEvent("search_submit", {
-    trip_type: tripType,
-    origin_city: searchData.userLocation.name,
-    budget: parseInt(searchData.budget),
-    days: searchData.tripDuration,
-    travellers: searchData.travellers.adults + searchData.travellers.children
-  });
+    trackEvent("search_submit", {
+      trip_type: tripType,
+      origin_city: searchData.userLocation.name,
+      budget: parseInt(searchData.budget),
+      days: searchData.tripDuration,
+      travellers: searchData.travellers.adults + searchData.travellers.children
+    });
 
     sessionStorage.setItem("searchData", JSON.stringify(finalSearchData));
     navigate("/results");

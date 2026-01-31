@@ -45,6 +45,7 @@
     "clsx": "^2.1.1",
     "contentful": "^10.12.14",
     "date-fns": "^4.1.0",
+    "framer-motion": "^11.18.2",
     "lottie-react": "^2.4.0",
     "lucide-react": "^0.453.0",
     "moment": "^2.30.1",
