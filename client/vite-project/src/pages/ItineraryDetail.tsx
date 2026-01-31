@@ -32,7 +32,8 @@ import {
   BarChart3,
   Star,
   FileText,
-  MessageSquare
+  MessageSquare,
+  ExternalLink
 } from "lucide-react";
 import { toast } from "@/hooks/use-toast";
 import { useAuth } from "@/hooks/use-auth";
@@ -49,7 +50,7 @@ import { BackButton } from "@/components/BackButton";
 import type { MultiCityItinerary } from "../shared/schema";
 import { BookingModal } from "@/components/BookingModal"; // Add this import
 import { trackEvent } from "@/analytics/ga";
-
+import { getDestinationAffiliateLink, trackAffiliateClick, AFFILIATE_DISCLOSURE, extractDestinationName } from "@/utils/affiliateLinks";
 
 export default function ItineraryDetail() {
   const navigate = useNavigate();
@@ -440,7 +441,21 @@ export default function ItineraryDetail() {
                destinations[0]?.destination?.images?.[0]?.url || 
                "https://images.unsplash.com/photo-1544551763-46a013bb70d5?w=1200&h=600&fit=crop";
 
-  const getComfortLevel = () => {
+    // NEW: Get affiliate link for first destination
+  const firstDestObj = itinerary?.destinations?.[0]?.destination || { name: 'India' };
+  const firstCityName = extractDestinationName(firstDestObj);
+
+const affiliateLink = getDestinationAffiliateLink(
+  firstDestObj,
+  {
+    duration: itinerary?.destinations?.[0]?.nights || totalDays || 3, // ← use totalDays
+    travellers: itinerary.travellers || { adults: 2, children: 0 },
+  },
+  'multi-city'
+);
+  
+  
+               const getComfortLevel = () => {
     const comfort = scores.comfortScore || 5;
     if (comfort >= 8) return { level: "Luxury", color: "text-emerald-600", bg: "bg-emerald-50" };
     if (comfort >= 6) return { level: "Comfort", color: "text-blue-600", bg: "bg-blue-50" };
@@ -887,62 +902,82 @@ export default function ItineraryDetail() {
                 <Separator />
 
                 {/* Action Buttons */}
-                <div className="space-y-3">
-                  <Button 
-                    className="w-full gap-2"
+                <div className="space-y-4">
+                  {/* Primary: Get Detailed Quote */}
+                  <Button
+                    className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
                     size="lg"
                     onClick={handleGetQuote}
                     disabled={bookingInProgress || quoteSubmitted}
                   >
                     {quoteSubmitted ? (
                       <>
-                        <Check className="h-4 w-4" />
+                        <Check className="mr-2 h-4 w-4" />
                         Quote Requested
                       </>
                     ) : (
                       <>
-                        <FileText className="h-4 w-4" />
+                        <FileText className="mr-2 h-4 w-4" />
                         Get Detailed Quote
                       </>
                     )}
                   </Button>
-                  
-                  <Button 
-                    variant="outline" 
-                    className="w-full gap-2"
-                    onClick={handleSaveItinerary}
-                    disabled={isSaving}
-                  >
-                    {isSaving ? (
-                      <>
-                        <Loader2 className="h-4 w-4 animate-spin" />
-                        Saving...
-                      </>
-                    ) : (
-                      <>
-                        <Bookmark className="h-4 w-4" />
-                        Save Itinerary
-                      </>
-                    )}
-                  </Button>
-                  
-                  <Button 
-                    variant="outline" 
-                    className="w-full gap-2 bg-green-50 text-green-700 hover:bg-green-100 border-green-200"
+
+                  {/* Secondary: Book Hotels - first destination */}
+                <Button
+                  asChild
+                  variant="outline"
+                  className="w-full bg-blue-600 hover:bg-blue-700 text-white"
+                  size="lg"
+                >
+                  <a
+                    href={affiliateLink}
+                    target="_blank"
+                    rel="sponsored noopener noreferrer"
                     onClick={() => {
-                      // ✅ TRACK WHATSAPP CLICK
-                      trackEvent("whatsapp_clicked", {
-                        destination_name: `${destinations.length} destinations`,
-                        total_cost: totalCost,
-                        trip_type: "multi-city"
-                      });
-                      const message = `Hi! I'm interested in this ${destinations.length}-destination itinerary for ₹${totalCost.toLocaleString()}. Can you send me a detailed quote?`;
-                      window.open(`https://wa.me/YOUR_WHATSAPP_NUMBER?text=${encodeURIComponent(message)}`, '_blank');
+                      trackAffiliateClick(firstCityName || 'Multi-City', 'detail', 'multi-city');
                     }}
                   >
-                    <MessageSquare className="h-4 w-4" />
-                    WhatsApp
-                  </Button>
+                    <ExternalLink className="h-4 w-4" />
+                    Book Hotels in {firstCityName}
+                  </a>
+                </Button>
+
+                  {/* Tertiary: Save + WhatsApp - 2-col grid, icons only */}
+                  <div className="grid grid-cols-2 gap-3">
+                    <Button
+                      variant="outline"
+                      className="w-full border-primary/30 text-primary hover:bg-primary/5"
+                      onClick={handleSaveItinerary}
+                      disabled={isSaving}
+                    >
+                      {isSaving ? (
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                      ) : (
+                        <>
+                          <Bookmark className="h-5 w-5" />
+                            save
+                        </>
+                      )}
+                    </Button>
+
+                    <Button
+                      variant="outline"
+                      className="w-full border-green-300 text-green-700 hover:bg-green-50"
+                      onClick={() => {
+                        const message = `Hi! Interested in this ${destinations.length}-destination itinerary for ₹${totalCost.toLocaleString()}. Can you send detailed quote?`;
+                        window.open(`https://wa.me/919646562880?text=${encodeURIComponent(message)}`, '_blank');
+                      }}
+                    >
+                      <MessageSquare className="h-5 w-5" />
+                      whatsapp
+                    </Button>
+                  </div>
+
+                  {/* Disclosure */}
+                  <p className="text-xs text-center text-muted-foreground mt-2">
+                    {AFFILIATE_DISCLOSURE}
+                  </p>
                 </div>
                 {/* Trust Badges */}
                 <div className="pt-4 border-t">
@@ -1019,15 +1054,19 @@ export default function ItineraryDetail() {
               </div>
             </Card>
 
-            {/* Need Help Card */}
+            {/* Need Help Card - kept as the single prominent CTA */}
             <Card className="p-6 bg-gradient-to-br from-primary/5 to-primary/10">
               <div className="text-center">
                 <Phone className="h-8 w-8 text-primary mx-auto mb-3" />
-                <h4 className="font-semibold mb-2">Need Help?</h4>
+                <h4 className="font-semibold mb-2">Need Help Customizing This Trip?</h4>
                 <p className="text-sm text-muted-foreground mb-4">
-                  Our travel experts are here to help customize this itinerary.
+                  Our travel experts can adjust dates, budget, preferences, or build a fully custom package.
                 </p>
-                <Button variant="outline" className="w-full gap-2">
+                <Button 
+                  className="w-full gap-2 bg-primary hover:bg-primary/90 text-primary-foreground"
+                  size="lg"
+                  onClick={() => navigate("/contact")}
+                >
                   <Mail className="h-4 w-4" />
                   Contact Expert
                 </Button>
@@ -1036,11 +1075,11 @@ export default function ItineraryDetail() {
           </div>
         </div>
 
-        {/* Footer CTA */}
-        <div className="mt-12 p-8 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-2xl text-center">
+        {/* Footer CTA - simplified: removed contact/quote mention */}
+        {/* <div className="mt-12 p-8 bg-gradient-to-r from-primary/10 via-primary/5 to-primary/10 rounded-2xl text-center">
           <h3 className="text-2xl font-bold mb-3">Ready to embark on this journey?</h3>
           <p className="text-muted-foreground mb-6 max-w-2xl mx-auto">
-            Save this itinerary, share it with your travel companions, or request an exact quote from our travel experts.
+            Save this itinerary or share it with your travel companions.
           </p>
           <div className="flex flex-col sm:flex-row gap-3 justify-center">
             <Button size="lg" className="gap-2" onClick={handleSaveItinerary}>
@@ -1052,23 +1091,28 @@ export default function ItineraryDetail() {
               Share Itinerary
             </Button>
           </div>
-        </div>
+        </div> */}
       </main>
 
-      {/* Footer */}
-      <footer className="border-t mt-12 py-8 bg-muted/20">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-sm text-muted-foreground">
-            All prices are estimates based on current rates and availability. 
-            Exact pricing may vary based on dates, availability, and customization.
+      {/* Page Footer - removed contact CTA (sidebar already covers it) */}
+      <footer className="border-t mt-16 py-8 bg-muted/20">
+        <div className="max-w-7xl mx-auto px-4 text-center text-sm text-muted-foreground">
+          <p>
+            All prices are estimates based on current rates. 
+            Routes optimized for your preferences and budget.
           </p>
-          <p className="text-sm text-muted-foreground mt-2">
-            Need help? <button className="underline text-primary">Contact our travel experts</button> 
-            or call +1-800-TRAVEL-HELP
+          <p className="mt-2">
+            Have questions? <button 
+              className="underline text-primary hover:text-primary/80 transition-colors"
+              onClick={() => navigate("/contact")}
+            >
+              Contact support
+            </button>
           </p>
         </div>
       </footer>
-      {/* Add this modal at the end, before the closing </div> */}
+
+      {/* Booking Modal */}
       <BookingModal
         isOpen={showBookingModal}
         onClose={() => setShowBookingModal(false)}

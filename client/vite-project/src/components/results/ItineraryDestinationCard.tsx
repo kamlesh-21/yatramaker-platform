@@ -1,7 +1,9 @@
-// client/vite-project/src/components/ItineraryDestinationCard.tsx
+// client/vite-project/src/components/results/ItineraryDestinationCard.tsx
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Hotel, Sun, Thermometer, Activity, Coffee, Camera } from "lucide-react";
+import { Hotel, Sun, Thermometer, Activity, Coffee, Camera, ExternalLink } from "lucide-react";
+import { getDestinationAffiliateLink, trackAffiliateClick, AFFILIATE_DISCLOSURE, extractDestinationName } from "@/utils/affiliateLinks";
+import { Button } from "@/components/ui/button";
 
 interface ItineraryDestinationCardProps {
   destination: any;
@@ -88,29 +90,63 @@ export function ItineraryDestinationCard({ destination, index, total }: Itinerar
             </div>
           )}
 
-          {/* Accommodation */}
-          <div className="p-3 bg-muted/20 rounded-lg">
-            <div className="flex items-center justify-between mb-2">
-              <div className="flex items-center gap-2">
-                <Hotel className="h-4 w-4 text-primary" />
-                <span className="font-medium">Accommodation</span>
-              </div>
-              <div className="font-bold">₹{accommodation.cost?.toLocaleString() || 0}</div>
-            </div>
-            <div className="text-sm text-muted-foreground">
-              {accommodation.accommodationType || 'Hotel'} • {accommodation.starRating || '—'}★
-              {accommodation.isEstimated && (
-                <Badge variant="outline" className="ml-2 text-xs">
-                  Estimated
-                </Badge>
-              )}
-            </div>
-            {accommodation.estimationReason && (
-              <div className="text-xs text-orange-600 mt-1">
-                {accommodation.estimationReason}
-              </div>
-            )}
-          </div>
+{/* Accommodation */}
+<div className="p-3 bg-muted/20 rounded-lg">
+  <div className="flex items-center justify-between mb-2">
+    <div className="flex items-center gap-2">
+      <Hotel className="h-4 w-4 text-primary" />
+      <span className="font-medium">Accommodation</span>
+    </div>
+    <div className="font-bold">₹{accommodation.cost?.toLocaleString() || 0}</div>
+  </div>
+  <div className="text-sm text-muted-foreground">
+    {accommodation.accommodationType || 'Hotel'} • {accommodation.starRating || '—'}★
+    {accommodation.isEstimated && (
+      <Badge variant="outline" className="ml-2 text-xs">
+        Estimated
+      </Badge>
+    )}
+  </div>
+  {accommodation.estimationReason && (
+    <div className="text-xs text-orange-600 mt-1">
+      {/* {accommodation.estimationReason} */}
+    </div>
+  )}
+
+  {/* NEW: Booking.com CTA - small, contextual */}
+  <div className="mt-3">
+    <Button
+      asChild
+      variant="outline"
+      size="sm"
+      className="w-full gap-2 border-primary/50 text-primary hover:bg-primary/10 text-xs"
+    >
+      <a
+        href={getDestinationAffiliateLink(
+          dest, // full destination object
+          { duration: destination.nights || 2 },
+          'multi-city-destination'
+        )}
+        target="_blank"
+        rel="sponsored noopener noreferrer"
+        onClick={() => {
+          trackAffiliateClick(
+            extractDestinationName(dest) || 'Unknown City',
+            'detail',
+            'multi-city'
+          );
+        }}
+      >
+        <ExternalLink className="h-3 w-3" />
+        Book Hotels in {extractDestinationName(dest)}
+      </a>
+    </Button>
+
+    <p className="text-[10px] text-center text-muted-foreground mt-1">
+      {AFFILIATE_DISCLOSURE}
+    </p>
+  </div>
+</div>
 
           {/* Local Expenses */}
           <div className="grid grid-cols-3 gap-2 text-sm">

@@ -815,84 +815,89 @@ const handleBookPackage = async (bookingData: any) => {
               />
               
                 {/* Action Buttons */}
-                <div className="space-y-3">
-                  {/* Get Quote Button - Available to ALL users */}
-                  <Button 
-                    className="w-full" 
-                    size="lg"
-                    onClick={handleGetQuote} 
-                    disabled={bookingInProgress || quoteSubmitted}
-                  >
-                    {quoteSubmitted ? (
-                      <>
-                        <Check className="mr-2 h-4 w-4" />
-                        Quote Requested
-                      </>
-                    ) : (
-                      <>
-                        <FileText className="mr-2 h-4 w-4" />
-                        Get Detailed Quote
-                      </>
-                    )}
-                  </Button>
+              <div className="space-y-4">
+                {/* Primary action: Get Detailed Quote - filled primary orange */}
+                <Button
+                  className="w-full bg-primary hover:bg-primary/90 text-primary-foreground"
+                  size="lg"
+                  onClick={handleGetQuote}
+                  disabled={bookingInProgress || quoteSubmitted}
+                >
+                  {quoteSubmitted ? (
+                    <>
+                      <Check className="mr-2 h-4 w-4" />
+                      Quote Requested
+                    </>
+                  ) : (
+                    <>
+                      <FileText className="mr-2 h-4 w-4" />
+                      Get Detailed Quote
+                    </>
+                  )}
+                </Button>
 
-              {/* ✨ NEW: Booking.com Affiliate Button */}
-              <Button 
-                className="w-full bg-blue-600 hover:bg-blue-700" 
+                {/* Secondary: Book Hotels Now - outline, primary border/text */}
+              <Button
+                className="w-full bg-blue-600 hover:bg-blue-700 text-white"
                 size="lg"
                 onClick={handleBookingClick}
               >
                 <ExternalLink className="mr-2 h-4 w-4" />
                 Book Hotels Now
               </Button>
-                  
-                  {/* Save Button - Only for logged-in users */}
-                  <Button 
+
+                {/* Tertiary: Save + WhatsApp - 2-column grid, icons only */}
+                <div className="grid grid-cols-2 gap-3">
+                  <Button
                     variant="outline"
-                    className="w-full"
-                    onClick={handleSaveItinerary} 
+                    className="w-full border-primary/30 text-primary hover:bg-primary/5"
+                    onClick={handleSaveItinerary}
                     disabled={isSaving}
                   >
                     {isSaving ? (
-                      <Loader2 className="h-4 w-4 animate-spin" />
+                      <Loader2 className="h-5 w-5 animate-spin" />
                     ) : (
                       <>
-                        <Bookmark className="mr-2 h-4 w-4" />
-                        Save Itinerary
+                      <Bookmark className="h-5 w-5" />
+                      save
                       </>
                     )}
                   </Button>
-                  
-                  {/* WhatsApp Button */}
-                  <Button 
+
+                  <Button
                     variant="outline"
-                    className="w-full bg-green-50 text-green-700 hover:bg-green-100 border-green-200"
+                    className="w-full border-green-300 text-green-700 hover:bg-green-50"
                     onClick={() => {
-                      const message = `Hi! I'm interested in ${name} package for ₹${costs.total.toLocaleString()}. Can you send me a detailed quote?`;
+                      const message = `Hi! Interested in ${name} package for ₹${costs.total.toLocaleString()}. Can you send detailed quote?`;
                       window.open(`https://wa.me/919646562880?text=${encodeURIComponent(message)}`, '_blank');
                     }}
                   >
-                    <MessageSquare className="mr-2 h-4 w-4" />
-                    WhatsApp
+                    <MessageSquare className="h-5 w-5" />
+                    whatsapp
                   </Button>
                 </div>
-              
-                <div className="pt-4 border-t">
-                  <div className="flex flex-wrap gap-2 justify-center">
-                    <Badge variant="outline" className="gap-1">
-                      <ShieldCheck className="h-3 w-3" />
-                      Secure Booking
-                    </Badge>
-                    <Badge variant="outline" className="gap-1">
-                      <Check className="h-3 w-3" />
-                      Best Price
-                    </Badge>
-                    <Badge variant="outline" className="gap-1">
-                      <Wifi className="h-3 w-3" />
-                      Free Support
-                    </Badge>
-                  </div>
+
+                {/* Trust badges - keep small */}
+                <div className="pt-4 border-t flex flex-wrap gap-2 justify-center">
+                  <Badge variant="outline" className="gap-1">
+                    <ShieldCheck className="h-3 w-3" />
+                    Secure Booking
+                  </Badge>
+                  <Badge variant="outline" className="gap-1">
+                    <Check className="h-3 w-3" />
+                    Best Price
+                  </Badge>
+                  <Badge variant="outline" className="gap-1">
+                    <Wifi className="h-3 w-3" />
+                    Free Support
+                  </Badge>
                 </div>
+
+                {/* Disclosure */}
+                <p className="text-xs text-center text-muted-foreground mt-4">
+                  {AFFILIATE_DISCLOSURE}
+                </p>
+              </div>
             </div>
           </div>
         </div>

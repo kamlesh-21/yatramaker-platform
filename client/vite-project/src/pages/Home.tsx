@@ -117,6 +117,14 @@ export default function Home() {
     return () => clearInterval(interval);
   }, [isPlaying]);
 
+  // Add this useEffect
+  useEffect(() => {
+    setSearchData(prev => ({
+      ...prev,
+      tripDuration: tripType === "multi-city" ? 5 : 3
+    }));
+  }, [tripType]);
+
   const handleLocationChange = (selectedLocation: any) => {
     setSearchData(prev => ({
       ...prev,

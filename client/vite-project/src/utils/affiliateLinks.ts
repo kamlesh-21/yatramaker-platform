@@ -1,24 +1,3 @@
-// // client/vite-project/src/utils/affiliateLinks.ts
-
-// const PUBLISHER_ID = '123456'; // ← REPLACE WITH YOUR ACTUAL AWIN PUBLISHER ID
-
-// export function getBookingLink(destination: any): string {
-//   // Extract destination name from your existing data structure
-//   const dest = destination?.destination ?? destination ?? {};
-//   const nameCandidate = dest?.name ?? dest?.title ?? destination?.title;
-//   const name = Array.isArray(nameCandidate) ? nameCandidate[0] : 
-//               (typeof nameCandidate === 'object' ? (nameCandidate?.text || 'India') : nameCandidate) || 
-//               "India";
-
-//   // Create Booking.com URL
-//   const bookingUrl = `https://www.booking.com/searchresults.html?ss=${encodeURIComponent(name)}&selected_currency=INR`;
-  
-//   // Wrap with AWIN tracking
-//   return `http://www.awin1.com/awclick.php?mid=18117&id=${PUBLISHER_ID}&clickref=yatramaker&p=${encodeURIComponent(bookingUrl)}`;
-// }
-
-// export const DISCLOSURE = 'As a Booking.com Affiliate, I earn from qualifying transactions.';
-
 // client/vite-project/src/utils/affiliateLinks.ts
 
 /**
@@ -30,19 +9,19 @@
 const AWIN_CONFIG = {
   MERCHANT_ID: '18117', // Booking.com on AWIN
   PUBLISHER_ID: import.meta.env.VITE_AWIN_PUBLISHER_ID as string, // ⚠️ REPLACE with your actual ID
-  TRACKING_URL: 'https://www.awin1.com/awclick.php',
+  TRACKING_URL: 'https://www.awin1.com/cread.php',
   BOOKING_BASE: 'https://www.booking.com',
 };
 
 if (!AWIN_CONFIG.PUBLISHER_ID) {
-  throw new Error('AWIN Publisher ID not configured');
+  console.warn('AWIN Publisher ID missing - using fallback for development');
+  AWIN_CONFIG.PUBLISHER_ID = '2733218'; // Your actual ID as fallback
 }
 
 /**
  * Extract destination name from various data structures
  */
-function extractDestinationName(destination: any): string {
-  // Handle different data structures
+export function extractDestinationName(destination: any): string {
   if (typeof destination === 'string') {
     return destination;
   }
@@ -51,14 +30,12 @@ function extractDestinationName(destination: any): string {
     return 'India';
   }
 
-  // Try multiple paths to find the name
   const nameCandidate = 
     destination.name || 
     destination.destination?.name || 
     destination.title ||
     destination.destination?.title;
 
-  // Handle array or object names
   if (Array.isArray(nameCandidate)) {
     return nameCandidate[0] || 'India';
   }
@@ -67,7 +44,7 @@ function extractDestinationName(destination: any): string {
     return nameCandidate.text;
   }
 
-  return nameCandidate || 'India';
+  return String(nameCandidate || 'India');
 }
 
 /**
@@ -117,6 +94,8 @@ function createBookingUrl(params: {
   const searchParams = new URLSearchParams({
     ss: params.destination,
     selected_currency: 'INR',
+    lang: 'en-gb', // Added: consistent English (India-friendly)
+    sb: '1',       // Added: search bar origin
   });
 
   if (params.checkin) searchParams.append('checkin', params.checkin);
@@ -179,7 +158,8 @@ export function getDestinationAffiliateLink(
     rooms: Math.ceil(adults / 2), // Simple room calculation
   });
 
-  const clickref = `yatramaker-${destName.toLowerCase().replace(/\s+/g, '-')}-${variant || 'default'}`;
+  const safeName = destName.toLowerCase().replace(/\s+/g, '-');
+  const clickref = `yatramaker-${safeName || 'fallback'}-${variant || 'default'}`;
 
   return wrapWithAffiliateTracking(bookingUrl, clickref);
 }
@@ -197,12 +177,12 @@ export function getMultiCityAffiliateLink(
     return getDestinationAffiliateLink({ name: 'India' });
   }
 
-  // Get the current destination
-  const currentDest = destinations[currentDestinationIndex];
-  const destName = extractDestinationName(currentDest?.destination || currentDest);
+  // Use FIRST destination by default (most logical starting point)
+  const mainDestObj = destinations[0]?.destination || {};
+  const destName = extractDestinationName(mainDestObj);
 
-  // Try to get dates from itinerary
-  const nights = currentDest?.nights || 2;
+  // Use nights from FIRST destination
+  const nights = destinations[0]?.nights || 2;
   const dates = getBookingDates({ duration: nights });
 
   const bookingUrl = createBookingUrl({
@@ -213,7 +193,8 @@ export function getMultiCityAffiliateLink(
     children: itinerary.travellers?.children || 0,
   });
 
-  const clickref = `yatramaker-multi-${destName.toLowerCase().replace(/\s+/g, '-')}-${currentDestinationIndex}`;
+  const safeName = destName.toLowerCase().replace(/\s+/g, '-');
+  const clickref = `yatramaker-multi-${safeName}-first-${currentDestinationIndex}`;
 
   return wrapWithAffiliateTracking(bookingUrl, clickref);
 }
@@ -243,7 +224,7 @@ export function trackAffiliateClick(
 /**
  * Affiliate disclosure text (REQUIRED by AWIN terms)
  */
-export const AFFILIATE_DISCLOSURE = 'As a Booking.com Affiliate, I earn from qualifying bookings.';
+export const AFFILIATE_DISCLOSURE = 'As a Booking.com affiliate, YatraMaker may earn a commission from qualifying bookings.';
 
 /**
  * Simple helper for quick links (if you just need a basic search)

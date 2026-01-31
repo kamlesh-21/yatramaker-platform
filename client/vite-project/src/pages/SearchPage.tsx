@@ -74,7 +74,7 @@ export default function SearchPage() {
             </div>
 
             <SearchForm
-              initialValues={initialValues}
+              initialValues={{ tripType: "single-destination" }}
               onSubmit={handleSubmit}
               onReset={handleReset}
             />

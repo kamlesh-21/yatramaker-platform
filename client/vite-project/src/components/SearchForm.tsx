@@ -55,6 +55,20 @@ const normalizePreferences = (prefs: string[]): string[] => {
     .filter((pref, index, array) => array.indexOf(pref) === index); // Remove duplicates
 };
 
+const TRIP_TYPE_PRESETS = {
+  "single-destination": {
+    duration: 3,
+    adults: 1,
+    preferences: ["Mountains", "Culture", "Beaches", "Temples"],
+  },
+  "multi-city": {
+    duration: 5,
+    adults: 1,
+    preferences: ["Culture", "Beaches", "Mountains", "Jungles"],
+  },
+} as const;
+
+
 interface SearchFormProps {
   initialValues?: Partial<SearchRequest>;
   onSubmit?: (data: SearchRequest) => void;
@@ -80,9 +94,9 @@ export function SearchForm({
   // State from initialValues or defaults
   const [location, setLocation] = useState<string>(initialValues.userLocation?.name || "");
   const [locationData, setLocationData] = useState<any>(initialValues.userLocation || null);
-  const [budget, setBudget] = useState<number[]>([initialValues.budget || 50000]);
-  const [duration, setDuration] = useState<number>(initialValues.tripDuration || 7);
-  const [adults, setAdults] = useState<number>(initialValues.travellers?.adults || 2);
+  const [budget, setBudget] = useState<number[]>([initialValues.budget || 30000]);
+  const [duration, setDuration] = useState<number>(initialValues.tripDuration || 5);
+  const [adults, setAdults] = useState<number>(initialValues.travellers?.adults || 1);
   const [children, setChildren] = useState<number>(initialValues.travellers?.children || 0);
   const [infants, setInfants] = useState<number>(initialValues.travellers?.infants || 0);
   const [selectedPreferences, setSelectedPreferences] = useState<string[]>(
@@ -91,8 +105,9 @@ export function SearchForm({
   const [tripType, setTripType] = useState<"single-destination" | "multi-city">(
     (initialValues.tripType as any) || "multi-city"
   );
+  
   const [accommodation, setAccommodation] = useState<"Cheap" | "Comfort" | "Luxury">(
-    initialValues.accommodationPreference || "Comfort"
+    initialValues.accommodationPreference || "Cheap"
   );
 
   // Sync initialValues on prop change
@@ -163,6 +178,21 @@ export function SearchForm({
 
     onSubmit?.(data);
   };
+
+  useEffect(() => {
+    const preset = TRIP_TYPE_PRESETS[tripType];
+    if (!preset) return;
+
+    setDuration(preset.duration);
+    setAdults(preset.adults);
+
+    setChildren(0);
+    setInfants(0);
+
+    // 👇 convert readonly tuple → mutable array
+    setSelectedPreferences([...preset.preferences]);
+  }, [tripType]);
+
 
   const handleReset = () => {
     setLocation("");
