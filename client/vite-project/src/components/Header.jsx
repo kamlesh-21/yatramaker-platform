@@ -72,6 +72,8 @@ return (
                 src={logo}
                 alt="YatraMaker Logo"
                 className="h-10 sm:h-12 md:h-14 w-auto min-w-[140px] object-contain filter brightness-105 contrast-105"
+                loading="eager"
+                fetchPriority="high"
               />
               {/* <div className="hidden sm:block"> {/* Desktop only 
                 <h1 className="font-display font-bold text-xl bg-gradient-to-r from-primary to-primary/70 bg-clip-text text-transparent">

@@ -106,6 +106,13 @@ export default function Home() {
     preferences: generateRandomPreference()
   });
 
+  useEffect(() => {
+  heroBackgrounds.slice(0, 3).forEach(src => {
+    const img = new Image();
+    img.src = src;
+  });
+}, []);
+
   // Hero background slideshow
   useEffect(() => {
     if (!isPlaying) return;
@@ -285,6 +292,8 @@ export default function Home() {
                   src={bg}
                   alt={`Travel background ${index + 1}`}
                   className="w-full h-full object-cover"
+                  loading={index === 0 ? "eager" : "lazy"}          // First image immediate, others lazy
+                  fetchPriority={index === 0 ? "high" : "low"}
                 />
                 <div className="absolute inset-0 bg-black/40" />
               </div>
@@ -555,15 +564,15 @@ export default function Home() {
             <div className="flex flex-wrap justify-center gap-6 text-white/70 text-sm">
               <div className="flex items-center gap-2">
                 <Zap className="h-4 w-4 text-green-400" />
-                <span>AI-Powered Recommendations</span>
+                <span>ML-Powered Recommendations</span>
               </div>
               <div className="flex items-center gap-2">
                 <Target className="h-4 w-4 text-blue-400" />
-                <span>Budget-Optimized</span>
+                <span>End-to-End Travel</span>
               </div>
               <div className="flex items-center gap-2">
                 <Globe className="h-4 w-4 text-purple-400" />
-                <span>1000+ Destinations</span>
+                <span>400+ Destinations</span>
               </div>
             </div>
           </div>
