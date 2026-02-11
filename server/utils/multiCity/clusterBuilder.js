@@ -9,30 +9,67 @@ const calculateDistance = require('../distanceCalculator');
 /**
  * Build clustering configuration dynamically
  */
+// function getClusteringConfig(userQuery = {}) {
+//     const { tripDuration = 5, budget = 15000 } = userQuery;
+
+//     let maxDestinations = 2;
+//     if (tripDuration >= 5) maxDestinations = 3;
+//     if (tripDuration >= 7) maxDestinations = 4;
+//     if (tripDuration >= 10) maxDestinations = 5;
+
+//     let maxClusterDistance = 300;
+//     let maxClusterSpan = 500;
+
+//     if (budget >= 15000) {
+//         maxClusterDistance = 500;
+//         maxClusterSpan = 800;
+//     }
+
+//     if (budget >= 25000) {
+//         maxClusterDistance = 700;
+//         maxClusterSpan = 1200;
+//     }
+
+//     if (tripDuration <= 4) {
+//         maxClusterDistance = Math.min(maxClusterDistance, 350);
+//         maxClusterSpan = Math.min(maxClusterSpan, 600);
+//     }
+
+//     return {
+//         MAX_CLUSTER_DISTANCE: Math.round(maxClusterDistance),
+//         MIN_DESTINATIONS_PER_CLUSTER: 2,
+//         MAX_DESTINATIONS_PER_CLUSTER: maxDestinations,
+//         MAX_CLUSTER_SPAN: Math.round(maxClusterSpan),
+//         SAME_STATE_BONUS: 0.7
+//     };
+// }
+
 function getClusteringConfig(userQuery = {}) {
     const { tripDuration = 5, budget = 15000 } = userQuery;
 
-    let maxDestinations = 2;
-    if (tripDuration >= 5) maxDestinations = 3;
-    if (tripDuration >= 7) maxDestinations = 4;
-    if (tripDuration >= 10) maxDestinations = 5;
+    let maxDestinations = 3;
+    if (tripDuration >= 7) maxDestinations = 5;
+    if (tripDuration >= 10) maxDestinations = 6;
 
-    let maxClusterDistance = 300;
-    let maxClusterSpan = 500;
+    let maxClusterDistance = 500;
+    let maxClusterSpan = 900;
 
-    if (budget >= 15000) {
-        maxClusterDistance = 500;
-        maxClusterSpan = 800;
+    if (budget >= 40000) {
+        maxClusterDistance = 1200;
+        maxClusterSpan = 2000;
+    }
+    if (budget >= 70000) {
+        maxClusterDistance = 2000;
+        maxClusterSpan = 3500;      // allow almost pan-India
+    }
+    if (budget >= 100000) {
+        maxClusterDistance = 3000;
+        maxClusterSpan = 5000;
     }
 
-    if (budget >= 25000) {
-        maxClusterDistance = 700;
-        maxClusterSpan = 1200;
-    }
-
-    if (tripDuration <= 4) {
-        maxClusterDistance = Math.min(maxClusterDistance, 350);
-        maxClusterSpan = Math.min(maxClusterSpan, 600);
+    if (tripDuration <= 5) {
+        maxClusterDistance = Math.min(maxClusterDistance, 800);
+        maxClusterSpan = Math.min(maxClusterSpan, 1400);
     }
 
     return {

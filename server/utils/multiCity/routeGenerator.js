@@ -207,35 +207,104 @@ async function generateRoute(cluster, userQuery) {
 /**
  * Allocate nights proportionally based on recommendedDays
  */
-function allocateNights(destinations, totalDuration) {
-    // Reserve days for travel (1 day at start, 0.5 day per inter-city leg, 1 day at end)
+// function allocateNights(destinations, totalDuration) {
+//     // Reserve days for travel (1 day at start, 0.5 day per inter-city leg, 1 day at end)
+//     const numLegs = destinations.length + 1; // Including return
+//     const estimatedTravelDays = 1 + (destinations.length - 1) * 0.5 + 1;
+//     const availableNights = Math.floor(totalDuration - estimatedTravelDays);
+    
+//     if (availableNights < destinations.length) {
+//         // Minimum 1 night per destination
+//         return destinations.map(() => 1);
+//     }
+    
+//     // Get recommended nights
+//     const recommended = destinations.map(d => d.visitMetrics?.recommendedDays || 2);
+//     const totalRecommended = recommended.reduce((sum, r) => sum + r, 0);
+    
+//     // Allocate proportionally
+//     const allocated = recommended.map(rec => 
+//         Math.max(1, Math.floor((rec / totalRecommended) * availableNights))
+//     );
+    
+//     // Adjust for rounding errors
+//     let currentTotal = allocated.reduce((sum, n) => sum + n, 0);
+//     let attempts = 0;
+    
+//     while (currentTotal < availableNights && attempts < 100) {
+//         // Add night to destination with highest recommendedDays that's under-allocated
+//         let bestIdx = 0;
+//         let bestRatio = 0;
+        
+//         for (let i = 0; i < destinations.length; i++) {
+//             const ratio = recommended[i] / (allocated[i] + 1);
+//             if (ratio > bestRatio) {
+//                 bestRatio = ratio;
+//                 bestIdx = i;
+//             }
+//         }
+        
+//         allocated[bestIdx]++;
+//         currentTotal++;
+//         attempts++;
+//     }
+    
+//     // If still over (shouldn't happen), trim from least important
+//     while (currentTotal > availableNights && attempts < 200) {
+//         let worstIdx = 0;
+//         let worstRatio = Infinity;
+        
+//         for (let i = 0; i < destinations.length; i++) {
+//             if (allocated[i] > 1) { // Don't go below 1 night
+//                 const ratio = recommended[i] / allocated[i];
+//                 if (ratio < worstRatio) {
+//                     worstRatio = ratio;
+//                     worstIdx = i;
+//                 }
+//             }
+//         }
+        
+//         allocated[worstIdx]--;
+//         currentTotal--;
+//         attempts++;
+//     }
+    
+//     return allocated;
+// }
+
+/**
+ * Allocate nights across destinations
+ * @param {Array} destinations - list of destination objects
+ * @param {number} totalDuration - total trip days
+ * @param {number} [budget] - optional: user budget in ₹ (used to decide whether to stretch nights)
+ * @param {number} [estimatedCost=0] - optional: rough current cost estimate (helps decide how many extra nights)
+ * @returns {number[]} array of nights per destination
+ */
+function allocateNights(destinations, totalDuration, budget = null, estimatedCost = 0) {
+    // ── Existing logic (unchanged) ────────────────────────────────────────
     const numLegs = destinations.length + 1; // Including return
     const estimatedTravelDays = 1 + (destinations.length - 1) * 0.5 + 1;
     const availableNights = Math.floor(totalDuration - estimatedTravelDays);
-    
+
     if (availableNights < destinations.length) {
-        // Minimum 1 night per destination
         return destinations.map(() => 1);
     }
-    
-    // Get recommended nights
+
     const recommended = destinations.map(d => d.visitMetrics?.recommendedDays || 2);
     const totalRecommended = recommended.reduce((sum, r) => sum + r, 0);
-    
-    // Allocate proportionally
-    const allocated = recommended.map(rec => 
+
+    let allocated = recommended.map(rec =>
         Math.max(1, Math.floor((rec / totalRecommended) * availableNights))
     );
-    
-    // Adjust for rounding errors
+
     let currentTotal = allocated.reduce((sum, n) => sum + n, 0);
+
+    // ── Adjustment loop for rounding (unchanged) ──────────────────────────
     let attempts = 0;
-    
     while (currentTotal < availableNights && attempts < 100) {
-        // Add night to destination with highest recommendedDays that's under-allocated
         let bestIdx = 0;
         let bestRatio = 0;
-        
+
         for (let i = 0; i < destinations.length; i++) {
             const ratio = recommended[i] / (allocated[i] + 1);
             if (ratio > bestRatio) {
@@ -243,19 +312,18 @@ function allocateNights(destinations, totalDuration) {
                 bestIdx = i;
             }
         }
-        
+
         allocated[bestIdx]++;
         currentTotal++;
         attempts++;
     }
-    
-    // If still over (shouldn't happen), trim from least important
+
     while (currentTotal > availableNights && attempts < 200) {
         let worstIdx = 0;
         let worstRatio = Infinity;
-        
+
         for (let i = 0; i < destinations.length; i++) {
-            if (allocated[i] > 1) { // Don't go below 1 night
+            if (allocated[i] > 1) {
                 const ratio = recommended[i] / allocated[i];
                 if (ratio < worstRatio) {
                     worstRatio = ratio;
@@ -263,12 +331,40 @@ function allocateNights(destinations, totalDuration) {
                 }
             }
         }
-        
+
         allocated[worstIdx]--;
         currentTotal--;
         attempts++;
     }
-    
+
+    // ── NEW: Stretch nights when budget is high and utilization is low ─────
+    if (budget && typeof budget === 'number' && budget > 50000 && estimatedCost > 0) {
+        const utilization = estimatedCost / budget;
+
+        // If we're using less than ~50–55% of budget → try to add extra nights
+        if (utilization < 0.55 && availableNights > currentTotal) {
+            // How many extra nights can we reasonably add?
+            // Rough rule: ~₹4000–8000 per night depending on group size & category
+            const roughNightCost = 6000; // adjust based on your average
+            const maxExtra = Math.floor((budget - estimatedCost) / roughNightCost);
+            const extraNights = Math.min(4, maxExtra, availableNights - currentTotal);
+
+            if (extraNights > 0) {
+                // Sort destinations by preference score (add to best ones first)
+                const ranked = destinations
+                    .map((d, idx) => ({ idx, score: d.preferenceScore || 5 }))
+                    .sort((a, b) => b.score - a.score);
+
+                for (let k = 0; k < extraNights; k++) {
+                    const bestIdx = ranked[k % ranked.length].idx;
+                    allocated[bestIdx]++;
+                }
+
+                console.log(`[allocateNights] Added ${extraNights} extra nights due to high budget (util: ${utilization.toFixed(2)})`);
+            }
+        }
+    }
+
     return allocated;
 }
 
@@ -799,6 +895,20 @@ async function generateRouteVariants(cluster, userQuery) {
             variants.push(expRoute);
         }
     }
+
+    if (userQuery.budget >= 70000) {
+    const luxuryRoute = await generateRoute(cluster, {
+        ...userQuery,
+        accommodationPreference: 'Luxury',
+        optimizationGoal: 'comfortable' // or 'experiential'
+    });
+    if (luxuryRoute) {
+        // Optional: force +1–2 extra nights to really use budget
+        luxuryRoute.summary.totalNights += 2;
+        // or better: re-run nights allocation with higher target
+        variants.push(luxuryRoute);
+    }
+}
     
     return variants;
 }
